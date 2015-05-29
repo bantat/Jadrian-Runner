@@ -7,11 +7,11 @@ import javafx.stage.Stage;
  */
 
 public class Model {
-    Stage gameWindow;
+//    Stage gameWindow;
 
-    public void Model(Stage gameWindow) {
-        gameWindow = gameWindow;
-    }
+//    public void Model(Stage gameWindow) {
+//        this.gameWindow = gameWindow;
+//    }
 
     /**
      * Updates the positions of each of the moving sprites currently on the
