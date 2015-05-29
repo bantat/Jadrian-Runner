@@ -3,10 +3,11 @@
  */
 public class PlayerSprite extends ModelSprite {
     private int runState = 0;
+    PlayerViewSprite playerViewSprite;
 
-    public PlayerSprite(PlayerViewSprite viewSprite) {
-        super(viewSprite);
-        )
+    public PlayerSprite(PlayerViewSprite playerViewSprite) {
+        super(playerViewSprite);
+        this.playerViewSprite = playerViewSprite;
     }
 
     public void animateRun() {
@@ -14,6 +15,6 @@ public class PlayerSprite extends ModelSprite {
             runState = (runState + 1) % 2;
         }
 
-        PlayerModelSprite.animateRun();
+        playerViewSprite.animateRun();
     }
 }
