@@ -2,15 +2,17 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Created by Ben on 5/27/2015.
- * A class for representing
+ * Created by Ben on 5/28/2015.
+ * A class for storing sprites within the model. Each instance has an associated
+ * ViewSprite that gets updated whenever the ModelSprite gets updated.
  */
-public abstract class Sprite {
+public abstract class ModelSprite extends Sprite{
     private List<Integer> position = new ArrayList<Integer>();
+    private ViewSprite viewSprite;
 
-//    public void Sprite() {
-//
-//    }
+    public ModelSprite(ViewSprite viewSprite) {
+        this.viewSprite = viewSprite;
+    }
 
     /**
      * Sets the current position of the sprite within the cannonical Model
@@ -18,18 +20,12 @@ public abstract class Sprite {
      * @param x the x coordinate
      * @param y the y coordinate
      */
+    @Override
     public void setPosition(int x, int y) {
         position = new ArrayList<Integer>();
         position.add(x);
         position.add(y);
-    }
 
-    /**
-     * Returns the current position of the sprite in the cannonical Model
-     * coordinates.
-     * @return The position as an Arraylist
-     */
-    public List<Integer> position() {
-        return position;
+        viewSprite.setPosition(x, y);
     }
 }

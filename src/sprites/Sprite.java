@@ -2,11 +2,11 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Created by Ben on 5/28/2015.
+ * Created by Ben on 5/27/2015.
+ * A class for representing objects as sprites.
  */
-public class ModelSprite extends Sprite{
+public abstract class Sprite {
     private List<Integer> position = new ArrayList<Integer>();
-    private ViewSprite viewSprite;
 
 //    public void Sprite() {
 //
@@ -18,12 +18,18 @@ public class ModelSprite extends Sprite{
      * @param x the x coordinate
      * @param y the y coordinate
      */
-    @Override
     public void setPosition(int x, int y) {
         position = new ArrayList<Integer>();
         position.add(x);
         position.add(y);
+    }
 
-        viewSprite.
+    /**
+     * Returns the current position of the sprite in the cannonical Model
+     * coordinates.
+     * @return The position as an Arraylist
+     */
+    public List<Integer> position() {
+        return position;
     }
 }
