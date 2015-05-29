@@ -3,13 +3,14 @@ import java.util.ArrayList;
 
 /**
  * Created by Ben on 5/27/2015.
+ * A class for representing
  */
 public abstract class Sprite {
     private List<Integer> position = new ArrayList<Integer>();
 
-    public void Sprite() {
-
-    }
+//    public void Sprite() {
+//
+//    }
 
     /**
      * Sets the current position of the sprite within the cannonical Model
