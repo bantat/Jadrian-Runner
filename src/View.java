@@ -2,6 +2,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
@@ -35,6 +36,11 @@ public class View {
     public void loadStartScreen() {
         gameWindow.setTitle("Jadrian Runner");
         gameWindow.setScene(loadGameScene());
+        gameWindow.show();
+    }
+    public void loadMainScreen() {
+        gameWindow.setTitle("Jadrian Runner");
+        gameWindow.setScene(loadMainScene());
         gameWindow.show();
     }
 
@@ -71,13 +77,15 @@ public class View {
     public void generateGameCanvas() {
         mainCanvas = new Canvas(800,600);
         GraphicsContext context = mainCanvas.getGraphicsContext2D();
-        context.fillOval(10,10,30,30);
+        context.fillOval(10,300,30,30);
     }
 
     public void generateBackgroundCanvas() {
         backgroundCanvas = new Canvas(800,600);
         GraphicsContext context = backgroundCanvas.getGraphicsContext2D();
-        context.setFill(Color.DARKBLUE);
-        context.fillRect(0,0,100000,100000);
+
+        Image background =
+                new Image("resources/background.png",0,800,true,false);
+        context.drawImage(background,0,-200);
     }
 }
