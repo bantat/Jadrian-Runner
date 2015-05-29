@@ -20,10 +20,12 @@ public class View {
     private Stage gameWindow;
 
     /**
-     * Stores references to canvas and model objects for the game, and creates a
-     * two dimensional context for drawing game elements on the canvas.
+     * Stores references to the gameWindow Stage and model objects for the game,
+     * and creates a two dimensional context for drawing game elements on the
+     * canvas.
      *
      * @param model
+     * @param gameWindow
      */
     public View(Model model, Stage gameWindow) {
         this.model = model;
@@ -52,17 +54,15 @@ public class View {
         generateGameCanvas();
 
         gameCanvasses = new ArrayList<Canvas>();
-
-        gameCanvasses.add(mainCanvas);
         gameCanvasses.add(backgroundCanvas);
+        gameCanvasses.add(mainCanvas);
 
         drawGame();
 
         Scene gameScene;
 
         Group root = new Group();
-        root.getChildren().add(backgroundCanvas);
-        root.getChildren().add(mainCanvas);
+        root.getChildren().addAll(gameCanvasses);
         gameScene = new Scene(root, 800, 600);
 
         return gameScene;

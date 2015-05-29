@@ -16,9 +16,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage gameWindow) throws Exception {
-//        Group root = new Group();
-//        canvas = new Canvas(800,400);
-//        root.getChildren().add(canvas);
+
         //Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
         this.gameWindow = gameWindow;
 
