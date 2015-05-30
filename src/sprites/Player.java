@@ -1,4 +1,7 @@
-import java.awt.*;
+package sprites;
+
+import javafx.scene.canvas.Canvas;
+import sprites.GameObject;
 
 /**
  * Created by Ben on 5/28/2015.
@@ -17,6 +20,12 @@ public class Player extends GameObject {
 
         width = 30;
         height = 38;
+
+        x = 10;
+        y = 300;
+
+        dx = 0;
+        dy = 0;
 
         fallSpeed = 0.18;
         maxFallSpeed = 4.0;
@@ -41,6 +50,10 @@ public class Player extends GameObject {
 
     @Override
     public void updatePosition() {
+
+        x = x + dx;
+        y = y + dy;
+
         if (startJump && !isFalling) {
             dy = jumpHeight;
             isJumping = true;
