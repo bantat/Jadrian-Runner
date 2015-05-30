@@ -16,16 +16,16 @@ import java.util.List;
  */
 
 public class Model {
-    private List<GameObject> gameObjects;
+    private List<Obstacles> obstacles;
+    private Player player;
 
     /**
      * Initializes our game by creating a GameObject for the player and a
      * GameObject for the first obstacles encountered in our game.
      */
     public void init() {
-        gameObjects = new ArrayList<GameObject>();
-        gameObjects.add(new Player());
-        gameObjects.add(getInitObstacles();
+        obstacles = getInitObstacles();
+        player = new Player();
     }
 
     /**
@@ -33,7 +33,7 @@ public class Model {
      * of the game.
      */
     public List<Obstacles> getInitObstacles() {
-        List<Obstacles> obstaclesList = new ArrayList<Obstacles>()
+        List<Obstacles> obstaclesList = new ArrayList<Obstacles>();
         Random random = new Random();
         int randomInt = random.nextInt(4);
         for (int i = 0; i < randomInt; i++) {
@@ -48,23 +48,25 @@ public class Model {
      * presses space bar in between time increments.
      */
     public void updateGameState(int dtime) {
-        for (int i = 0; i < gameObjects.size(); i++) {
-            if (gameObjects[i].getClass.equals(Player.class)) Player.update(dtime);
-            else if (gameObjects[i].getClass.equals(List.class)) {
-                for (int j = 0; j < gameObjects[1].size(); j++){
-                    gameObjects[i][j].update(dtime);
-                }
-            }
+        player.update();
+        for (int i = 0; i < obstacles[1].size();i++) {
+            obstacles[i].update;
         }
     }
 
 
     /**
-     * Gets the GameObjects needed to play the game. Returns an array list
-     * of these objects.
+     * Gets the list of Obstacle objects.
      */
-    public ArrayList<GameObject> getGameObjects()   {
-        return gameObjects;
+    public List<Obstacle> getObstacles()   {
+        return obstacles;
+    }
+
+    /**
+     * Gets Player object.
+     */
+    public Player getObstacles()   {
+        return obstacles;
     }
 
     /**
