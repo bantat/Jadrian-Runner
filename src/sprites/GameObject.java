@@ -1,3 +1,5 @@
+package sprites;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -5,15 +7,16 @@ import java.util.ArrayList;
  * Created by Ben on 5/27/2015.
  * A class for representing objects as sprites.
  */
-public abstract class Sprite {
+public abstract class GameObject {
+
     private List<Integer> position = new ArrayList<Integer>();
 
-//    public void Sprite() {
+//    public void GameObject() {
 //
 //    }
 
     /**
-     * Sets the current position of the sprite within the cannonical Model
+     * Sets the current position of the sprite within the canonical Model
      * coordinates.
      * @param x the x coordinate
      * @param y the y coordinate

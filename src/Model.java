@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+=======
+>>>>>>> ee495ba722183a35ffa52ad6059aeef5aaf55d29
 /**
  * Created by torebanta on 5/27/15.
  * @author Tore Banta
@@ -14,8 +17,20 @@ public class Model {
      * Updates the GameState. Gets the new positions of the GameObjects,
      * based on the amount of time passed.
      */
+<<<<<<< HEAD
     public void updateGameState(int dTime) {
         //...
+=======
+    private void updateSpritePosition(int dTime, GameObject gameObject) {
+
+    }
+
+    /**
+     * Makes the player jump if doing so is valid.
+     */
+    public void jump() {
+
+>>>>>>> ee495ba722183a35ffa52ad6059aeef5aaf55d29
     }
 
     /**
