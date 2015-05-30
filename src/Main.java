@@ -21,7 +21,8 @@ public class Main extends Application {
         this.gameWindow = gameWindow;
 
         model = new Model();
-        view = new View(model, gameWindow);
+        controller = new Controller(model);
+        view = new View(model, controller, gameWindow);
 
         view.loadStartScreen();
     }
