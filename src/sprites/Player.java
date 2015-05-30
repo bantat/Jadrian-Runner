@@ -35,6 +35,11 @@ public class Player extends GameObject {
     }
 
     @Override
+    public void updatePosition() {
+        
+    }
+
+    @Override
     public void draw(Canvas gameCanvas) {
         //...
     }
