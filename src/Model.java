@@ -1,5 +1,3 @@
-import javafx.stage.Stage;
-
 /**
  * Created by torebanta on 5/27/15.
  * @author Tore Banta
@@ -22,7 +20,7 @@ public class Model {
      * the last calculation.
      * @param dTime the amount of time since the last position calculation
      */
-    private void updateSpritePosition(int dTime, Sprite sprite) {
+    private void updateSpritePosition(int dTime, GameObject gameObject) {
 
     }
 
