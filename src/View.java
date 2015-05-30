@@ -1,8 +1,10 @@
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 
 public class View {
     private Model model;
+    private Controller controller;
     private ArrayList<Canvas> gameCanvasses;
     private Canvas mainCanvas;
     private Canvas backgroundCanvas;
@@ -26,10 +29,12 @@ public class View {
      * canvas.
      *
      * @param model
+     * @param controller
      * @param gameWindow
      */
-    public View(Model model, Stage gameWindow) {
+    public View(Model model, Controller controller, Stage gameWindow) {
         this.model = model;
+        this.controller = controller;
         this.gameWindow = gameWindow;
     }
 
@@ -38,6 +43,7 @@ public class View {
         gameWindow.setScene(loadGameScene());
         gameWindow.show();
     }
+
     public void loadMainScreen() {
         gameWindow.setTitle("Jadrian Runner");
         gameWindow.setScene(loadMainScene());
@@ -70,6 +76,20 @@ public class View {
         Group root = new Group();
         root.getChildren().addAll(gameCanvasses);
         gameScene = new Scene(root, 800, 600);
+
+        gameScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                controller.keyPressed(event);
+            }
+        });
+
+        gameScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                controller.keyReleased(event);
+            }
+        });
 
         return gameScene;
     }

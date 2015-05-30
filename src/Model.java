@@ -45,4 +45,8 @@ public class Model {
     public void genNewTrack() {
 
     }
+
+    public void updateInput() {
+        //...
+    }
 }
