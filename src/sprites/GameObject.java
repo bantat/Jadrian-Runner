@@ -1,6 +1,7 @@
 package sprites;
 
-import java.awt.*;
+import java.awt.Rectangle;
+import javafx.scene.canvas.Canvas;
 import java.util.List;
 import java.util.ArrayList;
 

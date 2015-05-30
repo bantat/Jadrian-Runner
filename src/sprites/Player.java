@@ -9,8 +9,11 @@ import java.awt.*;
  */
 public class Player extends GameObject {
     boolean isAlive;
+    boolean startJump;
     boolean isJumping;
     boolean isFalling;
+
+    int maxY;
 
     public Player() {
 
@@ -25,18 +28,53 @@ public class Player extends GameObject {
         shortJumpSpeed = 0.3;
 
         boolean isAlive = true;
+        boolean startJump = false;
         boolean isJumping = false;
         boolean isFalling = false;
+
+        maxY = 300;
 
     }
 
     public void setJumping(boolean jumpState) {
-        isJumping = jumpState;
+        if (jumpState && !isJumping) {
+            startJump = true;
+            isJumping = false;
+        }
     }
 
     @Override
     public void updatePosition() {
-        
+        if (startJump && !isFalling) {
+            dy = jumpHeight;
+            isJumping = true;
+            startJump = false;
+        }
+        else if (isJumping) {
+            if (dy < 0 && dy + 1 < 0) {
+                dy++;
+            }
+            else if (dy < 0) {
+                dy = 0;
+            }
+            else {
+                dy = fallSpeed;
+                isFalling = true;
+            }
+        }
+        else if (isFalling) {
+            if (y >= maxY) {
+                y = maxY;
+                dy = 0;
+                isFalling = false;
+            }
+            else if (dy < maxFallSpeed && dy + fallSpeed < maxFallSpeed) {
+                dy += fallSpeed;
+            }
+            else {
+                dy = maxFallSpeed;
+            }
+        }
     }
 
     @Override
