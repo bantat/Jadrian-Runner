@@ -52,9 +52,9 @@ public class Model {
      * presses space bar in between time increments.
      */
     public void updateGameState(int dtime) {
-        player.update();
+        player.update(dtime);
         for (int i = 0; i < obstacles.size();i++) {
-            obstacles.get(i).update;
+            obstacles.get(i).update(dtime);
         }
     }
 
