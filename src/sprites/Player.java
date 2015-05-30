@@ -8,17 +8,30 @@ import java.awt.*;
  * Created by Ben on 5/28/2015.
  */
 public class Player extends GameObject {
-    private int runState = 0;
+    boolean isAlive;
+    boolean isJumping;
+    boolean isFalling;
 
     public Player() {
+
         super();
+
+        width = 30;
+        height = 38;
+
+        fallSpeed = 0.18;
+        maxFallSpeed = 4.0;
+        jumpHeight = -4.8;
+        shortJumpSpeed = 0.3;
+
+        boolean isAlive = true;
+        boolean isJumping = false;
+        boolean isFalling = false;
+
     }
 
-    public void animateRun() {
-        if (runState == 0) {
-            runState = (runState + 1) % 2;
-        }
-
+    public void setJumping(boolean jumpState) {
+        isJumping = jumpState;
     }
 
     @Override

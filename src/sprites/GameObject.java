@@ -93,5 +93,7 @@ public abstract class GameObject {
         else return false;
     }
 
+    public abstract void updatePosition();
+
     public abstract void draw(Canvas gameCanvas);
 }
