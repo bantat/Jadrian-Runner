@@ -1,3 +1,9 @@
+package sprites;
+
+import sprites.GameObject;
+
+import java.awt.*;
+
 /**
  * Created by Ben on 5/28/2015.
  */
@@ -13,5 +19,10 @@ public class Player extends GameObject {
             runState = (runState + 1) % 2;
         }
 
+    }
+
+    @Override
+    public void draw(Canvas gameCanvas) {
+        //...
     }
 }

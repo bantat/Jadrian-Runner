@@ -1,5 +1,15 @@
 import sprites.GameObject;
 
+import javafx.stage.Stage;
+
+import sprites.GameObject;
+import sprites.*;
+import java.util.Random;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by torebanta on 5/27/15.
  * @author Tore Banta
@@ -7,38 +17,55 @@ import sprites.GameObject;
  */
 
 public class Model {
+    private List<GameObject> gameObjects;
 
     /**
-     * Updates the positions of each of the moving sprites currently on the
-     * screen, based on the amount of time passed since the last calculation.
-     * @param dTime the amount of time since the last position calculation
+     * Initializes our game by creating a GameObject for the player and a
+     * GameObject for the first obstacles encountered in our game.
      */
-    public void updatePositions(int dTime) {
-
+    public void init() {
+        gameObjects = new ArrayList<GameObject>();
+        gameObjects.add(new Player());
+        gameObjects.add(getInitObstacles());
     }
 
     /**
-     * Updates the player's position based on the amount of time passed since
-     * the last calculation.
-     * @param dTime the amount of time since the last position calculation
+     * Returns an ArrayList of Obstacle objects to be used at the beginning
+     * of the game.
      */
-    private void updateSpritePosition(int dTime, GameObject gameObject) {
-
+    public ArrayList<Obstacles> getInitObstacles() {
+        ArrayList<Obstacles> obstaclesList = new ArrayList<Obstacles>();
+        Random random = new Random();
+        int randomInt = random.nextInt(4);
+        for (int i = 0; i < randomInt; i++) {
+            obstaclesList.add(new Obstacle());
+        }
+        return obstaclesList;
     }
 
     /**
-     * Makes the player jump if doing so is valid.
+     * Updates the GameState. Gets the new positions of the GameObjects,
+     * based on the amount of time passed. Receives time passed in case player
+     * presses space bar in between time increments.
      */
-    public void jump() {
-
+    public void updateGameState(int dtime) {
+        for (int i = 0; i < gameObjects.size(); i++) {
+            if (gameObjects.get(i).getClass.equals(Player.class)) Player.update(dtime);
+            else if (gameObjects.get(i).getClass.equals(List.class)) {
+                for (int j = 0; j < gameObjects[1].size(); j++){
+                    gameObjects.get(i).update(dtime);
+                }
+            }
+        }
     }
 
+
     /**
-     * Checks if it is valid for the player to jump.
-     * @return True if it is valid for the player to jump.
+     * Gets the GameObjects needed to play the game. Returns an array list
+     * of these objects.
      */
-    private boolean canJump() {
-        return true;
+    public ArrayList<GameObject> getGameObjects()   {
+        return gameObjects;
     }
 
     /**
@@ -48,7 +75,5 @@ public class Model {
 
     }
 
-    public void updateInput() {
-        //...
-    }
+
 }
