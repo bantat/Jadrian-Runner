@@ -1,8 +1,9 @@
+import sprites.GameObject;
 
 import javafx.stage.Stage;
 
 import sprites.GameObject;
-import sprites.Player;
+import sprites.*;
 import java.util.Random;
 
 import java.lang.reflect.Array;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 
 public class Model {
-    private List<Obstacles> obstacles;
+    private List<Obstacle> obstacles;
     private Player player;
 
     /**
@@ -26,14 +27,16 @@ public class Model {
     public void init() {
         obstacles = getInitObstacles();
         player = new Player();
+
     }
 
     /**
      * Returns an ArrayList of Obstacle objects to be used at the beginning
      * of the game.
      */
-    public List<Obstacles> getInitObstacles() {
-        List<Obstacles> obstaclesList = new ArrayList<Obstacles>();
+
+    public ArrayList<Obstacle> getInitObstacles() {
+        ArrayList<Obstacle> obstaclesList = new ArrayList<Obstacle>();
         Random random = new Random();
         int randomInt = random.nextInt(4);
         for (int i = 0; i < randomInt; i++) {
