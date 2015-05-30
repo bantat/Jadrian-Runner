@@ -44,14 +44,15 @@ public class Model {
 
     /**
      * Updates the GameState. Gets the new positions of the GameObjects,
-     * based on the amount of time passed.
+     * based on the amount of time passed. Receives time passed in case player
+     * presses space bar in between time increments.
      */
-    public void updateGameState() {
+    public void updateGameState(int dtime) {
         for (int i = 0; i < gameObjects.size(); i++) {
-            if (gameObjects[i].getClass.equals(Player.class)) Player.update();
+            if (gameObjects[i].getClass.equals(Player.class)) Player.update(dtime);
             else if (gameObjects[i].getClass.equals(List.class)) {
                 for (int j = 0; j < gameObjects[1].size(); j++){
-                    gameObjects[i][j].update();
+                    gameObjects[i][j].update(dtime);
                 }
             }
         }
