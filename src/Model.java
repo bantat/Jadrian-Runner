@@ -1,5 +1,7 @@
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 /**
  * Created by torebanta on 5/27/15.
  * @author Tore Banta
@@ -9,36 +11,19 @@ import javafx.stage.Stage;
 public class Model {
 
     /**
-     * Updates the positions of each of the moving sprites currently on the
-     * screen, based on the amount of time passed since the last calculation.
-     * @param dTime the amount of time since the last position calculation
+     * Updates the GameState. Gets the new positions of the GameObjects,
+     * based on the amount of time passed.
      */
-    public void updatePositions(int dTime) {
-
+    public void updateGameState(int dTime) {
+        //...
     }
 
     /**
-     * Updates the player's position based on the amount of time passed since
-     * the last calculation.
-     * @param dTime the amount of time since the last position calculation
+     * Gets the GameObjects needed to play the game. Returns an array list
+     * of these objects.
      */
-    private void updateSpritePosition(int dTime, Sprite sprite) {
-
-    }
-
-    /**
-     * Makes the player jump if doing so is valid.
-     */
-    public void jump() {
-
-    }
-
-    /**
-     * Checks if it is valid for the player to jump.
-     * @return True if it is valid for the player to jump.
-     */
-    private boolean canJump() {
-        return true;
+    public ArrayList<GameObject> getGameObjects()   {
+        return null;
     }
 
     /**
@@ -48,7 +33,11 @@ public class Model {
 
     }
 
-    public void updateInput() {
+    /**
+     * Initializes our game by creating a GameObject for the player and a
+     * GameObject for the first obstacles encountered in our game.
+     */
+    public void init() {
         //...
     }
 }
