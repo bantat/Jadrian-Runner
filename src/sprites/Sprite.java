@@ -1,3 +1,5 @@
+package sprites;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -6,6 +8,7 @@ import java.util.ArrayList;
  * A class for representing objects as sprites.
  */
 public abstract class Sprite {
+
     private List<Integer> position = new ArrayList<Integer>();
 
 //    public void Sprite() {

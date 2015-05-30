@@ -1,3 +1,7 @@
+package sprites;
+
+import sprites.Sprite;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -6,7 +10,7 @@ import java.util.ArrayList;
  * A class for storing sprites within the model. Each instance has an associated
  * ViewSprite that gets updated whenever the ModelSprite gets updated.
  */
-public abstract class ModelSprite extends Sprite{
+public abstract class ModelSprite extends Sprite {
     private List<Integer> position = new ArrayList<Integer>();
     private ViewSprite viewSprite;
 
