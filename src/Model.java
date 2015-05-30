@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 import sprites.GameObject;
 import sprites.*;
 import java.util.Random;
+import sprites.Obstacle;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -52,8 +53,8 @@ public class Model {
      */
     public void updateGameState(int dtime) {
         player.update();
-        for (int i = 0; i < obstacles[1].size();i++) {
-            obstacles[i].update;
+        for (int i = 0; i < obstacles.size();i++) {
+            obstacles.get(i).update;
         }
     }
 
@@ -68,8 +69,8 @@ public class Model {
     /**
      * Gets Player object.
      */
-    public Player getObstacles()   {
-        return obstacles;
+    public Player getPlayer()   {
+        return player;
     }
 
     /**
