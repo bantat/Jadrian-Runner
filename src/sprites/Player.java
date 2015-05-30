@@ -1,7 +1,3 @@
-package sprites;
-
-import sprites.GameObject;
-
 import java.awt.*;
 
 /**

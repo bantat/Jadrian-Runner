@@ -51,10 +51,10 @@ public class Model {
      * based on the amount of time passed. Receives time passed in case player
      * presses space bar in between time increments.
      */
-    public void updateGameState(int dtime) {
-        player.update(dtime);
+    public void updateGameState() {
+        player.update();
         for (int i = 0; i < obstacles.size();i++) {
-            obstacles.get(i).update(dtime);
+            obstacles.get(i).update();
         }
     }
 
