@@ -85,6 +85,13 @@ public abstract class GameObject {
         this.dy = dy;
     }
 
+    public double getDirectionX() {
+        return this.dx;
+    }
+    public double getDirectionY() {
+        return this.dy;
+    }
+
     public boolean isOffScreen(Canvas gameCanvas) {
         if (x + width < 0) return true;
         else if (x > gameCanvas.getWidth()) return true;
