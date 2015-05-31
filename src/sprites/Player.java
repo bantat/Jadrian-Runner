@@ -1,7 +1,10 @@
 package sprites;
 
-import javafx.scene.canvas.Canvas;
+import java.awt.*;
 import sprites.GameObject;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.canvas.Canvas;
+
 
 /**
  * Created by Ben on 5/28/2015.
@@ -20,12 +23,6 @@ public class Player extends GameObject {
 
         width = 30;
         height = 38;
-
-        x = 10;
-        y = 300;
-
-        dx = 0;
-        dy = 0;
 
         fallSpeed = 0.18;
         maxFallSpeed = 4.0;
@@ -50,10 +47,6 @@ public class Player extends GameObject {
 
     @Override
     public void updatePosition() {
-
-        x = x + dx;
-        y = y + dy;
-
         if (startJump && !isFalling) {
             dy = jumpHeight;
             isJumping = true;
@@ -86,8 +79,11 @@ public class Player extends GameObject {
         }
     }
 
+
     @Override
     public void draw(Canvas gameCanvas) {
-        //...
+        GraphicsContext context = gameCanvas.getGraphicsContext2D();
+        context.setFill(javafx.scene.paint.Color.GREEN);
+        context.fillRect(getX(), getY(), getWidth(), getHeight());
     }
 }

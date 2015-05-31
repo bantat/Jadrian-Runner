@@ -1,15 +1,12 @@
-import sprites.GameObject;
-
 import javafx.stage.Stage;
 
-import sprites.GameObject;
-import sprites.*;
-import java.util.Random;
 import sprites.Obstacle;
+import java.util.Random;
+import sprites.Player;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created by torebanta on 5/27/15.
@@ -52,7 +49,7 @@ public class Model {
      * presses space bar in between time increments.
      */
     public void updateGameState() {
-        player.update();
+        player.updatePosition();
         for (int i = 0; i < obstacles.size();i++) {
             obstacles.get(i).update();
         }
