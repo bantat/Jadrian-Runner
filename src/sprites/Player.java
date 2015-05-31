@@ -26,10 +26,10 @@ public class Player extends GameObject {
         width = 30;
         height = 38;
 
-        fallSpeed = 0.18;
-        maxFallSpeed = 4.0;
-        jumpHeight = -4.8;
-        shortJumpSpeed = 0.3;
+        fallSpeed = 2.5;
+        maxFallSpeed = 15;
+        jumpHeight = -14;
+        shortJumpSpeed = 2;
 
         boolean isAlive = true;
         boolean startJump = false;
@@ -38,10 +38,16 @@ public class Player extends GameObject {
 
         maxY = 300;
 
+        x = 10;
+        y = maxY;
+
+        dx = 0;
+        dy = 0;
+
     }
 
     public void setJumping(boolean jumpState) {
-        if (jumpState && !isJumping) {
+        if (jumpState && !isJumping && !startJump) {
             startJump = true;
             isJumping = false;
         }
@@ -54,6 +60,7 @@ public class Player extends GameObject {
             isJumping = true;
             startJump = false;
         }
+
         else if (isJumping) {
             if (dy < 0 && dy + 1 < 0) {
                 dy++;
@@ -66,25 +73,35 @@ public class Player extends GameObject {
                 isFalling = true;
             }
         }
+
         else if (isFalling) {
             if (y >= maxY) {
                 y = maxY;
                 dy = 0;
                 isFalling = false;
             }
-            else if (dy < maxFallSpeed && dy + fallSpeed < maxFallSpeed) {
+            else if (dy < maxFallSpeed) {
                 dy += fallSpeed;
             }
             else {
                 dy = maxFallSpeed;
             }
         }
+
+        else {
+            dx = 0;
+            dy = 0;
+        }
+
+        x = x + dx;
+        y = y + dy;
     }
 
 
     @Override
     public void draw(Canvas gameCanvas) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
+        context.clearRect(0,0,gameCanvas.getWidth(),gameCanvas.getHeight());
         context.setFill(javafx.scene.paint.Color.BROWN);
         context.fillRect(getX(), getY(), getWidth(), getHeight());
     }

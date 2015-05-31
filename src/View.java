@@ -1,3 +1,4 @@
+import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -8,6 +9,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import sprites.GameObject;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,10 @@ public class View {
     private Canvas mainCanvas;
     private Canvas backgroundCanvas;
     private Stage gameWindow;
+    private AnimationTimer timer;
+
+    private long lastFrameDraw = 0;
+    private long frameDrawCount = 0;
 
     /**
      * Stores references to the gameWindow Stage and model objects for the game,
@@ -36,6 +42,27 @@ public class View {
         this.model = model;
         this.controller = controller;
         this.gameWindow = gameWindow;
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                long currentTime = System.currentTimeMillis();
+
+                if (currentTime - lastFrameDraw > 5) {
+                    lastFrameDraw = currentTime;
+
+                    drawGame();
+
+                    if(frameDrawCount % 4 == 0) {
+                        model.updateGameState();
+                    }
+
+                    frameDrawCount++;
+                }
+            }
+        };
+
+        timer.start();
     }
 
     public void loadStartScreen() {
@@ -51,7 +78,8 @@ public class View {
     }
 
     public void drawGame() {
-        //...
+        GameObject player = model.getPlayer();
+        player.draw(mainCanvas);
     }
 
     public Scene loadMainScene() {
@@ -68,6 +96,8 @@ public class View {
         gameCanvasses = new ArrayList<Canvas>();
         gameCanvasses.add(backgroundCanvas);
         gameCanvasses.add(mainCanvas);
+
+        model.init();
 
         drawGame();
 
@@ -97,7 +127,6 @@ public class View {
     public void generateGameCanvas() {
         mainCanvas = new Canvas(800,600);
         GraphicsContext context = mainCanvas.getGraphicsContext2D();
-        context.fillOval(10,300,30,30);
     }
 
     public void generateBackgroundCanvas() {

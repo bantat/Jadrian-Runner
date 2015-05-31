@@ -22,8 +22,8 @@ public class Controller {
      * updated.
      */
     public void resetInputState() {
-        if (!jump){
-            jump = true;
+        if (jump) {
+            jump = false;
         }
     }
 
@@ -32,12 +32,16 @@ public class Controller {
         if (code == KeyCode.UP || code == KeyCode.SPACE) {
             jump = true;
             keyEvent.consume();
-            model.updateGameState();
-            resetInputState();
+            model.updateInputState(true);
         }
     }
 
     public void keyReleased(KeyEvent keyEvent) {
-        //...
+        KeyCode code = keyEvent.getCode();
+        if (code == KeyCode.UP || code == KeyCode.SPACE) {
+            resetInputState();
+            keyEvent.consume();
+            model.updateInputState(false);
+        }
     }
 }
