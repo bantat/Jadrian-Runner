@@ -1,6 +1,8 @@
 package sprites;
 
 import java.awt.*;
+
+import javafx.scene.paint.*;
 import sprites.GameObject;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.canvas.Canvas;
@@ -83,7 +85,7 @@ public class Player extends GameObject {
     @Override
     public void draw(Canvas gameCanvas) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
-        context.setFill(javafx.scene.paint.Color.GREEN);
+        context.setFill(javafx.scene.paint.Color.BROWN);
         context.fillRect(getX(), getY(), getWidth(), getHeight());
     }
 }
