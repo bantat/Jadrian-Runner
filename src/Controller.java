@@ -32,7 +32,7 @@ public class Controller {
         if (code == KeyCode.UP || code == KeyCode.SPACE) {
             jump = true;
             keyEvent.consume();
-            model.updateInput();
+            model.updateGameState();
             resetInputState();
         }
     }
