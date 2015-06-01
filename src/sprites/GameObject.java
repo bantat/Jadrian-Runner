@@ -22,10 +22,10 @@ public abstract class GameObject {
     protected boolean jumping;
     protected boolean falling;
 
-    protected boolean left;
-    protected boolean right;
-    protected boolean up;
-    protected boolean down;
+//    protected boolean left;
+//    protected boolean right;
+//    protected boolean up;
+//    protected boolean down;
 
     protected double moveSpeed;
     protected double fallSpeed;
@@ -60,21 +60,21 @@ public abstract class GameObject {
         return height;
     }
 
-    public void setLeft(boolean isLeft) {
-        left = isLeft;
-    }
-
-    public void setRight(boolean isRight) {
-        right = isRight;
-    }
-
-    public void setUp(boolean isUp) {
-        up = isUp;
-    }
-
-    public void setDown(boolean isDown) {
-        down = isDown;
-    }
+//    public void setLeft(boolean isLeft) {
+//        left = isLeft;
+//    }
+//
+//    public void setRight(boolean isRight) {
+//        right = isRight;
+//    }
+//
+//    public void setUp(boolean isUp) {
+//        up = isUp;
+//    }
+//
+//    public void setDown(boolean isDown) {
+//        down = isDown;
+//    }
 
     public void setPosition(double x, double y) {
         this.x = x;
