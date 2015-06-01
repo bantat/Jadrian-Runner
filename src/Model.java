@@ -20,6 +20,7 @@ public class Model {
     private Player player;
     private boolean isRunning;
     private boolean isJumping;
+    private boolean quit = false;
 
     /**
      * Initializes our game by creating a GameObject for the player and a
@@ -28,9 +29,6 @@ public class Model {
     public void init() {
         player = new Player();
         obstacles = new ArrayList<Obstacle>();
-        for (int i = 0; i < 4; i++) {
-            generateNewObstacle();
-        }
         isRunning = true;
     }
 
@@ -89,9 +87,19 @@ public class Model {
         player.updatePosition();
         for (Obstacle obstacle : obstacles) {
             obstacle.updatePosition();
+            if (obstacle.isCollision(player)) {
+                setQuit();
+            }
         }
     }
 
+    private void setQuit() {
+        quit = true;
+    }
+
+    public boolean getQuit() {
+        return quit;
+    }
 
     /**
      * Gets the list of Obstacle objects.

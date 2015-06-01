@@ -36,7 +36,7 @@ public abstract class GameObject {
     protected double shortJumpSpeed;
 
     public Rectangle getHitBox() {
-        return new Rectangle((int)x - (width/2), (int)y - (width/2),
+        return new Rectangle((int)x - (width/2), (int)y - (height/2),
                              width, height);
     }
 
@@ -44,6 +44,11 @@ public abstract class GameObject {
         Rectangle thisHitBox = getHitBox();
         Rectangle otherHitBox = otherObject.getHitBox();
         return thisHitBox.intersects(otherHitBox);
+        //if (((int)x + width >= otherObject.getX() || (int)x <= otherObject.getX())
+        //        && ((int) y + height >= otherObject.getY() || (int)y <= otherObject.getY())) {
+
+        //}
+
     }
 
     public int getX() {
