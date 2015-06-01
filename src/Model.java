@@ -1,5 +1,7 @@
+import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
 
+import sprites.GameObject;
 import sprites.Obstacle;
 import java.util.Random;
 import sprites.Player;
@@ -26,9 +28,7 @@ public class Model {
      */
     public void init() {
         player = new Player();
-//        for (int i = 0; i < 10; i++) {
-//            generateNewObstacle();
-//        }
+        obstacles = new ArrayList<Obstacle>();
         isRunning = true;
     }
 
@@ -55,14 +55,29 @@ public class Model {
         int minHeight = 20;
         int maxHeight = 80;
 
-        int minSpeed = 10;
-        int maxSpeed = 50;
+        int minSpeed = 5;
+        int maxSpeed = 7;
 
-        obstacles.add(new Obstacle(
-                randInt(minWidth,maxWidth),
-                randInt(minHeight,maxHeight),
-                randInt(minSpeed,maxSpeed)
-                ));
+        int minX = 800;
+        int maxX = 1500;
+
+        int minY = 280;
+        int maxY = 500;
+
+        boolean obstacleNotMade = true;
+        Obstacle tempObstacle;
+
+        while (obstacleNotMade) {
+            tempObstacle = new Obstacle(randInt(minWidth, maxWidth),
+                                                 randInt(minHeight, maxHeight),
+                                                 randInt(minSpeed, maxSpeed),
+                                                 randInt(minX, maxX),
+                                                 randInt(minY, maxY));
+
+            for (int i = 0; i < obstacles.size(); i++) {
+                Obstacle otherObstacle = obstacles.get(i);
+            }
+        }
     }
 
     /**
@@ -77,6 +92,20 @@ public class Model {
     public void updateGameState() {
         player.setJumping(isJumping);
         player.updatePosition();
+
+        int obstaclesOffScreen = 0;
+        for (int i = 0; i < obstacles.size(); i++) {
+            if (obstacles.get(i).getX() + obstacles.get(i).getWidth() < 0) {
+                obstacles.remove(i);
+            }
+            if (obstacles.get(i).isOffScreen(new Canvas(800, 600))) {
+                obstaclesOffScreen++;
+            }
+            obstacles.get(i).updatePosition();
+        }
+        if (obstaclesOffScreen < 2) {
+            generateNewObstacle();
+        }
     }
 
 

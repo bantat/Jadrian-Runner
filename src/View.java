@@ -8,6 +8,9 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import sprites.GameObject;
+import sprites.Obstacle;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.ArrayList;
 
@@ -25,6 +28,7 @@ public class View {
     private AnimationTimer timer;
 
     private long lastFrameDraw = 0;
+    private int frameCount = 0;
 
     /**
      * Stores references to the gameWindow Stage and model objects for the game,
@@ -50,6 +54,8 @@ public class View {
 
                     drawGame();
 
+                    frameCount++;
+
                     model.updateGameState();
                 }
             }
@@ -71,8 +77,19 @@ public class View {
     }
 
     public void drawGame() {
+        GraphicsContext context = mainCanvas.getGraphicsContext2D();
+        context.clearRect(0,0,mainCanvas.getWidth(),mainCanvas.getHeight());
+
         GameObject player = model.getPlayer();
         player.draw(mainCanvas);
+
+        List<Obstacle> obstacles = model.getObstacles();
+        for (int i = 0; i < obstacles.size(); i++) {
+            obstacles.get(i).draw(mainCanvas);
+            if (obstacles.get(i).isCollision(player)) {
+                System.exit(1);
+            }
+        }
     }
 
     public Scene loadMainScene() {

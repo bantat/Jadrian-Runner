@@ -191,8 +191,5 @@ public class Player extends sprites.GameObject {
                 width,
                 height
         );
-
-//        context.setFill(javafx.scene.paint.Color.BROWN);
-//        context.fillRect(getX(), getY(), getWidth(), getHeight());
     }
 }
