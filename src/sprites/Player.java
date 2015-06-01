@@ -12,12 +12,14 @@ import javafx.scene.canvas.Canvas;
  * Created by Ben on 5/28/2015.
  */
 public class Player extends GameObject {
+
+    boolean jumpState;
     boolean isAlive;
-    boolean startJump;
     boolean isJumping;
     boolean isFalling;
 
     int maxY;
+    int minY;
 
     public Player() {
 
@@ -26,17 +28,17 @@ public class Player extends GameObject {
         width = 30;
         height = 38;
 
-        fallSpeed = 2.5;
-        maxFallSpeed = 15;
-        jumpHeight = -14;
-        shortJumpSpeed = 2;
+        fallSpeed = 2;
+        maxFallSpeed = 10;
+        jumpHeight = -20;
 
         boolean isAlive = true;
         boolean startJump = false;
         boolean isJumping = false;
         boolean isFalling = false;
 
-        maxY = 300;
+        maxY = 500;
+        minY = 350;
 
         x = 10;
         y = maxY;
@@ -47,44 +49,41 @@ public class Player extends GameObject {
     }
 
     public void setJumping(boolean jumpState) {
-        if (jumpState && !isJumping && !startJump) {
-            startJump = true;
-            isJumping = false;
-        }
+        this.jumpState = jumpState;
     }
 
     @Override
     public void updatePosition() {
-        if (startJump && !isFalling) {
-            dy = jumpHeight;
+
+        if (jumpState && !isFalling) {
             isJumping = true;
-            startJump = false;
         }
 
-        else if (isJumping) {
-            if (dy < 0 && dy + 1 < 0) {
-                dy++;
+        if (!jumpState && isJumping) {
+            isJumping = false;
+            isFalling = true;
+        }
+
+        if (isJumping) {
+            if (y > minY) {
+                dy = jumpHeight;
             }
-            else if (dy < 0) {
-                dy = 0;
-            }
+
             else {
-                dy = fallSpeed;
+                isJumping = false;
                 isFalling = true;
+                dy += fallSpeed;
             }
         }
 
         else if (isFalling) {
-            if (y >= maxY) {
-                y = maxY;
-                dy = 0;
+            if (y + dy >= maxY) {
                 isFalling = false;
-            }
-            else if (dy < maxFallSpeed) {
-                dy += fallSpeed;
+                dy = 0;
+                y = maxY;
             }
             else {
-                dy = maxFallSpeed;
+                dy += fallSpeed;
             }
         }
 

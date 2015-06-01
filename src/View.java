@@ -27,7 +27,6 @@ public class View {
     private AnimationTimer timer;
 
     private long lastFrameDraw = 0;
-    private long frameDrawCount = 0;
 
     /**
      * Stores references to the gameWindow Stage and model objects for the game,
@@ -46,18 +45,14 @@ public class View {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                long currentTime = System.currentTimeMillis();
+                long currentTime = System.nanoTime();
 
-                if (currentTime - lastFrameDraw > 5) {
+                if (currentTime - lastFrameDraw > 25000000L) {
                     lastFrameDraw = currentTime;
 
                     drawGame();
 
-                    if(frameDrawCount % 4 == 0) {
-                        model.updateGameState();
-                    }
-
-                    frameDrawCount++;
+                    model.updateGameState();
                 }
             }
         };
