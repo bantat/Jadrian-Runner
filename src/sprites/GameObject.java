@@ -2,10 +2,7 @@ package sprites;
 
 import java.awt.Rectangle;
 
-import javafx.animation.Animation;
 import javafx.scene.canvas.Canvas;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Created by Ben on 5/27/2015.

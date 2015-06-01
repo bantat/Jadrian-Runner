@@ -67,17 +67,17 @@ public class Model {
         boolean obstacleNotMade = true;
         Obstacle tempObstacle;
 
-        while (obstacleNotMade) {
-            tempObstacle = new Obstacle(randInt(minWidth, maxWidth),
-                                                 randInt(minHeight, maxHeight),
-                                                 randInt(minSpeed, maxSpeed),
-                                                 randInt(minX, maxX),
-                                                 randInt(minY, maxY));
-
-            for (int i = 0; i < obstacles.size(); i++) {
-                Obstacle otherObstacle = obstacles.get(i);
-            }
-        }
+//        while (obstacleNotMade) {
+//            tempObstacle = new Obstacle(randInt(minWidth, maxWidth),
+//                                                 randInt(minHeight, maxHeight),
+//                                                 randInt(minSpeed, maxSpeed),
+//                                                 randInt(minX, maxX),
+//                                                 randInt(minY, maxY));
+//
+//            for (int i = 0; i < obstacles.size(); i++) {
+//                Obstacle otherObstacle = obstacles.get(i);
+//            }
+//        }
     }
 
     /**

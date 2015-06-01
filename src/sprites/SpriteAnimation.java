@@ -32,6 +32,10 @@ public class SpriteAnimation {
     public void setFrameDelay(long d) { frameDelay = d; }
     public void setFrame(int i) { currentFrame = i; }
 
+    /**
+     * Updates the state of the animation if the time elapsed since the frame
+     * rate was last set is greater than the frame delay.
+     */
     public void update() {
 
         if (frameDelay == -1) { return; }

@@ -143,8 +143,9 @@ public class View {
         backgroundCanvas = new Canvas(800,600);
         GraphicsContext context = backgroundCanvas.getGraphicsContext2D();
 
-        Image background =
-                new Image("Resources/background.png",0,800,true,false);
+        Image background = new Image(
+                "Resources/background.png",0,800,true,false
+        );
         context.drawImage(background,0,-200);
     }
 }
