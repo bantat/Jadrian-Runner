@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public class Model {
-    private ArrayList<Obstacle> obstacles;
+    private List<Obstacle> obstacles;
     private Player player;
     private boolean isRunning;
     private boolean isJumping;
@@ -29,7 +29,9 @@ public class Model {
 //        for (int i = 0; i < 10; i++) {
 //            generateNewObstacle();
 //        }
+        obstacles = new ArrayList<Obstacle>();
         isRunning = true;
+        generateNewObstacle();
     }
 
     public boolean isRunning() {

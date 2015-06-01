@@ -8,6 +8,9 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import sprites.GameObject;
+import sprites.Obstacle;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.ArrayList;
 
@@ -73,6 +76,8 @@ public class View {
     public void drawGame() {
         GameObject player = model.getPlayer();
         player.draw(mainCanvas);
+        List<Obstacle> obstacles = model.getObstacles();
+        for (int i =0; i<obstacles.size();i++) obstacles.get(i).draw(mainCanvas);
     }
 
     public Scene loadMainScene() {
