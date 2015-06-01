@@ -26,9 +26,9 @@ public class Model {
      */
     public void init() {
         player = new Player();
-        for (int i = 0; i < 10; i++) {
-            generateNewObstacle();
-        }
+//        for (int i = 0; i < 10; i++) {
+//            generateNewObstacle();
+//        }
         isRunning = true;
     }
 
