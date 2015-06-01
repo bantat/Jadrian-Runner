@@ -74,10 +74,16 @@ public class View {
     }
 
     public void drawGame() {
+        GraphicsContext context = mainCanvas.getGraphicsContext2D();
+        context.clearRect(0,0,mainCanvas.getWidth(),mainCanvas.getHeight());
+
         GameObject player = model.getPlayer();
         player.draw(mainCanvas);
+
         List<Obstacle> obstacles = model.getObstacles();
-        for (int i =0; i<obstacles.size();i++) obstacles.get(i).draw(mainCanvas);
+        for (int i = 0; i < obstacles.size(); i++) {
+            obstacles.get(i).draw(mainCanvas);
+        }
     }
 
     public Scene loadMainScene() {

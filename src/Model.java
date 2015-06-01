@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 public class Model {
-    private List<Obstacle> obstacles;
+    private ArrayList<Obstacle> obstacles;
     private Player player;
     private boolean isRunning;
     private boolean isJumping;
@@ -27,10 +27,10 @@ public class Model {
      */
     public void init() {
         player = new Player();
-//        for (int i = 0; i < 10; i++) {
-//            generateNewObstacle();
-//        }
         obstacles = new ArrayList<Obstacle>();
+        for (int i = 0; i < 10; i++) {
+            generateNewObstacle();
+        }
         isRunning = true;
         generateNewObstacle();
     }
@@ -58,13 +58,21 @@ public class Model {
         int minHeight = 20;
         int maxHeight = 80;
 
-        int minSpeed = 10;
-        int maxSpeed = 50;
+        int minSpeed = 1;
+        int maxSpeed = 15;
+
+        int minX = 800;
+        int maxX = 1500;
+
+        int minY = 250;
+        int maxY = 500;
 
         obstacles.add(new Obstacle(
-                randInt(minWidth,maxWidth),
-                randInt(minHeight,maxHeight),
-                randInt(minSpeed,maxSpeed)
+                randInt(minWidth, maxWidth),
+                randInt(minHeight, maxHeight),
+                randInt(minSpeed, maxSpeed),
+                randInt(minX, maxX),
+                randInt(minY, maxY)
                 ));
     }
 
@@ -81,6 +89,7 @@ public class Model {
         player.setJumping(isJumping);
         player.updatePosition();
         for (Obstacle obstacle : obstacles) {
+            obstacle.updatePosition();
             if (obstacle.isCollision(player)) {
                 System.exit(1);
             }

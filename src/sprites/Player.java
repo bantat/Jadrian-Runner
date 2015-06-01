@@ -156,7 +156,6 @@ public class Player extends sprites.GameObject {
     @Override
     public void draw(Canvas gameCanvas) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
-        context.clearRect(0,0,gameCanvas.getWidth(),gameCanvas.getHeight());
         context.setFill(javafx.scene.paint.Color.BROWN);
         context.fillRect(getX(), getY(), getWidth(), getHeight());
     }
