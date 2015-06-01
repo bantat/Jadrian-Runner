@@ -1,6 +1,8 @@
 package sprites;
 
 import java.awt.Rectangle;
+
+import javafx.animation.Animation;
 import javafx.scene.canvas.Canvas;
 import java.util.List;
 import java.util.ArrayList;
@@ -20,6 +22,9 @@ public abstract class GameObject {
     protected int sheetHeight;
     protected int width;
     protected int height;
+
+    protected SpriteAnimation animation;
+    protected int currentAction;
 
     protected boolean jumping;
     protected boolean falling;

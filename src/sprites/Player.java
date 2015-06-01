@@ -1,5 +1,6 @@
 package sprites;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javafx.animation.KeyFrame;
@@ -21,21 +22,18 @@ import javax.imageio.ImageIO;
  */
 public class Player extends sprites.GameObject {
 
-    private ArrayList<Timeline> timelines;
+    private ArrayList<Image[]> sprites;
     private final int[] numFrames = {
-            2, 8, 1, 2, 4, 2, 5
+            8, 3, 3
     };
 
-    private static final int IDLE = 0;
-    private static final int RUNNING = 1;
-    private static final int JUMPING = 2;
-    private static final int FALLING = 3;
-    private static final int NUM_PLAYER_STATES = 4;
+    private static final int RUNNING = 0;
+    private static final int JUMPING = 1;
+    private static final int FALLING = 2;
+    private static final int NUM_PLAYER_STATES = 3;
 
-    boolean jumpState;
+    boolean isInAir;
     boolean isAlive;
-    boolean isJumping;
-    boolean isFalling;
 
     int maxY;
     int minY;
@@ -69,95 +67,132 @@ public class Player extends sprites.GameObject {
 
         // Loads the sprites
         try {
-            Image spriteSheet = new Image(
-                    "/Resources/sprites/player/PlayerSprites.gif"
-            );
-
-            timelines = new ArrayList<Timeline>();
+            sprites = new ArrayList<Image[]>();
             for (int i = 0; i < NUM_PLAYER_STATES; i++) {
-                ImageView[] imageArray = new ImageView[numFrames[i]];
-                KeyFrame[] keyFrames = new KeyFrame[numFrames[i]];
+                Image[] imageArray;
+                if (i == JUMPING) {
+                    imageArray = new Image[numFrames[JUMPING]];
+                    for (int j = 0; j < numFrames[JUMPING]; j++) {
+                        String imagePath = String.format("/Resources/sprites/player/jumping/PlayerJumping-%d.gif", j);
+                        Image spriteImage = new Image(imagePath);
+                        Image scaledSpriteImage = new Image(
+                                imagePath,
+                                spriteImage.getWidth() * 4, spriteImage.getHeight() * 4,
+                                true, false
+                        );
+                        imageArray[j] = scaledSpriteImage;
+                    }
 
-                for (int j = 0; j < numFrames[i]; j++) {
-                    ImageView imageView = new ImageView(spriteSheet);
+                } else if (i == FALLING) {
+                    imageArray = new Image[numFrames[FALLING]];
+                    for (int j = 0; j < numFrames[FALLING]; j++) {
+                        String imagePath = String.format("/Resources/sprites/player/falling/PlayerFalling-%d.gif", j);
+                        Image spriteImage = new Image(imagePath);
+                        Image scaledSpriteImage = new Image(
+                                imagePath,
+                                spriteImage.getWidth() * 4, spriteImage.getHeight() * 4,
+                                true, false
+                        );
+                        imageArray[j] = scaledSpriteImage;
+                    }
 
-                    imageArray[j] = new ImageView(spriteSheet);
-                    imageArray[j].setViewport(
-                            new Rectangle2D(
-                                    j * width,
-                                    i * height,
-                                    sheetWidth,
-                                    sheetHeight
-                            )
-                    );
-
-                    keyFrames[j] = new KeyFrame(Duration.seconds(0),
-                                                new KeyValue(
-                                                    imageView.imageProperty(),
-                                                    spriteSheet));
+                } else {
+                    imageArray = new Image[numFrames[RUNNING]];
+                    for (int j = 0; j < numFrames[RUNNING]; j++) {
+                        String imagePath = String.format("/Resources/sprites/player/running/PlayerRunning-%d.gif", j);
+                        Image spriteImage = new Image(imagePath);
+                        Image scaledSpriteImage = new Image(
+                                imagePath,
+                                160, 160,
+                                false, false
+                        );
+                        imageArray[j] = scaledSpriteImage;
+                    }
                 }
 
-                Timeline timeline = new Timeline(40.0, keyFrames);
-                timelines.add(timeline);
+                sprites.add(imageArray);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+        animation = new SpriteAnimation();
+        animation.setFrames(sprites.get(RUNNING));
     }
 
-    public void setJumping(boolean jumpState) {
-        this.jumpState = jumpState;
+    public void setJumping(boolean isInAir) {
+        this.isInAir = isInAir;
     }
 
     @Override
     public void updatePosition() {
 
-        if (jumpState && !isFalling) {
-            isJumping = true;
+        if (isInAir && currentAction != FALLING) {
+            currentAction = JUMPING;
+        }
+        if (!isInAir && currentAction == JUMPING) {
+            currentAction = FALLING;
         }
 
-        if (!jumpState && isJumping) {
-            isJumping = false;
-            isFalling = true;
-        }
-
-        if (isJumping) {
+        if (currentAction == JUMPING) {
             if (y > minY) {
                 dy = jumpHeight;
-            }
 
-            else {
-                isJumping = false;
-                isFalling = true;
+            } else {
+                currentAction = FALLING;
                 dy += fallSpeed;
             }
-        }
 
-        else if (isFalling) {
+        } else if (currentAction == FALLING) {
             if (y + dy >= maxY) {
-                isFalling = false;
+                currentAction = RUNNING;
                 dy = 0;
                 y = maxY;
-            }
-            else {
+
+            } else {
                 dy += fallSpeed;
             }
-        }
 
-        else {
+        }  else {
             dx = 0;
             dy = 0;
         }
 
         x = x + dx;
         y = y + dy;
+
+        if (currentAction == FALLING) {
+            animation.setFrames(sprites.get(FALLING));
+            animation.setFrameDelay(100);
+            width = 40;
+        } else if (currentAction == JUMPING) {
+            animation.setFrames(sprites.get(JUMPING));
+            animation.setFrameDelay(100);
+            width = 40;
+        } else {
+            animation.setFrames(sprites.get(RUNNING));
+            animation.setFrameDelay(40);
+            width = 40;
+        }
+
+        animation.update();
     }
 
     @Override
     public void draw(Canvas gameCanvas) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
         context.clearRect(0,0,gameCanvas.getWidth(),gameCanvas.getHeight());
-        context.setFill(javafx.scene.paint.Color.BROWN);
-        context.fillRect(getX(), getY(), getWidth(), getHeight());
+
+        animation.update();
+        context.drawImage(
+                animation.getImage(),
+                (int) x,
+                (int) y,
+                width,
+                height
+        );
+
+//        context.setFill(javafx.scene.paint.Color.BROWN);
+//        context.fillRect(getX(), getY(), getWidth(), getHeight());
     }
 }
