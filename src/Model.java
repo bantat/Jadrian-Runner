@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public class Model {
-    private List<Obstacle> obstacles;
+    private ArrayList<Obstacle> obstacles;
     private Player player;
     private boolean isRunning;
     private boolean isJumping;
@@ -25,8 +25,10 @@ public class Model {
      * GameObject for the first obstacles encountered in our game.
      */
     public void init() {
-        //obstacles = getInitObstacles();
         player = new Player();
+//        for (int i = 0; i < 10; i++) {
+//            generateNewObstacle();
+//        }
         isRunning = true;
     }
 
@@ -34,19 +36,33 @@ public class Model {
         return isRunning;
     }
 
+    public static int randInt(int min, int max) {
+
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+
+        return randomNum;
+    }
+
     /**
      * Returns an ArrayList of Obstacle objects to be used at the beginning
      * of the game.
      */
+    public void generateNewObstacle() {
+        int minWidth = 20;
+        int maxWidth = 80;
 
-    public ArrayList<Obstacle> getInitObstacles() {
-        ArrayList<Obstacle> obstaclesList = new ArrayList<Obstacle>();
-        Random random = new Random();
-        int randomInt = random.nextInt(4);
-        for (int i = 0; i < randomInt; i++) {
-            obstaclesList.add(new Obstacle());
-        }
-        return obstaclesList;
+        int minHeight = 20;
+        int maxHeight = 80;
+
+        int minSpeed = 10;
+        int maxSpeed = 50;
+
+        obstacles.add(new Obstacle(
+                randInt(minWidth,maxWidth),
+                randInt(minHeight,maxHeight),
+                randInt(minSpeed,maxSpeed)
+                ));
     }
 
     /**

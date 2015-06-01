@@ -6,8 +6,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import sprites.GameObject;
 
@@ -129,7 +127,7 @@ public class View {
         GraphicsContext context = backgroundCanvas.getGraphicsContext2D();
 
         Image background =
-                new Image("resources/background.png",0,800,true,false);
+                new Image("Resources/background.png",0,800,true,false);
         context.drawImage(background,0,-200);
     }
 }
