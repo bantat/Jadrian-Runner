@@ -28,11 +28,10 @@ public class Model {
     public void init() {
         player = new Player();
         obstacles = new ArrayList<Obstacle>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 4; i++) {
             generateNewObstacle();
         }
         isRunning = true;
-        generateNewObstacle();
     }
 
     public boolean isRunning() {
@@ -70,7 +69,7 @@ public class Model {
         obstacles.add(new Obstacle(
                 randInt(minWidth, maxWidth),
                 randInt(minHeight, maxHeight),
-                randInt(minSpeed, maxSpeed),
+                8,
                 randInt(minX, maxX),
                 randInt(minY, maxY)
                 ));

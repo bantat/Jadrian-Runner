@@ -28,6 +28,7 @@ public class View {
     private AnimationTimer timer;
 
     private long lastFrameDraw = 0;
+    private int frameCount = 0;
 
     /**
      * Stores references to the gameWindow Stage and model objects for the game,
@@ -52,6 +53,10 @@ public class View {
                     lastFrameDraw = currentTime;
 
                     drawGame();
+                    if (frameCount%250 == 0) {
+                        model.generateNewObstacle();
+                    }
+                    frameCount++;
 
                     model.updateGameState();
                 }
