@@ -1,3 +1,5 @@
+package sprites;
+
 import javafx.scene.image.Image;
 
 /**

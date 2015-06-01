@@ -17,15 +17,21 @@ import java.util.List;
 public class Model {
     private List<Obstacle> obstacles;
     private Player player;
+    private boolean isRunning;
+    private boolean isJumping;
 
     /**
      * Initializes our game by creating a GameObject for the player and a
      * GameObject for the first obstacles encountered in our game.
      */
     public void init() {
-        obstacles = getInitObstacles();
+        //obstacles = getInitObstacles();
         player = new Player();
+        isRunning = true;
+    }
 
+    public boolean isRunning() {
+        return isRunning;
     }
 
     /**
@@ -48,11 +54,13 @@ public class Model {
      * based on the amount of time passed. Receives time passed in case player
      * presses space bar in between time increments.
      */
+    public void updateInputState(boolean inputState) {
+        isJumping = inputState;
+    }
+
     public void updateGameState() {
+        player.setJumping(isJumping);
         player.updatePosition();
-        for (int i = 0; i < obstacles.size();i++) {
-            obstacles.get(i).update();
-        }
     }
 
 

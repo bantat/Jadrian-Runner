@@ -1,6 +1,5 @@
 package sprites;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 import javafx.animation.KeyFrame;
@@ -12,17 +11,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.*;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
-import sprites.GameObject;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.canvas.Canvas;
 
 import javax.imageio.ImageIO;
 
-
 /**
  * Created by Ben on 5/28/2015.
  */
-public class Player extends GameObject {
+public class Player extends sprites.GameObject {
 
     private ArrayList<Timeline> timelines;
     private final int[] numFrames = {
@@ -35,12 +32,13 @@ public class Player extends GameObject {
     private static final int FALLING = 3;
     private static final int NUM_PLAYER_STATES = 4;
 
+    boolean jumpState;
     boolean isAlive;
-    boolean startJump;
     boolean isJumping;
     boolean isFalling;
 
     int maxY;
+    int minY;
 
     public Player() {
 
@@ -51,17 +49,23 @@ public class Player extends GameObject {
         width = 40;
         height = 40;
 
-        fallSpeed = 0.18;
-        maxFallSpeed = 4.0;
-        jumpHeight = -4.8;
-        shortJumpSpeed = 0.3;
+        fallSpeed = 2;
+        maxFallSpeed = 10;
+        jumpHeight = -20;
 
         boolean isAlive = true;
         boolean startJump = false;
         boolean isJumping = false;
         boolean isFalling = false;
 
-        maxY = 300;
+        maxY = 450;
+        minY = 250;
+
+        x = 10;
+        y = maxY;
+
+        dx = 0;
+        dy = 0;
 
         // Loads the sprites
         try {
@@ -101,50 +105,58 @@ public class Player extends GameObject {
     }
 
     public void setJumping(boolean jumpState) {
-        if (jumpState && !isJumping) {
-            startJump = true;
-            isJumping = false;
-        }
+        this.jumpState = jumpState;
     }
 
     @Override
     public void updatePosition() {
-        if (startJump && !isFalling) {
-            dy = jumpHeight;
+
+        if (jumpState && !isFalling) {
             isJumping = true;
-            startJump = false;
         }
-        else if (isJumping) {
-            if (dy < 0 && dy + 1 < 0) {
-                dy++;
+
+        if (!jumpState && isJumping) {
+            isJumping = false;
+            isFalling = true;
+        }
+
+        if (isJumping) {
+            if (y > minY) {
+                dy = jumpHeight;
             }
-            else if (dy < 0) {
-                dy = 0;
-            }
+
             else {
-                dy = fallSpeed;
+                isJumping = false;
                 isFalling = true;
-            }
-        }
-        else if (isFalling) {
-            if (y >= maxY) {
-                y = maxY;
-                dy = 0;
-                isFalling = false;
-            }
-            else if (dy < maxFallSpeed && dy + fallSpeed < maxFallSpeed) {
                 dy += fallSpeed;
             }
+        }
+
+        else if (isFalling) {
+            if (y + dy >= maxY) {
+                isFalling = false;
+                dy = 0;
+                y = maxY;
+            }
             else {
-                dy = maxFallSpeed;
+                dy += fallSpeed;
             }
         }
+
+        else {
+            dx = 0;
+            dy = 0;
+        }
+
+        x = x + dx;
+        y = y + dy;
     }
 
 
     @Override
     public void draw(Canvas gameCanvas) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
+        context.clearRect(0,0,gameCanvas.getWidth(),gameCanvas.getHeight());
         context.setFill(javafx.scene.paint.Color.BROWN);
         context.fillRect(getX(), getY(), getWidth(), getHeight());
     }
