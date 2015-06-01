@@ -53,9 +53,7 @@ public class View {
                     lastFrameDraw = currentTime;
 
                     drawGame();
-                    if (frameCount%250 == 0) {
-                        model.generateNewObstacle();
-                    }
+
                     frameCount++;
 
                     model.updateGameState();

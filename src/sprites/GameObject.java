@@ -36,7 +36,7 @@ public abstract class GameObject {
     protected double shortJumpSpeed;
 
     public Rectangle getHitBox() {
-        return new Rectangle((int)x - (width/2), (int)y - (width/2),
+        return new Rectangle((int)x, (int)y,
                              width, height);
     }
 
