@@ -37,8 +37,8 @@ public class Player extends GameObject {
         boolean isJumping = false;
         boolean isFalling = false;
 
-        maxY = 500;
-        minY = 350;
+        maxY = 450;
+        minY = 250;
 
         x = 10;
         y = maxY;
