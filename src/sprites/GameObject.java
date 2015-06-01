@@ -16,6 +16,8 @@ public abstract class GameObject {
     protected double dx;
     protected double dy;
 
+    protected int sheetWidth;
+    protected int sheetHeight;
     protected int width;
     protected int height;
 
