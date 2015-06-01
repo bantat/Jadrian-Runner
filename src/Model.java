@@ -1,5 +1,6 @@
 import javafx.stage.Stage;
 
+import sprites.GameObject;
 import sprites.Obstacle;
 import java.util.Random;
 import sprites.Player;
@@ -77,6 +78,11 @@ public class Model {
     public void updateGameState() {
         player.setJumping(isJumping);
         player.updatePosition();
+        for (Obstacle obstacle : obstacles) {
+            if (obstacle.isCollision(player)) {
+                System.exit(1);
+            }
+        }
     }
 
 
