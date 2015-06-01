@@ -73,6 +73,7 @@ public class Player extends sprites.GameObject {
                     "/Resources/sprites/player/PlayerSprites.gif"
             );
 
+            timelines = new ArrayList<Timeline>();
             for (int i = 0; i < NUM_PLAYER_STATES; i++) {
                 ImageView[] imageArray = new ImageView[numFrames[i]];
                 KeyFrame[] keyFrames = new KeyFrame[numFrames[i]];
@@ -81,7 +82,7 @@ public class Player extends sprites.GameObject {
                     ImageView imageView = new ImageView(spriteSheet);
 
                     imageArray[j] = new ImageView(spriteSheet);
-                    imageArray[i].setViewport(
+                    imageArray[j].setViewport(
                             new Rectangle2D(
                                     j * width,
                                     i * height,
@@ -90,13 +91,13 @@ public class Player extends sprites.GameObject {
                             )
                     );
 
-                    keyFrames[i] = new KeyFrame(Duration.seconds(0),
+                    keyFrames[j] = new KeyFrame(Duration.seconds(0),
                                                 new KeyValue(
                                                     imageView.imageProperty(),
                                                     spriteSheet));
                 }
 
-                Timeline timeline = new Timeline(40, keyFrames);
+                Timeline timeline = new Timeline(40.0, keyFrames);
                 timelines.add(timeline);
             }
         } catch (Exception e){
@@ -151,7 +152,6 @@ public class Player extends sprites.GameObject {
         x = x + dx;
         y = y + dy;
     }
-
 
     @Override
     public void draw(Canvas gameCanvas) {
