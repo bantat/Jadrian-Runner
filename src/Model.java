@@ -90,9 +90,6 @@ public class Model {
         player.updatePosition();
         for (Obstacle obstacle : obstacles) {
             obstacle.updatePosition();
-            if (obstacle.isCollision(player)) {
-                System.exit(1);
-            }
         }
     }
 

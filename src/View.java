@@ -83,6 +83,9 @@ public class View {
         List<Obstacle> obstacles = model.getObstacles();
         for (int i = 0; i < obstacles.size(); i++) {
             obstacles.get(i).draw(mainCanvas);
+            if (obstacles.get(i).isCollision(player)) {
+                System.exit(1);
+            }
         }
     }
 
