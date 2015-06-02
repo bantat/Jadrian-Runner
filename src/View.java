@@ -105,7 +105,7 @@ public class View {
         }
         if (model.isRunning() == false) {
             timer.stop();
-            model = new Model();
+            //model = new Model();
             controller = new Controller(model);
             loadStartScreen();
             //System.exit(1);
