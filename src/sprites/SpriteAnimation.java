@@ -23,6 +23,9 @@ public class SpriteAnimation {
     }
 
     public void setFrames(Image[] frames) {
+        if (frames == this.frames) {
+            return;
+        }
         this.frames = frames;
         currentFrame = 0;
         startTime = System.nanoTime();
@@ -40,12 +43,12 @@ public class SpriteAnimation {
 
         if (frameDelay == -1) { return; }
 
-        long elapsed = (System.nanoTime() - startTime) / 1000000;
+        long elapsed = (System.nanoTime() - startTime) / 1000000L ;
         if (elapsed > frameDelay) {
             currentFrame++;
             startTime = System.nanoTime();
         }
-        if (currentFrame == frames.length) {
+        if (currentFrame >= frames.length) {
             currentFrame = 0;
             playedOnce = true;
         }
