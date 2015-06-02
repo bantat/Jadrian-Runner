@@ -68,7 +68,7 @@ public class Model {
 
         boolean obstacleNotMade = true;
         Obstacle tempObstacle;
-        obstacles.add(new Obstacle(50,100,8,1050,300));
+        obstacles.add(new Obstacle(50,100,8,1050,randInt(240,400)));
 
 //        while (obstacleNotMade) {
 //            tempObstacle = new Obstacle(randInt(minWidth, maxWidth),
@@ -97,6 +97,11 @@ public class Model {
 
     public void updateGameState() {
         player.setJumping(isJumping);
+        for (int j = 0; j < obstacles.size(); j++) {
+            if (obstacles.get(j).isCollision(player)) {
+                isRunning = false;
+            }
+        }
         player.updatePosition();
         int obstaclesOffScreen = 0;
         for (int i = 0; i < obstacles.size(); i++) {
@@ -107,8 +112,9 @@ public class Model {
                 obstaclesOffScreen++;
             }
             obstacles.get(i).updatePosition();
+
         }
-        if (obstaclesOffScreen < 2) {
+        if (obstaclesOffScreen < 1) {
             generateNewObstacle();
 
         }
