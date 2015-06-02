@@ -17,8 +17,6 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.ArrayList;
-
 /**
  * Created by torebanta on 5/27/15.
  */
@@ -52,9 +50,9 @@ public class View {
         AnimationTimer timer;
     }
 
-    public View() {
+    //public View() {
         //...
-    }
+    //}
 
     public void loadStartScreen() {
         gameWindow.setTitle("Jadrian Runner");
@@ -103,6 +101,23 @@ public class View {
         mainScene = new Scene(root, 800, 600);
 
         return mainScene;
+    }
+
+    public void quit() {
+        //Scene mainScene;
+        //Parent root = null;
+
+        try {
+            FXMLLoader temp = new FXMLLoader(View.class.getResource("/resources/Menu.fxml"));
+            temp.setController(this);
+            //root = temp.load();
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.exit(1);
     }
 
     public void onNewGame(ActionEvent actionEvent) {
