@@ -89,7 +89,7 @@ public class View {
         Parent root = null;
 
         try {
-            FXMLLoader temp = new FXMLLoader(View.class.getResource("Menu.fxml"));
+            FXMLLoader temp = new FXMLLoader(View.class.getResource("/resources/Menu.fxml"));
             temp.setController(this);
             root = temp.load();
         }
