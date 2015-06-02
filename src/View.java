@@ -102,14 +102,6 @@ public class View {
         return mainScene;
     }
 
-    public void onNewGame(ActionEvent actionEvent) {
-        loadGameScreen();
-    }
-
-    public void onQuitGame(ActionEvent actionEvent) {
-        System.exit(1);
-    }
-
     public Scene loadGameScene() {
 
         generateBackgroundCanvas();
