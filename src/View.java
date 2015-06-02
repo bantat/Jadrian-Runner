@@ -27,8 +27,12 @@ import static java.awt.Color.*;
 
 /**
  * A class for rendering the game graphics on a screen.
+ *
+ * @author Tore Banta
+ * @author Ben Withbroe
+ * @author Alex Griese
+ * @author Greg Erlandson
  */
-
 public class View {
 
     // Instance variables for generating the window on the screen
@@ -129,7 +133,7 @@ public class View {
 
         try {
             FXMLLoader temp = new FXMLLoader(
-                    View.class.getResource("/resources/Menu.fxml")
+                    View.class.getResource("Menu.fxml")
             );
             temp.setController(this);
             root = temp.load();
@@ -150,11 +154,10 @@ public class View {
     public void onQuitGame() {
         try {
             FXMLLoader temp = new FXMLLoader(
-                    View.class.getResource("/resources/Menu.fxml")
+                    View.class.getResource("Menu.fxml")
             );
             temp.setController(this);
         }
-<<<<<<< HEAD
 
         catch (Exception e) {
             e.printStackTrace();
@@ -163,26 +166,13 @@ public class View {
         System.exit(1);
     }
 
-    public void onNewGame(ActionEvent actionEvent) {
-        loadGameScreen();
-    }
+//    public void onNewGame(ActionEvent actionEvent) {
+//        loadGameScreen();
+//    }
 
-    public void onQuitGame(ActionEvent actionEvent) {
-        System.exit(1);
-    }
-=======
->>>>>>> 989ef0d8d980a8647b784e5b76f760a7cd9e14f4
-
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.exit(1);
-    }
-
-    public void onNewGame(ActionEvent actionEvent) {
-        loadGameScreen();
-    }
+//    public void onNewGame(ActionEvent actionEvent) {
+//        loadGameScreen();
+//    }
 
     /**
      * Loads the standard game screen for playing  from the relevant FXML file.

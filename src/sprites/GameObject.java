@@ -4,8 +4,12 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 
 /**
- * Created by Ben on 5/27/2015.
- * A class for representing objects as sprites.
+ * A class for representing game entities as objects.
+ *
+ * @author Tore Banta
+ * @author Ben Withbroe
+ * @author Alex Griese
+ * @author Greg Erlandson
  */
 public abstract class GameObject {
 
@@ -31,11 +35,23 @@ public abstract class GameObject {
     protected double jumpHeight;
     protected double shortJumpSpeed;
 
+    /**
+     * Method for getting an object representation of the GameObject's collision
+     * box.
+     *
+     * @return Rectangle2D hitBox
+     */
     public Rectangle2D getHitBox() {
         return new Rectangle2D((int)x, (int)y,
                              width, height);
     }
 
+    /**
+     * Method for checking if two GameObjects hitboxes intersect.
+     *
+     * @param otherObject
+     * @return boolean isCollsion
+     */
     public boolean isCollision(GameObject otherObject) {
         Rectangle2D thisHitBox = getHitBox();
         Rectangle2D otherHitBox = otherObject.getHitBox();
@@ -91,6 +107,12 @@ public abstract class GameObject {
         return this.dy;
     }
 
+    /**
+     * Method for checking if a GameObject is within the boundaries of a Canvas.
+     *
+     * @param gameCanvas
+     * @return boolean isOffScreen
+     */
     public boolean isOffScreen(Canvas gameCanvas) {
         if (x + width < 0) return true;
         else if (x > gameCanvas.getWidth()) return true;

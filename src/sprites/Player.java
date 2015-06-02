@@ -4,7 +4,13 @@ package sprites;
  * Class for the user to control.
  *
  * Template from Youtuber ForeignGuyMike, in his video at the URL:
- *     https://www.youtube.com/watch?v=zUOkojY_Ylo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv&index=4
+ * https://www.youtube.com/watch?v=zUOkojY_Ylo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq
+ * 45jYGv&index=4
+ *
+ * @author Tore Banta
+ * @author Ben Withbroe
+ * @author Alex Griese
+ * @author Greg Erlandson
  */
 public class Player extends sprites.GameObject {
 
@@ -53,14 +59,29 @@ public class Player extends sprites.GameObject {
         dy = 0;
     }
 
+    /**
+     * Method for updating the Player object's jump state.
+     *
+     * @param shouldJump
+     */
     public void setJumping(boolean shouldJump) {
         this.shouldJump = shouldJump;
     }
 
+    /**
+     * Method for updating the Player object's left movement state.
+     *
+     * @param leftState
+     */
     public void setLeft(boolean leftState) {
         this.left = leftState;
     }
 
+    /**
+     * Method for updating the Player object's right movement state.
+     *
+     * @param rightState
+     */
     public void setRight(boolean rightState) {
         this.right = rightState;
     }
