@@ -4,7 +4,8 @@ package sprites;
  * Class for the user to control.
  *
  * Template from Youtuber ForeignGuyMike, in his video at the URL:
- *     https://www.youtube.com/watch?v=zUOkojY_Ylo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv&index=4
+ * https://www.youtube.com/watch?v=zUOkojY_Ylo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq
+ * 45jYGv&index=4
  */
 public class Player extends sprites.GameObject {
 
