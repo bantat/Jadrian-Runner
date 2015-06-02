@@ -80,7 +80,11 @@ public class View {
             drawObstacle(mainCanvas, obstacles.get(i));
         }
         if (model.isRunning() == false) {
-            System.exit(1);
+            timer.stop();
+            model = new Model();
+            controller = new Controller(model);
+            loadStartScreen();
+            //System.exit(1);
         }
     }
 
@@ -103,14 +107,10 @@ public class View {
         return mainScene;
     }
 
-    public void quit() {
-        //Scene mainScene;
-        //Parent root = null;
-
+    public void onQuitGame() {
         try {
             FXMLLoader temp = new FXMLLoader(View.class.getResource("/resources/Menu.fxml"));
             temp.setController(this);
-            //root = temp.load();
         }
 
         catch (Exception e) {
