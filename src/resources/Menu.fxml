@@ -1,39 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TitledPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="228.0" prefWidth="242.0">
-         <content>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="373.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
-                              <Text layoutX="85.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Menu" />
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
-                              <ButtonBar layoutX="1.0" layoutY="23.0" prefHeight="40.0" prefWidth="203.0">
-                                 <buttons>
-                                    <Button mnemonicParsing="false" text=" New Game" />
-                                    <Button mnemonicParsing="false" text="Quit Game" />
-                                 </buttons>
-                              </ButtonBar>
-                           </children>
-                        </AnchorPane>
-                     </items>
-                  </SplitPane>
+                  <Text layoutX="208.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jadrian Runner!">
+                     <font>
+                        <Font name="Comic Sans MS Bold" size="24.0" />
+                     </font>
+                  </Text>
                </children>
             </AnchorPane>
-         </content>
-      </TitledPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <BorderPane layoutX="199.0" layoutY="81.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <left>
+                        <Button fx:id="quitGame" mnemonicParsing="false" text="Quit Game" BorderPane.alignment="CENTER">
+                           <BorderPane.margin>
+                              <Insets left="50.0" />
+                           </BorderPane.margin>
+                        </Button>
+                     </left>
+                     <right>
+                        <Button fx:id="newGame" mnemonicParsing="false" onAction="#loadGameScreen" text="New Game" BorderPane.alignment="CENTER">
+                           <BorderPane.margin>
+                              <Insets right="50.0" />
+                           </BorderPane.margin>
+                        </Button>
+                     </right>
+                  </BorderPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
    </children>
 </AnchorPane>

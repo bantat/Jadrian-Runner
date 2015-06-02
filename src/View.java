@@ -1,6 +1,8 @@
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -9,6 +11,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import sprites.GameObject;
 import sprites.Obstacle;
+
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,35 +48,21 @@ public class View {
         this.controller = controller;
         this.gameWindow = gameWindow;
 
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                long currentTime = System.nanoTime();
+        AnimationTimer timer;
+    }
 
-                if (currentTime - lastFrameDraw > 25000000L) {
-                    lastFrameDraw = currentTime;
-
-                    drawGame();
-
-                    frameCount++;
-
-                    model.updateGameState();
-                }
-            }
-        };
-
-        timer.start();
+    public View() {
+        //...
     }
 
     public void loadStartScreen() {
         gameWindow.setTitle("Jadrian Runner");
-        gameWindow.setScene(loadGameScene());
+        gameWindow.setScene(loadMainScene());
         gameWindow.show();
     }
 
-    public void loadMainScreen() {
-        gameWindow.setTitle("Jadrian Runner");
-        gameWindow.setScene(loadMainScene());
+    public void loadGameScreen() {
+        gameWindow.setScene(loadGameScene());
         gameWindow.show();
     }
 
@@ -93,14 +83,31 @@ public class View {
         }
     }
 
-    private void helpDraw() {
-
-    }
-
     public Scene loadMainScene() {
-        Scene mainScene = null;
+        Scene mainScene;
+        Parent root = null;
+
+        try {
+            FXMLLoader temp = new FXMLLoader(View.class.getResource("Menu.fxml"));
+            temp.setController(this);
+            root = temp.load();
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mainScene = new Scene(root, 800, 600);
 
         return mainScene;
+    }
+
+    public void onNewGame(ActionEvent actionEvent) {
+        loadGameScreen();
+    }
+
+    public void onQuitGame(ActionEvent actionEvent) {
+        System.exit(1);
     }
 
     public Scene loadGameScene() {
@@ -113,6 +120,25 @@ public class View {
         gameCanvasses.add(mainCanvas);
 
         model.init();
+
+        timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                long currentTime = System.nanoTime();
+
+                if (currentTime - lastFrameDraw > 25000000L) {
+                    lastFrameDraw = currentTime;
+
+                    drawGame();
+
+                    frameCount++;
+
+                    model.updateGameState();
+                }
+            }
+        };
+
+        timer.start();
 
         drawGame();
 
