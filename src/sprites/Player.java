@@ -22,10 +22,14 @@ public class Player extends sprites.GameObject {
     private static final int NUM_PLAYER_STATES = 3;
 
     boolean shouldJump;
+    boolean left;
+    boolean right;
     boolean isAlive;
 
     int maxY;
     int minY;
+    int minX;
+    int maxX;
 
     public Player() {
 
@@ -37,6 +41,7 @@ public class Player extends sprites.GameObject {
         height = 40;
 
         fallSpeed = 2;
+        moveSpeed = 5;
         maxFallSpeed = 10;
         jumpHeight = -20;
 
@@ -45,6 +50,8 @@ public class Player extends sprites.GameObject {
 
         maxY = 450;
         minY = 250;
+        minX = 10;
+        maxX = 600;
 
         x = 10;
         y = maxY;
@@ -136,6 +143,14 @@ public class Player extends sprites.GameObject {
         this.shouldJump = shouldJump;
     }
 
+    public void setLeft(boolean leftState) {
+        this.left = leftState;
+    }
+
+    public void setRight(boolean rightState) {
+        this.right = rightState;
+    }
+
     /**
      * Updates the current position of the player based on the most recent
      * position, and velocity, and whether or not the player jumped since then.
@@ -149,6 +164,44 @@ public class Player extends sprites.GameObject {
         }
         if (!shouldJump && currentAction == JUMPING) {
             currentAction = FALLING;
+        }
+
+        if (left) {
+            if (x - moveSpeed < minX) {
+                dx = 0;
+                x = minX;
+            }
+            else {
+                dx = -1 * moveSpeed;
+            }
+        }
+
+        if (right) {
+            if (x + moveSpeed > maxX) {
+                dx = 0;
+                x = maxX;
+            }
+            else {
+                dx = moveSpeed;
+            }
+        }
+
+        if (!left && !right && dx > 0) {
+            if (dx - moveSpeed > 0) {
+                dx += -1 * moveSpeed;
+            }
+            else {
+                dx = 0;
+            }
+        }
+
+        if (!left && !right && dx < 0) {
+            if (dx + moveSpeed < 0) {
+                dx += moveSpeed;
+            }
+            else {
+                dx = 0;
+            }
         }
 
         if (currentAction == JUMPING) {

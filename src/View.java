@@ -84,6 +84,7 @@ public class View {
         player.draw(mainCanvas);
 
         List<Obstacle> obstacles = model.getObstacles();
+
         for (int i = 0; i < obstacles.size(); i++) {
             obstacles.get(i).draw(mainCanvas);
         }
