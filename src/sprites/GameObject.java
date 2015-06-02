@@ -108,4 +108,8 @@ public abstract class GameObject {
     public abstract void updatePosition();
 
     public abstract void draw(Canvas gameCanvas);
+
+    public SpriteAnimation getAnimation() {
+        return animation;
+    }
 }

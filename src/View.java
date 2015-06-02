@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import sprites.GameObject;
 import sprites.Obstacle;
+import sprites.SpriteAnimation;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -178,5 +179,26 @@ public class View {
                 "Resources/background.png",0,800,true,false
         );
         context.drawImage(background,0,-200);
+    }
+
+    public void drawPlayer(Canvas gameCanvas, GameObject player) {
+        GraphicsContext context = gameCanvas.getGraphicsContext2D();
+        context.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
+
+        SpriteAnimation animation = player.getAnimation();
+        context.drawImage(
+                animation.getImage(),
+                (int) player.getX(),
+                (int) player.getY(),
+                player.getWidth(),
+                player.getHeight()
+        );
+    }
+
+    public void drawObstacle(Canvas gameCanvas, GameObject obstacle) {
+        GraphicsContext context = gameCanvas.getGraphicsContext2D();
+        context.setFill(javafx.scene.paint.Color.GREEN);
+        context.fillRect(obstacle.getX(), obstacle.getY(), obstacle.getWidth(),
+                obstacle.getHeight());
     }
 }
