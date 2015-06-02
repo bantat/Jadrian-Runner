@@ -154,8 +154,6 @@ public class View {
             );
             temp.setController(this);
         }
-<<<<<<< HEAD
-
         catch (Exception e) {
             e.printStackTrace();
         }
@@ -163,22 +161,13 @@ public class View {
         System.exit(1);
     }
 
-    public void onNewGame(ActionEvent actionEvent) {
-        loadGameScreen();
-    }
-
-    public void onQuitGame(ActionEvent actionEvent) {
-        System.exit(1);
-    }
-=======
->>>>>>> 989ef0d8d980a8647b784e5b76f760a7cd9e14f4
-
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.exit(1);
-    }
+//    public void onNewGame(ActionEvent actionEvent) {
+//        loadGameScreen();
+//    }
+//
+//    public void onQuitGame(ActionEvent actionEvent) {
+//        System.exit(1);
+//    }
 
     public void onNewGame(ActionEvent actionEvent) {
         loadGameScreen();

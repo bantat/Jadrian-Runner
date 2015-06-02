@@ -148,7 +148,7 @@ public class Model {
      */
 
     public String getScore() {
-        String scoreString = Integer.toString(score);
+        String scoreString = Integer.toString(score/10);
         return scoreString;
     }
 
