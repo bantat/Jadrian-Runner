@@ -27,7 +27,6 @@ public class Main extends Application {
         view.loadStartScreen();
     }
 
-
     public static void main(String[] args) {
         launch(args);
     }
