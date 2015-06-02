@@ -21,6 +21,7 @@ public class Model {
     private boolean isJumping = false;
     private boolean left;
     private boolean right;
+    private int score;
 
     /**
      * Initializes our game by creating a GameObject for the player and a
@@ -118,6 +119,7 @@ public class Model {
             generateNewObstacle();
 
         }
+        score++;
     }
 
     /**
@@ -139,6 +141,15 @@ public class Model {
      */
     public void genNewTrack() {
 
+    }
+
+    /**
+     * Getter for score.
+     */
+
+    public String getScore() {
+        String scoreString = Integer.toString(score);
+        return scoreString;
     }
 
 

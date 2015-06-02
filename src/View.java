@@ -90,6 +90,9 @@ public class View {
         GraphicsContext context = mainCanvas.getGraphicsContext2D();
         context.clearRect(0,0,mainCanvas.getWidth(),mainCanvas.getHeight());
 
+        context.fillText(model.getScore(), 50, 50);
+
+
         GameObject player = model.getPlayer();
         //player.draw(mainCanvas);
         drawPlayer(mainCanvas,player);
