@@ -97,6 +97,8 @@ public class Model {
 
     public void updateGameState() {
         player.setJumping(isJumping);
+        player.setLeft(left);
+        player.setRight(right);
         for (int j = 0; j < obstacles.size(); j++) {
             if (obstacles.get(j).isCollision(player)) {
                 isRunning = false;

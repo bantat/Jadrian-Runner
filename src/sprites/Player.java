@@ -31,6 +31,8 @@ public class Player extends sprites.GameObject {
     int minX;
     int maxX;
 
+    int slowSpeed;
+
     public Player() {
 
         super();
@@ -41,7 +43,8 @@ public class Player extends sprites.GameObject {
         height = 40;
 
         fallSpeed = 2;
-        moveSpeed = 5;
+        moveSpeed = 8;
+        slowSpeed = 3;
         maxFallSpeed = 10;
         jumpHeight = -20;
 
@@ -187,8 +190,8 @@ public class Player extends sprites.GameObject {
         }
 
         if (!left && !right && dx > 0) {
-            if (dx - moveSpeed > 0) {
-                dx += -1 * moveSpeed;
+            if (dx - slowSpeed > 0) {
+                dx += -1 * slowSpeed;
             }
             else {
                 dx = 0;
@@ -196,8 +199,8 @@ public class Player extends sprites.GameObject {
         }
 
         if (!left && !right && dx < 0) {
-            if (dx + moveSpeed < 0) {
-                dx += moveSpeed;
+            if (dx + slowSpeed < 0) {
+                dx += slowSpeed;
             }
             else {
                 dx = 0;
@@ -222,7 +225,6 @@ public class Player extends sprites.GameObject {
             }
 
         } else  {
-            dx = 0;
             dy = 0;
             y = maxY;
         }
