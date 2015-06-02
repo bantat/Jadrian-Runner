@@ -72,12 +72,14 @@ public class View {
         context.clearRect(0,0,mainCanvas.getWidth(),mainCanvas.getHeight());
 
         GameObject player = model.getPlayer();
-        player.draw(mainCanvas);
+        //player.draw(mainCanvas);
+        drawPlayer(mainCanvas,player);
 
         List<Obstacle> obstacles = model.getObstacles();
 
         for (int i = 0; i < obstacles.size(); i++) {
-            obstacles.get(i).draw(mainCanvas);
+            //obstacles.get(i).draw(mainCanvas);
+            drawObstacle(mainCanvas, obstacles.get(i));
         }
         if (model.isRunning() == false) {
             System.exit(1);
