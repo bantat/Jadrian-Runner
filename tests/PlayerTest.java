@@ -15,6 +15,7 @@ public class PlayerTest {
      */
 
     private Player player= new Player();
+
     @Test
     public void testSetJumping() throws Exception {
 
@@ -30,11 +31,6 @@ public class PlayerTest {
         int newPosition = player.getX();
         assertTrue((oldPosition+5) == newPosition);
 
-    }
-
-    @Test
-    public void testDraw() throws Exception {
-        assertTrue(true);
     }
 
     @Test

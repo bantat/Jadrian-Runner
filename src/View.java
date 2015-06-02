@@ -9,16 +9,21 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import sprites.GameObject;
 import sprites.Obstacle;
 import sprites.SpriteAnimation;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.awt.Color.*;
 
 /**
  * A class for generating the game on a screen.
@@ -88,9 +93,8 @@ public class View {
      */
     public void drawGame() {
         GraphicsContext context = mainCanvas.getGraphicsContext2D();
-        context.clearRect(0,0,mainCanvas.getWidth(),mainCanvas.getHeight());
+        context.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
 
-        context.fillText(model.getScore(), 50, 50);
 
 
         GameObject player = model.getPlayer();
@@ -108,8 +112,11 @@ public class View {
             //model = new Model();
             controller = new Controller(model);
             loadStartScreen();
+            model.resetScore();
             //System.exit(1);
         }
+        context.setFont(new Font("TimesRoman", (double) 24));
+        context.fillText("SCORE   " + model.getScore() + "m", 40, 40);
     }
 
     /**
@@ -137,31 +144,31 @@ public class View {
         return mainScene;
     }
 
-//    /**
-//     * Handles the case where the game is quit by the user.
-//     */
-//    public void onQuitGame() {
-//        try {
-//            FXMLLoader temp = new FXMLLoader(
-//                    View.class.getResource("/resources/Menu.fxml")
-//            );
-//            temp.setController(this);
-//        }
-//
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        System.exit(1);
-//    }
-//
-//    public void onNewGame(ActionEvent actionEvent) {
-//        loadGameScreen();
-//    }
-//
-//    public void onQuitGame(ActionEvent actionEvent) {
-//        System.exit(1);
-//    }
+    /**
+     * Handles the case where the game is quit by the user.
+     */
+    public void onQuitGame() {
+        try {
+            FXMLLoader temp = new FXMLLoader(
+                    View.class.getResource("/resources/Menu.fxml")
+            );
+            temp.setController(this);
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.exit(1);
+    }
+
+    public void onNewGame(ActionEvent actionEvent) {
+        loadGameScreen();
+    }
+
+    public void onQuitGame(ActionEvent actionEvent) {
+        System.exit(1);
+    }
 
 
     /**

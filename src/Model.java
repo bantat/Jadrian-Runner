@@ -152,5 +152,13 @@ public class Model {
         return scoreString;
     }
 
+    /**
+     * Setter for score.
+     */
+
+    public void resetScore() {
+        score = 0;
+    }
+
 
 }
