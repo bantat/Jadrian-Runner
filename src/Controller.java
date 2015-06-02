@@ -17,16 +17,6 @@ public class Controller {
         this.model = model;
     }
 
-    /**
-     * Resets instance variable for state of user input after model has been
-     * updated.
-     */
-    public void resetInputState() {
-        if (jump) {
-            jump = false;
-        }
-    }
-
     public void keyPressed(KeyEvent keyEvent) {
         KeyCode code = keyEvent.getCode();
         if (code == KeyCode.UP || code == KeyCode.SPACE) {
@@ -39,7 +29,7 @@ public class Controller {
     public void keyReleased(KeyEvent keyEvent) {
         KeyCode code = keyEvent.getCode();
         if (code == KeyCode.UP || code == KeyCode.SPACE) {
-            resetInputState();
+            jump = false;
             keyEvent.consume();
             model.updateInputState(false);
         }

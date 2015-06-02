@@ -21,7 +21,8 @@ public class Model {
     private Player player;
     private boolean isRunning;
     private boolean isJumping;
-    private boolean quit = false;
+    private boolean left;
+    private boolean right;
 
     /**
      * Initializes our game by creating a GameObject for the player and a
@@ -87,8 +88,11 @@ public class Model {
      * based on the amount of time passed. Receives time passed in case player
      * presses space bar in between time increments.
      */
-    public void updateInputState(boolean inputState) {
-        isJumping = inputState;
+    public void updateInputState(boolean jumpState, boolean leftState,
+                                 boolean rightState) {
+        isJumping = jumpState;
+        left = leftState;
+        right = rightState;
     }
 
     public void updateGameState() {
@@ -108,14 +112,6 @@ public class Model {
             generateNewObstacle();
 
         }
-    }
-
-    private void setQuit() {
-        quit = true;
-    }
-
-    public boolean getQuit() {
-        return quit;
     }
 
     /**
