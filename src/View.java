@@ -26,7 +26,7 @@ import java.util.List;
 import static java.awt.Color.*;
 
 /**
- * A class for generating the game on a screen.
+ * A class for rendering the game graphics on a screen.
  */
 
 public class View {
@@ -154,6 +154,7 @@ public class View {
             );
             temp.setController(this);
         }
+<<<<<<< HEAD
 
         catch (Exception e) {
             e.printStackTrace();
@@ -169,7 +170,19 @@ public class View {
     public void onQuitGame(ActionEvent actionEvent) {
         System.exit(1);
     }
+=======
+>>>>>>> 989ef0d8d980a8647b784e5b76f760a7cd9e14f4
 
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.exit(1);
+    }
+
+    public void onNewGame(ActionEvent actionEvent) {
+        loadGameScreen();
+    }
 
     /**
      * Loads the standard game screen for playing  from the relevant FXML file.
@@ -279,21 +292,24 @@ public class View {
             if (i == PLAYER_JUMPING) {
                 imageArray = new Image[numFrames[PLAYER_JUMPING]];
                 for (int j = 0; j < numFrames[PLAYER_JUMPING]; j++) {
-                    String imagePath = String.format("/Resources/sprites/player/jumping/PlayerJumping-%d.gif", j);
+                    String imagePath = String.format("/Resources/" +
+                            "sprites/player/jumping/PlayerJumping-%d.gif", j);
                     imageArray[j] = loadScaledImage(imagePath, 4);
                 }
 
             } else if (i == PLAYER_FALLING) {
                 imageArray = new Image[numFrames[PLAYER_FALLING]];
                 for (int j = 0; j < numFrames[PLAYER_FALLING]; j++) {
-                    String imagePath = String.format("/Resources/sprites/player/falling/PlayerFalling-%d.gif", j);
+                    String imagePath = String.format("/Resources/" +
+                            "sprites/player/falling/PlayerFalling-%d.gif", j);
                     imageArray[j] = loadScaledImage(imagePath, 4);
                 }
 
             } else {
                 imageArray = new Image[numFrames[PLAYER_RUNNING]];
                 for (int j = 0; j < numFrames[PLAYER_RUNNING]; j++) {
-                    String imagePath = String.format("/Resources/sprites/player/running/PlayerRunning-%d.gif", j);
+                    String imagePath = String.format("/Resources/" +
+                            "sprites/player/running/PlayerRunning-%d.gif", j);
                     imageArray[j] = loadScaledImage(imagePath, 4);
                 }
             }
