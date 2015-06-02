@@ -90,7 +90,8 @@ public class View {
         GraphicsContext context = mainCanvas.getGraphicsContext2D();
         context.clearRect(0,0,mainCanvas.getWidth(),mainCanvas.getHeight());
 
-        drawScore(mainCanvas);
+        context.fillText(model.getScore(), 50, 50);
+
 
         GameObject player = model.getPlayer();
         //player.draw(mainCanvas);
@@ -157,11 +158,6 @@ public class View {
 
     public void onQuitGame(ActionEvent actionEvent) {
         System.exit(1);
-    }
-
-    public void drawScore(Canvas gameCanvas) {
-        GraphicsContext context = gameCanvas.getGraphicsContext2D();
-        context.fillText(model.getScore(), 0, 0);
     }
 
     /**
