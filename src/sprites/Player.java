@@ -1,20 +1,9 @@
 package sprites;
 
-import java.util.ArrayList;
-
-import javafx.scene.image.Image;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.canvas.Canvas;
-
 /**
  * Class for the user to control.
  */
 public class Player extends sprites.GameObject {
-
-    private ArrayList<Image[]> sprites;
-    private final int[] numFrames = {
-            8, 3, 3
-    };
 
     private static final int RUNNING = 0;
     private static final int JUMPING = 1;
@@ -37,8 +26,6 @@ public class Player extends sprites.GameObject {
 
         super();
 
-        sheetWidth = 40;
-        sheetHeight = 40;
         width = 40;
         height = 40;
 
@@ -61,85 +48,6 @@ public class Player extends sprites.GameObject {
 
         dx = 0;
         dy = 0;
-
-        // Loads the sprites
-        try {
-            sprites = new ArrayList<Image[]>();
-            loadSprites();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        animation = new SpriteAnimation();
-        animation.setFrames(sprites.get(RUNNING));
-    }
-
-    /**
-     * Loads the sprite images to the animation ArrayList.
-     */
-    public void loadSprites() {
-        for (int i = 0; i < NUM_PLAYER_STATES; i++) {
-            Image[] imageArray;
-
-            if (i == JUMPING) {
-                imageArray = new Image[numFrames[JUMPING]];
-                for (int j = 0; j < numFrames[JUMPING]; j++) {
-                    String imagePath = String.format("/Resources/sprites/player/jumping/PlayerJumping-%d.gif", j);
-                    imageArray[j] = loadScaledImage(imagePath, 4);
-                }
-
-            } else if (i == FALLING) {
-                imageArray = new Image[numFrames[FALLING]];
-                for (int j = 0; j < numFrames[FALLING]; j++) {
-                    String imagePath = String.format("/Resources/sprites/player/falling/PlayerFalling-%d.gif", j);
-                    imageArray[j] = loadScaledImage(imagePath, 4);
-                }
-
-            } else {
-                imageArray = new Image[numFrames[RUNNING]];
-                for (int j = 0; j < numFrames[RUNNING]; j++) {
-                    String imagePath = String.format("/Resources/sprites/player/running/PlayerRunning-%d.gif", j);
-                    imageArray[j] = loadScaledImage(imagePath, 4);
-                }
-            }
-
-            sprites.add(imageArray);
-        }
-    }
-
-    /**
-     * Loads the image, requesting it be of size width x height.
-     * @param imagePath the filepath to the image
-     * @param width the requested width
-     * @param height the requested height
-     * @return the scaled image
-     */
-    public Image loadScaledImage(String imagePath, int width, int height) {
-        Image scaledSpriteImage = new Image(
-                imagePath,
-                width, height,
-                false, false
-        );
-        return scaledSpriteImage;
-    }
-
-    /**
-     * Loads the image scaled by scalingFactor to retain the original aspect
-     * ratio.
-     * @param imagePath the filepath to the image
-     * @param scalingFactor the scaling factor for the image
-     * @return the scaled image
-     */
-    public Image loadScaledImage(String imagePath, double scalingFactor) {
-        Image spriteImage = new Image(imagePath);
-        Image scaledSpriteImage = new Image(
-                imagePath,
-                spriteImage.getWidth() * scalingFactor,
-                spriteImage.getHeight() * scalingFactor,
-                true,    // preserveRatio
-                false    // smooth
-        );
-        return scaledSpriteImage;
     }
 
     public void setJumping(boolean shouldJump) {
@@ -231,43 +139,5 @@ public class Player extends sprites.GameObject {
 
         x = x + dx;
         y = y + dy;
-
-        // Sets the animation to correspond to the correct action.
-        if (dy > 0) {
-            animation.setFrames(sprites.get(FALLING));
-            animation.setFrameDelay(100);
-            width = 40;
-
-        } else if (dy < 0) {
-            animation.setFrames(sprites.get(JUMPING));
-            animation.setFrameDelay(100);
-            width = 40;
-
-        } else {
-            animation.setFrames(sprites.get(RUNNING));
-            animation.setFrameDelay(40);
-            width = 40;
-        }
-
-        animation.update();
-    }
-
-    /**
-     * Draws the player onto the given canvas.
-     * @param gameCanvas
-     */
-    @Override
-    public void draw(Canvas gameCanvas) {
-        GraphicsContext context = gameCanvas.getGraphicsContext2D();
-        context.clearRect(0,0,gameCanvas.getWidth(),gameCanvas.getHeight());
-
-        animation.update();
-        context.drawImage(
-                animation.getImage(),
-                (int) x,
-                (int) y,
-                width,
-                height
-        );
     }
 }

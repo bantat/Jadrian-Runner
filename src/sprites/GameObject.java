@@ -1,7 +1,6 @@
 package sprites;
 
-import java.awt.Rectangle;
-
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 
 /**
@@ -15,16 +14,11 @@ public abstract class GameObject {
     protected double dx;
     protected double dy;
 
-    protected int sheetWidth;
-    protected int sheetHeight;
     protected int width;
     protected int height;
 
     protected SpriteAnimation animation;
     protected int currentAction;
-
-    protected boolean jumping;
-    protected boolean falling;
 
 //    protected boolean left;
 //    protected boolean right;
@@ -37,14 +31,14 @@ public abstract class GameObject {
     protected double jumpHeight;
     protected double shortJumpSpeed;
 
-    public Rectangle getHitBox() {
-        return new Rectangle((int)x, (int)y,
+    public Rectangle2D getHitBox() {
+        return new Rectangle2D((int)x, (int)y,
                              width, height);
     }
 
     public boolean isCollision(GameObject otherObject) {
-        Rectangle thisHitBox = getHitBox();
-        Rectangle otherHitBox = otherObject.getHitBox();
+        Rectangle2D thisHitBox = getHitBox();
+        Rectangle2D otherHitBox = otherObject.getHitBox();
         return thisHitBox.intersects(otherHitBox);
     }
 
@@ -107,5 +101,7 @@ public abstract class GameObject {
 
     public abstract void updatePosition();
 
-    public abstract void draw(Canvas gameCanvas);
+    public SpriteAnimation getAnimation() {
+        return animation;
+    }
 }

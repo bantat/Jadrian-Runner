@@ -24,7 +24,7 @@
                <children>
                   <BorderPane layoutX="199.0" layoutY="81.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <left>
-                        <Button fx:id="quitGame" mnemonicParsing="false" text="Quit Game" BorderPane.alignment="CENTER">
+                        <Button fx:id="quitGame" mnemonicParsing="false" onAction="#onQuitGame" text="Quit Game" BorderPane.alignment="CENTER">
                            <BorderPane.margin>
                               <Insets left="50.0" />
                            </BorderPane.margin>

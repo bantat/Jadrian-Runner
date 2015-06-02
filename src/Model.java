@@ -1,14 +1,12 @@
 import javafx.scene.canvas.Canvas;
-import javafx.stage.Stage;
-
-import sprites.GameObject;
-import sprites.Obstacle;
-import java.util.Random;
-import sprites.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import sprites.GameObject;
+import sprites.Obstacle;
+import sprites.Player;
 
 /**
  * Created by torebanta on 5/27/15.
@@ -20,9 +18,10 @@ public class Model {
     private ArrayList<Obstacle> obstacles;
     private Player player;
     private boolean isRunning;
-    private boolean isJumping;
+    private boolean isJumping = false;
     private boolean left;
     private boolean right;
+    private int score;
 
     /**
      * Initializes our game by creating a GameObject for the player and a
@@ -120,6 +119,7 @@ public class Model {
             generateNewObstacle();
 
         }
+        score++;
     }
 
     /**
@@ -141,6 +141,15 @@ public class Model {
      */
     public void genNewTrack() {
 
+    }
+
+    /**
+     * Getter for score.
+     */
+
+    public String getScore() {
+        String scoreString = Integer.toString(score);
+        return scoreString;
     }
 
 
