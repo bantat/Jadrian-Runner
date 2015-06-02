@@ -22,16 +22,34 @@ import java.util.List;
  */
 
 public class View {
+
+    // Instance variables for generating the window on the screen
     private Model model;
     private Controller controller;
     private ArrayList<Canvas> gameCanvasses;
     private Canvas mainCanvas;
     private Canvas backgroundCanvas;
     private Stage gameWindow;
-    private AnimationTimer timer;
 
+    // Instance variables for continual running
+    private AnimationTimer timer;
     private long lastFrameDraw = 0;
     private int frameCount = 0;
+
+    // Instance variables for displaying the player
+    private SpriteAnimation playerAnimation;
+    private ArrayList<Image[]> playerSprites;
+
+    private static final int PLAYER_RUNNING = 0;
+    private static final int PLAYER_JUMPING = 1;
+    private static final int PLAYER_FALLING = 2;
+    private static final int NUM_PLAYER_STATES = 3;
+
+    private final int[] numFrames = {
+            8, // RUNNING
+            3, // JUMPING
+            3  // FALLING
+    };
 
     /**
      * Stores references to the gameWindow Stage and model objects for the game,
@@ -65,6 +83,9 @@ public class View {
         gameWindow.show();
     }
 
+    /**
+     * Draws the game onto the game canvas.
+     */
     public void drawGame() {
         GraphicsContext context = mainCanvas.getGraphicsContext2D();
         context.clearRect(0,0,mainCanvas.getWidth(),mainCanvas.getHeight());
@@ -88,12 +109,18 @@ public class View {
         }
     }
 
+    /**
+     * Loads the main menu game scene from the relevant FXML file.
+     * @return the main menu game scene
+     */
     public Scene loadMainScene() {
         Scene mainScene;
         Parent root = null;
 
         try {
-            FXMLLoader temp = new FXMLLoader(View.class.getResource("/resources/Menu.fxml"));
+            FXMLLoader temp = new FXMLLoader(
+                    View.class.getResource("/resources/Menu.fxml")
+            );
             temp.setController(this);
             root = temp.load();
         }
@@ -109,7 +136,9 @@ public class View {
 
     public void onQuitGame() {
         try {
-            FXMLLoader temp = new FXMLLoader(View.class.getResource("/resources/Menu.fxml"));
+            FXMLLoader temp = new FXMLLoader(
+                    View.class.getResource("/resources/Menu.fxml")
+            );
             temp.setController(this);
         }
 
@@ -128,6 +157,10 @@ public class View {
         System.exit(1);
     }
 
+    /**
+     * Loads the standard game screen for playing  from the relevant FXML file.
+     * @return the playing game scene
+     */
     public Scene loadGameScene() {
 
         generateBackgroundCanvas();
@@ -138,6 +171,7 @@ public class View {
         gameCanvasses.add(mainCanvas);
 
         model.init();
+        genPlayerAnimation();
 
         timer = new AnimationTimer() {
             @Override
@@ -146,12 +180,11 @@ public class View {
 
                 if (currentTime - lastFrameDraw > 25000000L) {
                     lastFrameDraw = currentTime;
-
                     drawGame();
 
-                    frameCount++;
-
                     model.updateGameState();
+
+                    frameCount++;
                 }
             }
         };
@@ -183,11 +216,19 @@ public class View {
         return gameScene;
     }
 
+    /**
+     * Generates the canvas used for game play, including the player and any
+     * obstacles on the screen.
+     */
     public void generateGameCanvas() {
         mainCanvas = new Canvas(800,600);
         GraphicsContext context = mainCanvas.getGraphicsContext2D();
     }
 
+    /**
+     * Generates the canvas for the background of the game, along with any
+     * images drawn onto it.
+     */
     public void generateBackgroundCanvas() {
         backgroundCanvas = new Canvas(800,600);
         GraphicsContext context = backgroundCanvas.getGraphicsContext2D();
@@ -198,13 +239,129 @@ public class View {
         context.drawImage(background,0,-200);
     }
 
+    /**
+     * Generates the player's spries and animation.
+     */
+    public void genPlayerAnimation() {
+        // Loads the sprites
+        try {
+            playerSprites = new ArrayList<Image[]>();
+            loadPlayerSprites();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        playerAnimation = new SpriteAnimation();
+        playerAnimation.setFrames(playerSprites.get(PLAYER_RUNNING));
+    }
+
+    /**
+     * Loads the sprite images arrays to the animation ArrayList.
+     */
+    public void loadPlayerSprites() {
+        for (int i = 0; i < NUM_PLAYER_STATES; i++) {
+            Image[] imageArray;
+
+            if (i == PLAYER_JUMPING) {
+                imageArray = new Image[numFrames[PLAYER_JUMPING]];
+                for (int j = 0; j < numFrames[PLAYER_JUMPING]; j++) {
+                    String imagePath = String.format("/Resources/sprites/player/jumping/PlayerJumping-%d.gif", j);
+                    imageArray[j] = loadScaledImage(imagePath, 4);
+                }
+
+            } else if (i == PLAYER_FALLING) {
+                imageArray = new Image[numFrames[PLAYER_FALLING]];
+                for (int j = 0; j < numFrames[PLAYER_FALLING]; j++) {
+                    String imagePath = String.format("/Resources/sprites/player/falling/PlayerFalling-%d.gif", j);
+                    imageArray[j] = loadScaledImage(imagePath, 4);
+                }
+
+            } else {
+                imageArray = new Image[numFrames[PLAYER_RUNNING]];
+                for (int j = 0; j < numFrames[PLAYER_RUNNING]; j++) {
+                    String imagePath = String.format("/Resources/sprites/player/running/PlayerRunning-%d.gif", j);
+                    imageArray[j] = loadScaledImage(imagePath, 4);
+                }
+            }
+
+            playerSprites.add(imageArray);
+        }
+    }
+
+    /**
+     * Loads the image, requesting it be of size width x height.
+     * @param imagePath the filepath to the image
+     * @param width the requested width
+     * @param height the requested height
+     * @return the scaled image
+     */
+    public Image loadScaledImage(String imagePath, int width, int height) {
+        Image scaledSpriteImage = new Image(
+                imagePath,
+                width, height,
+                false, false
+        );
+        return scaledSpriteImage;
+    }
+
+    /**
+     * Loads the image scaled by scalingFactor to retain the original aspect
+     * ratio.
+     * @param imagePath the filepath to the image
+     * @param scalingFactor the scaling factor for the image
+     * @return the scaled image
+     */
+    public Image loadScaledImage(String imagePath, double scalingFactor) {
+        Image spriteImage = new Image(imagePath);
+        Image scaledSpriteImage = new Image(
+                imagePath,
+                spriteImage.getWidth() * scalingFactor,
+                spriteImage.getHeight() * scalingFactor,
+                true,    // preserveRatio
+                false    // smooth
+        );
+        return scaledSpriteImage;
+    }
+
+    /**
+     * Updates the player's animation, depending on if the player is running,
+     * jumping, or falling.
+     * Will later be abstracted to account for any object's animation.
+     * @param player the player to be updated.
+     */
+    public void updatePlayerAnimation(GameObject player) {
+        // Sets the animation to correspond to the correct action.
+        if (player.getDirectionY() > 0) {
+            playerAnimation.setFrames(playerSprites.get(PLAYER_FALLING));
+            playerAnimation.setFrameDelay(100);
+//            width = 40;
+
+        } else if (player.getDirectionY() < 0) {
+            playerAnimation.setFrames(playerSprites.get(PLAYER_JUMPING));
+            playerAnimation.setFrameDelay(100);
+//            width = 40;
+
+        } else {
+            playerAnimation.setFrames(playerSprites.get(PLAYER_RUNNING));
+            playerAnimation.setFrameDelay(40);
+//            width = 40;
+        }
+
+        playerAnimation.update();
+    }
+
+    /**
+     * Draws the player onto the game canvas.
+     * @param gameCanvas the canvas the player is drawn on.
+     * @param player the player that is drawn
+     */
     public void drawPlayer(Canvas gameCanvas, GameObject player) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
         context.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
 
-        SpriteAnimation animation = player.getAnimation();
+        updatePlayerAnimation(player);
         context.drawImage(
-                animation.getImage(),
+                playerAnimation.getImage(),
                 (int) player.getX(),
                 (int) player.getY(),
                 player.getWidth(),
@@ -212,6 +369,11 @@ public class View {
         );
     }
 
+    /**
+     * Draws the obstacle onto the game canvas.
+     * @param gameCanvas the canvas the obstacle is drawn on.
+     * @param obstacle the obstacle that is drawn
+     */
     public void drawObstacle(Canvas gameCanvas, GameObject obstacle) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
         context.setFill(javafx.scene.paint.Color.GREEN);

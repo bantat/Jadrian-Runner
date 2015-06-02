@@ -1,10 +1,7 @@
 package sprites;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.canvas.Canvas;
-
 /**
- * Created by alexgriese on 5/29/15.
+ * A class for representing obstacles in the game.
  */
 public class Obstacle extends GameObject {
 
@@ -23,12 +20,4 @@ public class Obstacle extends GameObject {
     public void updatePosition() {
         x = x + dx;
     }
-
-    @Override
-    public void draw(Canvas gameCanvas) {
-        GraphicsContext context = gameCanvas.getGraphicsContext2D();
-        context.setFill(javafx.scene.paint.Color.GREEN);
-        context.fillRect(x, y, width, height);
-    }
-
 }

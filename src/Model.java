@@ -20,7 +20,7 @@ public class Model {
     private ArrayList<Obstacle> obstacles;
     private Player player;
     private boolean isRunning;
-    private boolean isJumping;
+    private boolean isJumping = false;
     private boolean left;
     private boolean right;
 
