@@ -3,7 +3,10 @@ package sprites;
 import javafx.scene.image.Image;
 
 /**
- * Created by Ben on 5/31/2015.
+ * A class for representing multiple images as an animation onscreen.
+ *
+ * Template from Youtuber ForeignGuyMike, in his video at the URL:
+ *     https://www.youtube.com/watch?v=zUOkojY_Ylo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv&index=4
  */
 public class SpriteAnimation {
 
