@@ -1,24 +1,27 @@
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import sprites.GameObject;
 import sprites.Obstacle;
 import sprites.SpriteAnimation;
 
 import java.awt.event.ActionEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by torebanta on 5/27/15.
+ * A class for generating the game on a screen.
  */
 
 public class View {
@@ -52,13 +55,14 @@ public class View {
     };
 
     /**
-     * Stores references to the gameWindow Stage and model objects for the game,
-     * and creates a two dimensional context for drawing game elements on the
-     * canvas.
+     * Stores references to the gameWindow Stage and model objects for the
+     * game, and creates a two dimensional context for drawing game elements
+     * on the canvas.
      *
-     * @param model
-     * @param controller
-     * @param gameWindow
+     * @param model the model that stores all of the information about the
+     *              game's current state.
+     * @param controller the controller that handles keyboard input
+     * @param gameWindow the Stage on which everything is drawn
      */
     public View(Model model, Controller controller, Stage gameWindow) {
         this.model = model;
@@ -67,10 +71,6 @@ public class View {
 
         AnimationTimer timer;
     }
-
-    //public View() {
-        //...
-    //}
 
     public void loadStartScreen() {
         gameWindow.setTitle("Jadrian Runner");
@@ -134,28 +134,32 @@ public class View {
         return mainScene;
     }
 
-    public void onQuitGame() {
-        try {
-            FXMLLoader temp = new FXMLLoader(
-                    View.class.getResource("/resources/Menu.fxml")
-            );
-            temp.setController(this);
-        }
+//    /**
+//     * Handles the case where the game is quit by the user.
+//     */
+//    public void onQuitGame() {
+//        try {
+//            FXMLLoader temp = new FXMLLoader(
+//                    View.class.getResource("/resources/Menu.fxml")
+//            );
+//            temp.setController(this);
+//        }
+//
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        System.exit(1);
+//    }
+//
+//    public void onNewGame(ActionEvent actionEvent) {
+//        loadGameScreen();
+//    }
+//
+//    public void onQuitGame(ActionEvent actionEvent) {
+//        System.exit(1);
+//    }
 
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.exit(1);
-    }
-
-    public void onNewGame(ActionEvent actionEvent) {
-        loadGameScreen();
-    }
-
-    public void onQuitGame(ActionEvent actionEvent) {
-        System.exit(1);
-    }
 
     /**
      * Loads the standard game screen for playing  from the relevant FXML file.
