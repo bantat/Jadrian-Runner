@@ -29,7 +29,6 @@ public class View {
 
     private long lastFrameDraw = 0;
     private int frameCount = 0;
-    private int randInt;
 
     /**
      * Stores references to the gameWindow Stage and model objects for the game,
@@ -44,7 +43,6 @@ public class View {
         this.model = model;
         this.controller = controller;
         this.gameWindow = gameWindow;
-        this.randInt = model.randInt(60,120);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -55,14 +53,7 @@ public class View {
                     lastFrameDraw = currentTime;
 
                     drawGame();
-                    if (model.getQuit() == true) {
-                        System.exit(1);
-                    }
 
-                    if (frameCount%randInt == 0) {
-                        model.generateNewObstacle();
-                        randInt = model.randInt(60,120);
-                    }
                     frameCount++;
 
                     model.updateGameState();
@@ -95,6 +86,9 @@ public class View {
         List<Obstacle> obstacles = model.getObstacles();
         for (int i = 0; i < obstacles.size(); i++) {
             obstacles.get(i).draw(mainCanvas);
+            if (obstacles.get(i).isCollision(player)) {
+                System.exit(1);
+            }
         }
     }
 
@@ -149,8 +143,9 @@ public class View {
         backgroundCanvas = new Canvas(800,600);
         GraphicsContext context = backgroundCanvas.getGraphicsContext2D();
 
-        Image background =
-                new Image("Resources/background.png",0,800,true,false);
+        Image background = new Image(
+                "Resources/background.png",0,800,true,false
+        );
         context.drawImage(background,0,-200);
     }
 }

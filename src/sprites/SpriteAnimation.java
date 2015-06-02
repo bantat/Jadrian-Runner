@@ -1,54 +1,58 @@
 package sprites;
 
-import javafx.animation.Interpolator;
-import javafx.animation.Transition;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.image.ImageView;
-import javafx.util.Duration;
+import javafx.scene.image.Image;
 
 /**
- * Class for generating an Animation from a sprite file.
- * Taken from the tutorial at:
- * http://blog.netopyr.com/2012/03/09/creating-a-sprite-animation-with-javafx/
+ * Created by Ben on 5/31/2015.
  */
+public class SpriteAnimation {
 
-public class SpriteAnimation extends Transition {
+    private Image[] frames;
+    private int currentFrame;
+    private int numFrames;
 
-    private final ImageView imageView;
-    private final int count;
-    private final int columns;
-    private final int offsetX;
-    private final int offsetY;
-    private final int width;
-    private final int height;
+    private long startTime;
+    private long frameDelay;
+
+    private boolean playedOnce;
 
     private int lastIndex;
 
-    public SpriteAnimation(
-            ImageView imageView,
-            Duration duration,
-            int count,   int columns,
-            int offsetX, int offsetY,
-            int width,   int height) {
-        this.imageView = imageView;
-        this.count     = count;
-        this.columns   = columns;
-        this.offsetX   = offsetX;
-        this.offsetY   = offsetY;
-        this.width     = width;
-        this.height    = height;
-        setCycleDuration(duration);
-        setInterpolator(Interpolator.LINEAR);
+    public SpriteAnimation() {
+        playedOnce = false;
     }
 
-    protected void interpolate(double k) {
-        final int index = Math.min((int) Math.floor(k * count), count - 1);
-        if (index != lastIndex) {
-            final int x = (index % columns) * width  + offsetX;
-            final int y = (index / columns) * height + offsetY;
-            imageView.setViewport(new Rectangle2D(x, y, width, height));
-            lastIndex = index;
+    public void setFrames(Image[] frames) {
+        this.frames = frames;
+        currentFrame = 0;
+        startTime = System.nanoTime();
+        playedOnce = false;
+    }
+
+    public void setFrameDelay(long d) { frameDelay = d; }
+    public void setFrame(int i) { currentFrame = i; }
+
+    /**
+     * Updates the state of the animation if the time elapsed since the frame
+     * rate was last set is greater than the frame delay.
+     */
+    public void update() {
+
+        if (frameDelay == -1) { return; }
+
+        long elapsed = (System.nanoTime() - startTime) / 1000000;
+        if (elapsed > frameDelay) {
+            currentFrame++;
+            startTime = System.nanoTime();
+        }
+        if (currentFrame == frames.length) {
+            currentFrame = 0;
+            playedOnce = true;
         }
     }
-}
 
+    public int getFrame() { return currentFrame; }
+    public Image getImage() { return frames[currentFrame]; }
+    public boolean hasPlayedOnce() { return playedOnce; }
+
+}

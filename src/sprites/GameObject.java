@@ -1,9 +1,8 @@
 package sprites;
 
 import java.awt.Rectangle;
+
 import javafx.scene.canvas.Canvas;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Created by Ben on 5/27/2015.
@@ -21,6 +20,9 @@ public abstract class GameObject {
     protected int width;
     protected int height;
 
+    protected SpriteAnimation animation;
+    protected int currentAction;
+
     protected boolean jumping;
     protected boolean falling;
 
@@ -36,7 +38,7 @@ public abstract class GameObject {
     protected double shortJumpSpeed;
 
     public Rectangle getHitBox() {
-        return new Rectangle((int)x - (width/2), (int)y - (height/2),
+        return new Rectangle((int)x, (int)y,
                              width, height);
     }
 
@@ -44,11 +46,6 @@ public abstract class GameObject {
         Rectangle thisHitBox = getHitBox();
         Rectangle otherHitBox = otherObject.getHitBox();
         return thisHitBox.intersects(otherHitBox);
-        //if (((int)x + width >= otherObject.getX() || (int)x <= otherObject.getX())
-        //        && ((int) y + height >= otherObject.getY() || (int)y <= otherObject.getY())) {
-
-        //}
-
     }
 
     public int getX() {
