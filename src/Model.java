@@ -1,14 +1,12 @@
 import javafx.scene.canvas.Canvas;
-import javafx.stage.Stage;
-
-import sprites.GameObject;
-import sprites.Obstacle;
-import java.util.Random;
-import sprites.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import sprites.GameObject;
+import sprites.Obstacle;
+import sprites.Player;
 
 /**
  * Created by torebanta on 5/27/15.

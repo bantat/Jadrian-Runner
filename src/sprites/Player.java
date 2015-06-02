@@ -1,11 +1,5 @@
 package sprites;
 
-import java.util.ArrayList;
-
-import javafx.scene.image.Image;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.canvas.Canvas;
-
 /**
  * Class for the user to control.
  */
@@ -32,8 +26,6 @@ public class Player extends sprites.GameObject {
 
         super();
 
-        sheetWidth = 40;
-        sheetHeight = 40;
         width = 40;
         height = 40;
 
