@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class for generating the game on a screen.
+ * A class for rendering the game graphics on a screen.
  */
 
 public class View {
@@ -267,21 +267,24 @@ public class View {
             if (i == PLAYER_JUMPING) {
                 imageArray = new Image[numFrames[PLAYER_JUMPING]];
                 for (int j = 0; j < numFrames[PLAYER_JUMPING]; j++) {
-                    String imagePath = String.format("/Resources/sprites/player/jumping/PlayerJumping-%d.gif", j);
+                    String imagePath = String.format("/Resources/" +
+                            "sprites/player/jumping/PlayerJumping-%d.gif", j);
                     imageArray[j] = loadScaledImage(imagePath, 4);
                 }
 
             } else if (i == PLAYER_FALLING) {
                 imageArray = new Image[numFrames[PLAYER_FALLING]];
                 for (int j = 0; j < numFrames[PLAYER_FALLING]; j++) {
-                    String imagePath = String.format("/Resources/sprites/player/falling/PlayerFalling-%d.gif", j);
+                    String imagePath = String.format("/Resources/" +
+                            "sprites/player/falling/PlayerFalling-%d.gif", j);
                     imageArray[j] = loadScaledImage(imagePath, 4);
                 }
 
             } else {
                 imageArray = new Image[numFrames[PLAYER_RUNNING]];
                 for (int j = 0; j < numFrames[PLAYER_RUNNING]; j++) {
-                    String imagePath = String.format("/Resources/sprites/player/running/PlayerRunning-%d.gif", j);
+                    String imagePath = String.format("/Resources/" +
+                            "sprites/player/running/PlayerRunning-%d.gif", j);
                     imageArray[j] = loadScaledImage(imagePath, 4);
                 }
             }
