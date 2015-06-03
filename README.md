@@ -14,11 +14,10 @@ Group Members:
 
 Running the Game:
 
-- Compile the .java files
-- Locate the class file Main (usually in 'out')
-- Run Main from the command line "java Main"
+- Compile the .java files in the /src directory
+- Run Main from the command line, execute "java Main"
 
 If you run into difficulties running the game,
-change the line "View.class.getResource("Menu.fxml")" in Main.java
+change the lines 136 and 157 in View.java, which say "View.class.getResource("Menu.fxml")"
 to read the .fxml file from an absolute path:
 View.class.getResource("/resources/Menu.fxml")
