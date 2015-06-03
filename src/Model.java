@@ -9,11 +9,14 @@ import sprites.Obstacle;
 import sprites.Player;
 
 /**
- * Created by torebanta on 5/27/15.
+ * A class for containing the logic behind the game. Generates obstacles in
+ * game, and processes user input from Controller.
+ *
  * @author Tore Banta
  * @author Ben Withbroe
+ * @author Alex Griese
+ * @author Greg Erlandson
  */
-
 public class Model {
     private ArrayList<Obstacle> obstacles;
     private Player player;

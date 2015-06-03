@@ -27,8 +27,12 @@ import static java.awt.Color.*;
 
 /**
  * A class for rendering the game graphics on a screen.
+ *
+ * @author Tore Banta
+ * @author Ben Withbroe
+ * @author Alex Griese
+ * @author Greg Erlandson
  */
-
 public class View {
 
     // Instance variables for generating the window on the screen
@@ -172,6 +176,7 @@ public class View {
     public void onNewGame(ActionEvent actionEvent) {
         loadGameScreen();
     }
+
 
     /**
      * Loads the standard game screen for playing  from the relevant FXML file.

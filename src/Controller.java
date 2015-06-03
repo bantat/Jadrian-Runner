@@ -2,7 +2,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 /**
- * Created by torebanta on 5/27/15.
+ * A class for listening for and processing user input.
+ *
+ * @author Tore Banta
+ * @author Ben Withbroe
+ * @author Alex Griese
+ * @author Greg Erlandson
  */
 public class Controller {
     private Model model;
