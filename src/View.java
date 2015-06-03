@@ -288,7 +288,7 @@ public class View {
                 for (int j = 0; j < numFrames[PLAYER_JUMPING]; j++) {
                     String imagePath = String.format("/Resources/" +
                             "sprites/player/jumping/PlayerJumping-%d.gif", j);
-                    imageArray[j] = loadScaledImage(imagePath, 4);
+                    imageArray[j] = loadScaledImage(imagePath, 2);
                 }
 
             } else if (i == PLAYER_FALLING) {
@@ -296,7 +296,7 @@ public class View {
                 for (int j = 0; j < numFrames[PLAYER_FALLING]; j++) {
                     String imagePath = String.format("/Resources/" +
                             "sprites/player/falling/PlayerFalling-%d.gif", j);
-                    imageArray[j] = loadScaledImage(imagePath, 4);
+                    imageArray[j] = loadScaledImage(imagePath, 2);
                 }
 
             } else {
@@ -304,7 +304,7 @@ public class View {
                 for (int j = 0; j < numFrames[PLAYER_RUNNING]; j++) {
                     String imagePath = String.format("/Resources/" +
                             "sprites/player/running/PlayerRunning-%d.gif", j);
-                    imageArray[j] = loadScaledImage(imagePath, 4);
+                    imageArray[j] = loadScaledImage(imagePath, 2);
                 }
             }
 
@@ -384,12 +384,13 @@ public class View {
         context.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
 
         updatePlayerAnimation(player);
+        Image playerImage = playerAnimation.getImage();
         context.drawImage(
-                playerAnimation.getImage(),
+                playerImage,
                 (int) player.getX(),
                 (int) player.getY(),
-                player.getWidth(),
-                player.getHeight()
+                playerImage.getWidth(),
+                playerImage.getHeight()
         );
     }
 
@@ -404,9 +405,9 @@ public class View {
         //context.fillRect(obstacle.getX(), obstacle.getY(), obstacle.getWidth(),
                 //obstacle.getHeight());
 
-        Image obstacleImage = new Image(
-                "Resources/stick.png",obstacle.getWidth(), obstacle.getHeight(),true,false
-        );
+        Image obstacleImage = loadScaledImage("Resources/stick.png",
+                                              obstacle.getWidth(),
+                                              obstacle.getHeight());
         context.drawImage(obstacleImage, obstacle.getX(), obstacle.getY());
     }
 }

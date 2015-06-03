@@ -70,7 +70,13 @@ public class Model {
 
         boolean obstacleNotMade = true;
         Obstacle tempObstacle;
-        obstacles.add(new Obstacle(50,100,8,1050,randInt(240,400)));
+        obstacles.add(new Obstacle(13,              // width
+                                   75,             // height
+                                   8,               // speed
+                                   1050,            // x
+                                   randInt(240,400) // y
+                )
+        );
 
 //        while (obstacleNotMade) {
 //            tempObstacle = new Obstacle(randInt(minWidth, maxWidth),
