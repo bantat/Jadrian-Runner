@@ -400,8 +400,13 @@ public class View {
      */
     public void drawObstacle(Canvas gameCanvas, GameObject obstacle) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
-        context.setFill(javafx.scene.paint.Color.GREEN);
-        context.fillRect(obstacle.getX(), obstacle.getY(), obstacle.getWidth(),
-                obstacle.getHeight());
+        //context.setFill(javafx.scene.paint.Color.GREEN);
+        //context.fillRect(obstacle.getX(), obstacle.getY(), obstacle.getWidth(),
+                //obstacle.getHeight());
+
+        Image obstacleImage = new Image(
+                "Resources/stick.png",obstacle.getWidth(), obstacle.getHeight(),true,false
+        );
+        context.drawImage(obstacleImage, obstacle.getX(), obstacle.getY());
     }
 }
