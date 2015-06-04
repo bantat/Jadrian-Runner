@@ -35,7 +35,7 @@ import static java.awt.Color.*;
  */
 public class View {
 
-    // Instance variables for generating the window on the screen
+    // Instance variables for generating the window on the screen.
     private Model model;
     private Controller controller;
     private ArrayList<Canvas> gameCanvasses;
@@ -43,20 +43,24 @@ public class View {
     private Canvas backgroundCanvas;
     private Stage gameWindow;
 
-    // Instance variables for continual running
+    // Instance variables for continual running.
     private AnimationTimer timer;
     private long lastFrameDraw = 0;
-    private int frameCount = 0;
+    //private int frameCount = 0;
 
     // Instance variables for displaying the player
     private SpriteAnimation playerAnimation;
     private ArrayList<Image[]> playerSprites;
 
+    /*
+    Instance variables that determine which series of images to use for the
+    player animation, based on index in numFrames. numFrames contains number
+    of images used for each different animation.
+    */
     private static final int PLAYER_RUNNING = 0;
     private static final int PLAYER_JUMPING = 1;
     private static final int PLAYER_FALLING = 2;
     private static final int NUM_PLAYER_STATES = 3;
-
     private final int[] numFrames = {
             8, // RUNNING
             3, // JUMPING
@@ -78,15 +82,23 @@ public class View {
         this.controller = controller;
         this.gameWindow = gameWindow;
 
-        AnimationTimer timer;
+        //AnimationTimer timer;
     }
 
+    /**
+     * Generates the Start window the user interacts with when the game is
+     * opened initially.
+     */
     public void loadStartScreen() {
         gameWindow.setTitle("Jadrian Runner");
         gameWindow.setScene(loadMainScene());
         gameWindow.show();
     }
 
+    /**
+     * Generates the game window the user interacts with in order to play the
+     * game.
+     */
     public void loadGameScreen() {
         gameWindow.setScene(loadGameScene());
         gameWindow.show();
@@ -96,41 +108,50 @@ public class View {
      * Draws the game onto the game canvas.
      */
     public void drawGame() {
+        /*
+        Initializes a GraphicsContext variable to allow the program to draw
+        player, obstacle objects and background on the game window. Clears
+        the previous game screen in order to draw new game state with updated
+        player, obstacle objects and score.
+         */
         GraphicsContext context = mainCanvas.getGraphicsContext2D();
         context.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
 
 
-
         GameObject player = model.getPlayer();
-        //player.draw(mainCanvas);
         drawPlayer(mainCanvas,player);
 
         List<Obstacle> obstacles = model.getObstacles();
 
         for (int i = 0; i < obstacles.size(); i++) {
-            //obstacles.get(i).draw(mainCanvas);
             drawObstacle(mainCanvas, obstacles.get(i));
         }
+
+        context.setFont(new Font("TimesRoman", (double) 24));
+        context.fillText("SCORE   " + model.getScore() + "m", 40, 40);
+
+        /*
+        Checks to see if the game has ended as a result of a collision. If it
+        has send the user to the start screen.
+         */
         if (model.isRunning() == false) {
             timer.stop();
-            //model = new Model();
             controller = new Controller(model);
             loadStartScreen();
             model.resetScore();
-            //System.exit(1);
         }
-        context.setFont(new Font("TimesRoman", (double) 24));
-        context.fillText("SCORE   " + model.getScore() + "m", 40, 40);
     }
 
     /**
      * Loads the main menu game scene from the relevant FXML file.
-     * @return the main menu game scene
+     * @return the main menu game scene.
      */
     public Scene loadMainScene() {
+        // Javafx based variables to generate new scene for start screen.
         Scene mainScene;
         Parent root = null;
 
+        // Loads Menu.fxml to display as start screen.
         try {
             FXMLLoader temp = new FXMLLoader(
                     View.class.getResource("/resources/Menu.fxml")
@@ -143,6 +164,7 @@ public class View {
             e.printStackTrace();
         }
 
+        // Sets the scene, after root has been set.
         mainScene = new Scene(root, 800, 600);
 
         return mainScene;
@@ -152,19 +174,22 @@ public class View {
      * Handles the case where the game is quit by the user.
      */
     public void onQuitGame() {
-        try {
-            FXMLLoader temp = new FXMLLoader(
-                    View.class.getResource("/resources/Menu.fxml")
-            );
-            temp.setController(this);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+//        Why doe we have to do this?
+//        try {
+//            FXMLLoader temp = new FXMLLoader(
+//                    View.class.getResource("/resources/Menu.fxml")
+//            );
+//            temp.setController(this);
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         System.exit(1);
     }
 
+//    Can we get rid of this?
+//
 //    public void onNewGame(ActionEvent actionEvent) {
 //        loadGameScreen();
 //    }
@@ -172,10 +197,10 @@ public class View {
 //    public void onQuitGame(ActionEvent actionEvent) {
 //        System.exit(1);
 //    }
-
-    public void onNewGame(ActionEvent actionEvent) {
-        loadGameScreen();
-    }
+//
+//    public void onNewGame(ActionEvent actionEvent) {
+//        loadGameScreen()
+//    }
 
 
     /**
@@ -183,7 +208,6 @@ public class View {
      * @return the playing game scene
      */
     public Scene loadGameScene() {
-
         generateBackgroundCanvas();
         generateGameCanvas();
 
@@ -192,34 +216,48 @@ public class View {
         gameCanvasses.add(mainCanvas);
 
         model.init();
-        genPlayerAnimation();
 
+        genPlayerAnimation();
+        /*
+        Initializes the game timer, which will allow the user to play the
+        game.
+        */
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 long currentTime = System.nanoTime();
 
+                /*
+                Determines the frame rate, then draws the updated positions
+                based on user input, and re-updates the game state.
+                */
                 if (currentTime - lastFrameDraw > 25000000L) {
                     lastFrameDraw = currentTime;
                     drawGame();
 
                     model.updateGameState();
 
-                    frameCount++;
+                    //frameCount++;
                 }
             }
         };
 
         timer.start();
 
-        drawGame();
+        // Alex: I don't think we need this call.
+        // drawGame();
 
         Scene gameScene;
 
+        /*
+        Adds all the canvasses, which have all been 'drawn' on to the scene,
+        in order to be displayed.
+        */
         Group root = new Group();
         root.getChildren().addAll(gameCanvasses);
         gameScene = new Scene(root, 800, 600);
 
+        // Checks to see if a key has been pressed.
         gameScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -227,6 +265,7 @@ public class View {
             }
         });
 
+        // Checks to see if a key has been released.
         gameScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -235,15 +274,6 @@ public class View {
         });
 
         return gameScene;
-    }
-
-    /**
-     * Generates the canvas used for game play, including the player and any
-     * obstacles on the screen.
-     */
-    public void generateGameCanvas() {
-        mainCanvas = new Canvas(800,600);
-        GraphicsContext context = mainCanvas.getGraphicsContext2D();
     }
 
     /**
@@ -261,7 +291,16 @@ public class View {
     }
 
     /**
-     * Generates the player's spries and animation.
+     * Generates the canvas used for game play, including the player and any
+     * obstacles on the screen.
+     */
+    public void generateGameCanvas() {
+        mainCanvas = new Canvas(800,600);
+        //GraphicsContext context = mainCanvas.getGraphicsContext2D();
+    }
+
+    /**
+     * Generates the player's sprites and animation.
      */
     public void genPlayerAnimation() {
         // Loads the sprites
@@ -272,6 +311,7 @@ public class View {
             e.printStackTrace();
         }
 
+        // Sets the initial animation to the player running.
         playerAnimation = new SpriteAnimation();
         playerAnimation.setFrames(playerSprites.get(PLAYER_RUNNING));
     }
@@ -283,6 +323,10 @@ public class View {
         for (int i = 0; i < NUM_PLAYER_STATES; i++) {
             Image[] imageArray;
 
+            /*
+            Loads the frames for the player's jumping animation into the
+            image array.
+            */
             if (i == PLAYER_JUMPING) {
                 imageArray = new Image[numFrames[PLAYER_JUMPING]];
                 for (int j = 0; j < numFrames[PLAYER_JUMPING]; j++) {
@@ -290,7 +334,10 @@ public class View {
                             "sprites/player/jumping/PlayerJumping-%d.gif", j);
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
-
+            /*
+            Loads the frames for the player's falling animation into the
+            image array.
+            */
             } else if (i == PLAYER_FALLING) {
                 imageArray = new Image[numFrames[PLAYER_FALLING]];
                 for (int j = 0; j < numFrames[PLAYER_FALLING]; j++) {
@@ -299,6 +346,10 @@ public class View {
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
 
+            /*
+            Loads the frames for the player's running animation into the
+            image array.
+            */
             } else {
                 imageArray = new Image[numFrames[PLAYER_RUNNING]];
                 for (int j = 0; j < numFrames[PLAYER_RUNNING]; j++) {
@@ -308,6 +359,10 @@ public class View {
                 }
             }
 
+            /*
+            Adds the frames for the player's animation to be displayed
+            in the game.
+            */
             playerSprites.add(imageArray);
         }
     }
@@ -401,10 +456,6 @@ public class View {
      */
     public void drawObstacle(Canvas gameCanvas, GameObject obstacle) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
-        //context.setFill(javafx.scene.paint.Color.GREEN);
-        //context.fillRect(obstacle.getX(), obstacle.getY(), obstacle.getWidth(),
-                //obstacle.getHeight());
-
         Image obstacleImage = loadScaledImage("Resources/stick.png",
                                               obstacle.getWidth(),
                                               obstacle.getHeight());
