@@ -354,7 +354,7 @@ public class View {
                 imageArray = new Image[numFrames[PLAYER_RUNNING]];
                 for (int j = 0; j < numFrames[PLAYER_RUNNING]; j++) {
                     String imagePath = String.format("/Resources/" +
-                            "sprites/player/running/PlayerRunning-%d.gif", j);
+                            "sprites/player/running/Player_Running_%d.png", j);
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
             }
