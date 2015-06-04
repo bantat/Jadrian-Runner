@@ -18,6 +18,11 @@ import sprites.Player;
  * @author Greg Erlandson
  */
 public class Model {
+    /*
+    Keep track of the obstacle and player objects,
+    whether or not the game is running, the specified user input
+    (move left, move right, or jump), and the score.
+     */
     private ArrayList<Obstacle> obstacles;
     private Player player;
     private boolean isRunning;
@@ -110,8 +115,8 @@ public class Model {
     }
 
     /**
-     * Updates the GameState. Gets the new positions of the GameObjects,
-     * based on the amount of time passed.
+     * Updates the GameState. Determines whether or not the user specified
+     * a jump, move left, or move right.
      */
     public void updateInputState(boolean jumpState, boolean leftState,
                                  boolean rightState) {

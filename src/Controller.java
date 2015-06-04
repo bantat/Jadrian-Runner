@@ -10,20 +10,30 @@ import javafx.scene.input.KeyEvent;
  * @author Greg Erlandson
  */
 public class Controller {
+    /*
+    Keep track of the model in order to update
+    instance variables in model, user input (move left, move right
+    or jump).
+     */
     private Model model;
     private boolean jump = false;
     private boolean left = false;
     private boolean right = false;
 
     /**
-     * Creates instance variables to store state of user input. Takes reference
-     * to game model as argument for the purpose of calling methods based on user
-     * input.
+     * Takes reference to game model as argument for the purpose of calling
+     * methods based on user input.
      */
     public Controller(Model model) {
         this.model = model;
     }
 
+    /**
+     * A user has pressed a key. Determines which key the user has pressed
+     * and then tells the model which key has been pressed.
+     * @param keyEvent javafx object that tells the program if the user presses
+     *                 a key.
+     */
     public void keyPressed(KeyEvent keyEvent) {
         KeyCode code = keyEvent.getCode();
         if (code == KeyCode.UP || code == KeyCode.SPACE) {
@@ -43,6 +53,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Tells the model which key has been released.
+     * @param keyEvent javafx object that tells the program if the user presses
+     *                 a key.
+     */
     public void keyReleased(KeyEvent keyEvent) {
         KeyCode code = keyEvent.getCode();
         if (code == KeyCode.UP || code == KeyCode.SPACE) {
