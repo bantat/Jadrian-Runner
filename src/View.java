@@ -48,14 +48,14 @@ public class View {
     private long lastFrameDraw = 0;
     //private int frameCount = 0;
 
-    // Instance variables for displaying the player
+    // Instance variables for displaying the Player object.
     private SpriteAnimation playerAnimation;
     private ArrayList<Image[]> playerSprites;
 
     /*
     Instance variables that determine which series of images to use for the
-    player animation, based on index in numFrames. numFrames contains number
-    of images used for each different animation.
+    Player object animation, based on index in numFrames. numFrames contains
+    number of images used for each different animation.
     */
     private static final int PLAYER_RUNNING = 0;
     private static final int PLAYER_JUMPING = 1;
@@ -110,9 +110,9 @@ public class View {
     public void drawGame() {
         /*
         Initializes a GraphicsContext variable to allow the program to draw
-        player, obstacle objects and background on the game window. Clears
-        the previous game screen in order to draw new game state with updated
-        player, obstacle objects and score.
+        the player object, Obstacle objects and background on the game window.
+        Clears the previous game screen in order to draw new game state with the
+        updated Player object, Obstacle objects and score.
          */
         GraphicsContext context = mainCanvas.getGraphicsContext2D();
         context.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
@@ -291,8 +291,8 @@ public class View {
     }
 
     /**
-     * Generates the canvas used for game play, including the player and any
-     * obstacles on the screen.
+     * Generates the canvas used for game play, including the Player object
+     * and any Obstacle objects on the screen.
      */
     public void generateGameCanvas() {
         mainCanvas = new Canvas(800,600);
@@ -300,7 +300,7 @@ public class View {
     }
 
     /**
-     * Generates the player's sprites and animation.
+     * Generates the Player object's sprites and animation.
      */
     public void genPlayerAnimation() {
         // Loads the sprites
@@ -324,7 +324,7 @@ public class View {
             Image[] imageArray;
 
             /*
-            Loads the frames for the player's jumping animation into the
+            Loads the frames for the Player object's jumping animation into the
             image array.
             */
             if (i == PLAYER_JUMPING) {
@@ -335,7 +335,7 @@ public class View {
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
             /*
-            Loads the frames for the player's falling animation into the
+            Loads the frames for the Player object's falling animation into the
             image array.
             */
             } else if (i == PLAYER_FALLING) {
@@ -347,7 +347,7 @@ public class View {
                 }
 
             /*
-            Loads the frames for the player's running animation into the
+            Loads the frames for the Player object's running animation into the
             image array.
             */
             } else {
@@ -360,7 +360,7 @@ public class View {
             }
 
             /*
-            Adds the frames for the player's animation to be displayed
+            Adds the frames for the Player object's animation to be displayed
             in the game.
             */
             playerSprites.add(imageArray);
@@ -403,10 +403,10 @@ public class View {
     }
 
     /**
-     * Updates the player's animation, depending on if the player is running,
-     * jumping, or falling.
+     * Updates the Player object's animation, depending on if the player is
+     * running, jumping, or falling.
      * Will later be abstracted to account for any object's animation.
-     * @param player the player to be updated.
+     * @param player the Player object to be updated.
      */
     public void updatePlayerAnimation(GameObject player) {
         // Sets the animation to correspond to the correct action.
@@ -430,9 +430,9 @@ public class View {
     }
 
     /**
-     * Draws the player onto the game canvas.
-     * @param gameCanvas the canvas the player is drawn on.
-     * @param player the player that is drawn
+     * Draws the Player object onto the game canvas.
+     * @param gameCanvas the canvas the Player object is drawn on.
+     * @param player the Player object that is drawn
      */
     public void drawPlayer(Canvas gameCanvas, GameObject player) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
@@ -450,9 +450,9 @@ public class View {
     }
 
     /**
-     * Draws the obstacle onto the game canvas.
-     * @param gameCanvas the canvas the obstacle is drawn on.
-     * @param obstacle the obstacle that is drawn
+     * Draws the Obstacle object onto the game canvas.
+     * @param gameCanvas the canvas the Obstacle object is drawn on.
+     * @param obstacle the Obstacle object that is drawn
      */
     public void drawObstacle(Canvas gameCanvas, GameObject obstacle) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
