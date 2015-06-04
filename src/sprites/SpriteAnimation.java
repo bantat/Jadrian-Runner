@@ -10,6 +10,9 @@ import javafx.scene.image.Image;
  */
 public class SpriteAnimation {
 
+    /*
+    Instance variable to store the different frames involved in the animation.
+    */
     private Image[] frames;
     private int currentFrame;
     private int numFrames;
@@ -25,6 +28,10 @@ public class SpriteAnimation {
         playedOnce = false;
     }
 
+    /**
+     * Sets up the frames to be displayed on the game screen.
+     * @param frames an array of images to be displayed.
+     */
     public void setFrames(Image[] frames) {
         if (frames == this.frames) {
             return;
@@ -35,7 +42,16 @@ public class SpriteAnimation {
         playedOnce = false;
     }
 
+    /**
+     * Sets the frame delay.
+     * @param d desired frame delay
+     */
     public void setFrameDelay(long d) { frameDelay = d; }
+
+    /**
+     * Sets the current frame.
+     * @param i the desired frame.
+     */
     public void setFrame(int i) { currentFrame = i; }
 
     /**
@@ -47,6 +63,8 @@ public class SpriteAnimation {
         if (frameDelay == -1) { return; }
 
         long elapsed = (System.nanoTime() - startTime) / 1000000L ;
+
+        // What is going on in these two ifs?
         if (elapsed > frameDelay) {
             currentFrame++;
             startTime = System.nanoTime();
@@ -57,8 +75,22 @@ public class SpriteAnimation {
         }
     }
 
+    /**
+     * Gets the current frame.
+     * @return the current frame
+     */
     public int getFrame() { return currentFrame; }
+
+    /**
+     * Gets the image being displayed for the current frame.
+     * @return image being displayed.
+     */
     public Image getImage() { return frames[currentFrame]; }
+
+    /**
+     * ???
+     * @return returns playedOnce boolean
+     */
     public boolean hasPlayedOnce() { return playedOnce; }
 
 }
