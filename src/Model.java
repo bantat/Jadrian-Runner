@@ -19,7 +19,7 @@ import sprites.Player;
  */
 public class Model {
     /*
-    Keep track of the obstacle and player objects,
+    Keep track of the Obstacle and Player objects,
     whether or not the game is running, the specified user input
     (move left, move right, or jump), and the score.
      */
@@ -126,7 +126,8 @@ public class Model {
     }
 
     /**
-     * Updates the game, i.e. all the obstacles' and player's positions.
+     * Updates the game, i.e. all the Obstacle objects' and Player objects's
+     * positions.
      */
     public void updateGameState() {
         /*
@@ -137,7 +138,7 @@ public class Model {
         player.setLeft(left);
         player.setRight(right);
         /*
-        Checks to see if any of the obstacle objects have collided with the
+        Checks to see if any of the Obstacle objects have collided with the
         player object. If any of them have it tells the game to end.
          */
         for (int j = 0; j < obstacles.size(); j++) {
@@ -148,13 +149,13 @@ public class Model {
         player.updatePosition();
 
         /*
-        Checks to see if an obstacle is off the screen to the left; if it has
-        remove it from the obstacle objects list, in order to keep the list
-        size reasonably small. Also, checks to see if there is an obstacle
+        Checks to see if an Obstacle object is off the screen to the left; if it
+        has, remove it from the Obstacle objects list, in order to keep the list
+        size reasonably small. Also, checks to see if there is an Obstacle
         object, which is generated off the screen to the right before
         moving on to the game screen, is off the screen. If there is not one,
         it generates a new one. Then, updates the position of each of the
-        existing obstacle objects.
+        existing Obstacle objects.
          */
         int obstaclesOffScreen = 0;
         for (int i = 0; i < obstacles.size(); i++) {
