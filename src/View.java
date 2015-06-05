@@ -138,7 +138,7 @@ public class View {
             controller = new Controller(model);
 //            loadStartScreen();
             model.resetScore();
-            loadGameOverScreen();
+//            loadGameOverScreen();
         }
     }
 
