@@ -133,7 +133,7 @@ public class View {
 
         try {
             FXMLLoader temp = new FXMLLoader(
-                    View.class.getResource("/resources/Menu.fxml")
+                    View.class.getResource("Menu.fxml")
             );
             temp.setController(this);
             root = temp.load();
@@ -154,7 +154,7 @@ public class View {
     public void onQuitGame() {
         try {
             FXMLLoader temp = new FXMLLoader(
-                    View.class.getResource("/resources/Menu.fxml")
+                    View.class.getResource("Menu.fxml")
             );
             temp.setController(this);
         }
