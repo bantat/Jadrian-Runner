@@ -53,12 +53,15 @@ public class View {
     private Controller controller;
     private ArrayList<Canvas> gameCanvasses;
     private Canvas mainCanvas;
-    private Canvas backgroundCanvas;
-    private Canvas backgroundCanvas2;
+    private Canvas backgroundSkyCanvas;
+    private Canvas backgroundGrassCanvas;
     private Stage gameWindow;
 
-    private int backgroundCanvasX = 0;
-    private int backgroundCanvas2X = 800;
+
+    double backgroundSkyShift = -2;
+    double backgroundGrassShift = -8;
+    private double backgroundSkyCanvasX = 0;
+    private double backgroundGrassCanvasX = 0;
 
     // Instance variables for continual running.
     private AnimationTimer timer;
@@ -72,11 +75,9 @@ public class View {
     private SpriteAnimation playerAnimation;
     private ArrayList<Image[]> playerSprites;
 
-    /*
-    Instance variables that determine which series of images to use for the
-    Player object animation, based on index in numFrames. numFrames contains
-    number of images used for each different animation.
-    */
+    // Instance variables that determine which series of images to use for the
+    // Player object animation, based on index in numFrames. numFrames contains
+    // number of images used for each different animation.
     private static final int PLAYER_RUNNING = 0;
     private static final int PLAYER_JUMPING = 1;
     private static final int PLAYER_FALLING = 2;
@@ -86,6 +87,13 @@ public class View {
             3, // JUMPING
             3  // FALLING
     };
+
+    Image backgroundSkyImage = new Image(
+            "Resources/Background_Sky.png", 0, 800, true, false
+    );
+    Image backgroundGrassImage = new Image(
+            "Resources/Background_Grass.png", 0, 800, true, false
+    );
 
     /**
      * Stores references to the gameWindow Stage and model objects for the
@@ -139,31 +147,30 @@ public class View {
             loadGameOverScreen(score);
         }
 
-        /*
-        Initializes a GraphicsContext variable to allow the program to draw
-        the player object, Obstacle objects and background on the game window.
-        Clears the previous game screen in order to draw new game state with the
-        updated Player object, Obstacle objects and score.
-         */
+        // Initializes a GraphicsContext variable to allow the program to draw
+        // the player object, Obstacle objects and background on the game
+        // window. Clears the previous game screen in order to draw new game
+        // state with the updated Player object, Obstacle objects and score.
         GraphicsContext context = mainCanvas.getGraphicsContext2D();
         context.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
-        GraphicsContext context1 = backgroundCanvas.getGraphicsContext2D();
-        context1.clearRect(0, 0, backgroundCanvas.getWidth(), backgroundCanvas.getHeight());
-        GraphicsContext context2 = backgroundCanvas2.getGraphicsContext2D();
-        context2.clearRect(0, 0, backgroundCanvas2.getWidth(), backgroundCanvas.getHeight());
 
-        Image background = new Image(
-                "Resources/background.png",0,800,true,false
-        );
-        moveCanvas(8);
-        context1.drawImage(background, backgroundCanvasX, -200);
-        context2.drawImage(background, backgroundCanvas2X, -200);
+        backgroundSkyCanvasX += backgroundSkyShift;
+        updateBackgroundImage(backgroundSkyCanvas,
+                              backgroundSkyImage,
+                              backgroundSkyCanvasX);
 
-        if (backgroundCanvasX == -800) {
-            backgroundCanvasX = 800;
+        backgroundGrassCanvasX += backgroundGrassShift;
+        updateBackgroundImage(backgroundGrassCanvas,
+                              backgroundGrassImage,
+                              backgroundGrassCanvasX);
+
+        // Resets the position of each background image if they've travelled
+        // far enough across the screen.
+        if (backgroundSkyCanvasX <= -backgroundSkyImage.getWidth()) {
+            backgroundSkyCanvasX = 0;
         }
-        if (backgroundCanvas2X == -800) {
-            backgroundCanvas2X = 800;
+        if (backgroundGrassCanvasX <= -backgroundGrassImage.getWidth()) {
+            backgroundGrassCanvasX = 0;
         }
 
         GameObject player = model.getPlayer();
@@ -177,6 +184,22 @@ public class View {
 
         context.setFont(new Font("Comic Sans MS", (double) 24));
         context.fillText("SCORE   " + model.getScore() + "m", 40, 40);
+    }
+
+    /**
+     * Updates the position of a background image. Draws two copies of the
+     * image to allow for smooth scrolling across the screen.
+     * @param canvas the canvas the image is drawn on
+     * @param image the background image to be drawn
+     * @param x the x position of the image
+     */
+    public void updateBackgroundImage(Canvas canvas, Image image,
+                                       double x) {
+        GraphicsContext context = canvas.getGraphicsContext2D();
+        context.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+
+        context.drawImage(image, x, -200);
+        context.drawImage(image, x + image.getWidth(), -200);
     }
 
     public void loadGameOverScreen(String score) {
@@ -256,14 +279,14 @@ public class View {
      * @return the playing game scene
      */
     public Scene loadGameScene() {
-        generateBackgroundCanvas();
-        generateBackgroundCanvas2();
+        generateBackgroundCanvases();
+//        generateBackgroundCanvases2();
 
         generateGameCanvas();
 
         gameCanvasses = new ArrayList<Canvas>();
-        gameCanvasses.add(backgroundCanvas);
-        gameCanvasses.add(backgroundCanvas2);
+        gameCanvasses.add(backgroundSkyCanvas);
+        gameCanvasses.add(backgroundGrassCanvas);
         gameCanvasses.add(mainCanvas);
 
         model.init();
@@ -271,16 +294,15 @@ public class View {
         genPlayerAnimation();
 
         // Initializes the game timer, which will allow the user to play the
+        // Initializes the game timer, which will allow the user to play the
         // game.
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 long currentTime = System.nanoTime();
 
-                /*
-                Determines the frame rate, then draws the updated positions
-                based on user input, and re-updates the game state.
-                */
+                // Determines the frame rate, then draws the updated positions
+                // based on user input, and re-updates the game state.
                 if (currentTime - lastFrameDraw > 25000000L) {
                     lastFrameDraw = currentTime;
                     drawGame();
@@ -329,29 +351,30 @@ public class View {
      * Generates the canvas for the background of the game, along with any
      * images drawn onto it.
      */
-    public void generateBackgroundCanvas() {
-        backgroundCanvas = new Canvas(800,600);
-        GraphicsContext context = backgroundCanvas.getGraphicsContext2D();
+    public void generateBackgroundCanvases() {
+        backgroundGrassCanvas = new Canvas(800,600);
+        GraphicsContext backgroundSkyContext = backgroundGrassCanvas.getGraphicsContext2D();
 
-        Image background = new Image(
-                "Resources/background.png",0,800,true,false
-        );
-        context.drawImage(background,0,-200);
+        backgroundSkyCanvas = new Canvas(800,600);
+        GraphicsContext backgroundGrassContext = backgroundSkyCanvas.getGraphicsContext2D();
+
+        backgroundSkyContext.drawImage(backgroundSkyImage,0,-200);
+        backgroundGrassContext.drawImage(backgroundGrassImage,0,-200);
     }
 
-    /**
-     * Generates the canvas for the background of the game, along with any
-     * images drawn onto it.
-     */
-    public void generateBackgroundCanvas2() {
-        backgroundCanvas2 = new Canvas(800,600);
-        GraphicsContext context = backgroundCanvas2.getGraphicsContext2D();
-
-        Image background = new Image(
-                "Resources/background.png",0,800,true,false
-        );
-        context.drawImage(background, 800,-200);
-    }
+//    /**
+//     * Generates the canvas for the background of the game, along with any
+//     * images drawn onto it.
+//     */
+//    public void generateBackgroundCanvases2() {
+//        backgroundCanvas2 = new Canvas(800,600);
+//        GraphicsContext context = backgroundCanvas2.getGraphicsContext2D();
+//
+//        Image background = new Image(
+//                "Resources/background.png",0,800,true,false
+//        );
+//        context.drawImage(background, 800,-200);
+//    }
 
     /**
      * Generates the canvas used for game play, including the Player object
@@ -360,11 +383,6 @@ public class View {
     public void generateGameCanvas() {
         mainCanvas = new Canvas(800,600);
         //GraphicsContext context = mainCanvas.getGraphicsContext2D();
-    }
-
-    private void moveCanvas(int dx) {
-        backgroundCanvasX -= dx;
-        backgroundCanvas2X -= dx;
     }
 
     /**
