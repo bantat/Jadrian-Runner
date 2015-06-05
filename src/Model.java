@@ -210,5 +210,8 @@ public class Model {
         score = 0;
     }
 
-
+    public int moveCanvas(int dx, int x) {
+        int newX = x - dx;
+        return newX;
+    }
 }

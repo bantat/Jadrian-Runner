@@ -14,12 +14,15 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.text.Text;
 
 import sprites.GameObject;
 import sprites.Obstacle;
@@ -27,6 +30,7 @@ import sprites.SpriteAnimation;
 
 import java.awt.*;
 import javafx.scene.control.Button;
+
 import java.awt.Label;
 
 import java.util.ArrayList;
@@ -50,7 +54,11 @@ public class View {
     private ArrayList<Canvas> gameCanvasses;
     private Canvas mainCanvas;
     private Canvas backgroundCanvas;
+    private Canvas backgroundCanvas2;
     private Stage gameWindow;
+
+    private int backgroundCanvasX = 0;
+    private int backgroundCanvas2X = 800;
 
     // Instance variables for continual running.
     private AnimationTimer timer;
@@ -128,10 +136,27 @@ public class View {
          */
         GraphicsContext context = mainCanvas.getGraphicsContext2D();
         context.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
+        GraphicsContext context1 = backgroundCanvas.getGraphicsContext2D();
+        context1.clearRect(0, 0, backgroundCanvas.getWidth(), backgroundCanvas.getHeight());
+        GraphicsContext context2 = backgroundCanvas2.getGraphicsContext2D();
+        context2.clearRect(0, 0, backgroundCanvas2.getWidth(), backgroundCanvas.getHeight());
 
+        Image background = new Image(
+                "Resources/background.png",0,800,true,false
+        );
+        moveCanvas(8);
+        context1.drawImage(background, backgroundCanvasX, -200);
+        context2.drawImage(background, backgroundCanvas2X, -200);
+
+        if (backgroundCanvasX == -800) {
+            backgroundCanvasX = 800;
+        }
+        if (backgroundCanvas2X == -800) {
+            backgroundCanvas2X = 800;
+        }
 
         GameObject player = model.getPlayer();
-        drawPlayer(mainCanvas,player);
+        drawPlayer(mainCanvas, player);
 
         List<Obstacle> obstacles = model.getObstacles();
 
@@ -139,7 +164,7 @@ public class View {
             drawObstacle(mainCanvas, obstacles.get(i));
         }
 
-        context.setFont(new Font("TimesRoman", (double) 24));
+        context.setFont(new Font("Comic Sans MS", (double) 24));
         context.fillText("SCORE   " + model.getScore() + "m", 40, 40);
 
 
@@ -159,16 +184,17 @@ public class View {
         newButton = new Button("New Game");
         //Label label = new Label("THis");
         FlowPane fpl1 = new FlowPane(Orientation.VERTICAL);
-        fpl1.setPadding(new Insets(0,0,75,0));
+        fpl1.setPadding(new Insets(0,0,75, 0));
         fpl1.setAlignment(Pos.BOTTOM_CENTER);
-        Text scoreText = new Text("Score " + score);
+        Text scoreText = new Text("Score: " + score);
+        scoreText.setFont(Font.font ("Comic Sans MS", 20));
         fpl1.getChildren().add(scoreText);
         fpl1.getChildren().add(newButton);
         fpl1.getChildren().add(quitButton);
 
         fpl1.setVgap((double) 25);
         fpl1.setHgap((double) 25);
-        fpl1.setStyle("-fx-background: blue;");
+        fpl1.setStyle("-fx-background: #95f7ff;");
 
         Scene scene = new Scene(fpl1,400,300);
         quitButton.setOnAction(e -> handleButtonAction(e));
@@ -222,34 +248,7 @@ public class View {
     /**
      * Handles the case where the game is quit by the user.
      */
-    public void onQuitGame() {
-//        Why doe we have to do this?
-//        try {
-//            FXMLLoader temp = new FXMLLoader(
-//                    View.class.getResource("/resources/Menu.fxml")
-//            );
-//            temp.setController(this);
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-        System.exit(1);
-    }
-
-//    Can we get rid of this?
-//
-//    public void onNewGame(ActionEvent actionEvent) {
-//        loadGameScreen();
-//    }
-//
-//    public void onQuitGame(ActionEvent actionEvent) {
-//        System.exit(1);
-//    }
-//
-//    public void onNewGame(ActionEvent actionEvent) {
-//        loadGameScreen()
-//    }
+    public void onQuitGame() { System.exit(1); }
 
 
     /**
@@ -258,10 +257,13 @@ public class View {
      */
     public Scene loadGameScene() {
         generateBackgroundCanvas();
+        generateBackgroundCanvas2();
+
         generateGameCanvas();
 
         gameCanvasses = new ArrayList<Canvas>();
         gameCanvasses.add(backgroundCanvas);
+        gameCanvasses.add(backgroundCanvas2);
         gameCanvasses.add(mainCanvas);
 
         model.init();
@@ -338,12 +340,31 @@ public class View {
     }
 
     /**
+     * Generates the canvas for the background of the game, along with any
+     * images drawn onto it.
+     */
+    public void generateBackgroundCanvas2() {
+        backgroundCanvas2 = new Canvas(800,600);
+        GraphicsContext context = backgroundCanvas2.getGraphicsContext2D();
+
+        Image background = new Image(
+                "Resources/background.png",0,800,true,false
+        );
+        context.drawImage(background, 800,-200);
+    }
+
+    /**
      * Generates the canvas used for game play, including the Player object
      * and any Obstacle objects on the screen.
      */
     public void generateGameCanvas() {
         mainCanvas = new Canvas(800,600);
         //GraphicsContext context = mainCanvas.getGraphicsContext2D();
+    }
+
+    private void moveCanvas(int dx) {
+        backgroundCanvasX -= dx;
+        backgroundCanvas2X -= dx;
     }
 
     /**
