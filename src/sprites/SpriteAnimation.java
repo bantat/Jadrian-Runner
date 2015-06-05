@@ -10,9 +10,8 @@ import javafx.scene.image.Image;
  */
 public class SpriteAnimation {
 
-    /*
-    Instance variable to store the different frames involved in the animation.
-    */
+    // Instance variable to store the different frames involved in the
+    // animation.
     private Image[] frames;
     private int currentFrame;
     private int numFrames;

@@ -130,17 +130,14 @@ public class Model {
      * positions.
      */
     public void updateGameState() {
-        /*
-        Tells the Player object whether or not the user wants to move the
-        Player object is meant to jump, move left, or move right.
-         */
+        // Tells the Player object whether or not the user wants to move the
+        // Player object is meant to jump, move left, or move right.
         player.setJumping(isJumping);
         player.setLeft(left);
         player.setRight(right);
-        /*
-        Checks to see if any of the Obstacle objects have collided with the
-        Player object. If any of them have it tells the game to end.
-         */
+
+        // Checks to see if any of the Obstacle objects have collided with the
+        // Player object. If any of them have it tells the game to end.
         for (int j = 0; j < obstacles.size(); j++) {
             if (obstacles.get(j).isCollision(player)) {
                 isRunning = false;

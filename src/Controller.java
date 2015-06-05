@@ -10,11 +10,8 @@ import javafx.scene.input.KeyEvent;
  * @author Greg Erlandson
  */
 public class Controller {
-    /*
-    Keep track of the model in order to update
-    instance variables in model, user input (move left, move right
-    or jump).
-     */
+    // Keep track of the model in order to update instance variables in model,
+    // user input (move left, move right or jump).
     private Model model;
     private boolean jump = false;
     private boolean left = false;

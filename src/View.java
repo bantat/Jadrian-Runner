@@ -130,10 +130,9 @@ public class View {
         context.setFont(new Font("TimesRoman", (double) 24));
         context.fillText("SCORE   " + model.getScore() + "m", 40, 40);
 
-        /*
-        Checks to see if the game has ended as a result of a collision. If it
-        has send the user to the start screen.
-         */
+
+        //Checks to see if the game has ended as a result of a collision.
+        // If it has send the user to the start screen.
         if (model.isRunning() == false) {
             timer.stop();
             controller = new Controller(model);
@@ -218,10 +217,9 @@ public class View {
         model.init();
 
         genPlayerAnimation();
-        /*
-        Initializes the game timer, which will allow the user to play the
-        game.
-        */
+
+        // Initializes the game timer, which will allow the user to play the
+        // game.
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -244,15 +242,14 @@ public class View {
 
         timer.start();
 
-        // Alex: I don't think we need this call.
+        // I don't think we need this call.
         // drawGame();
 
         Scene gameScene;
 
-        /*
-        Adds all the canvasses, which have all been 'drawn' on to the scene,
-        in order to be displayed.
-        */
+        // Adds all the canvasses, which have all been 'drawn' on to the scene,
+        // in order to be displayed.
+
         Group root = new Group();
         root.getChildren().addAll(gameCanvasses);
         gameScene = new Scene(root, 800, 600);
@@ -323,10 +320,9 @@ public class View {
         for (int i = 0; i < NUM_PLAYER_STATES; i++) {
             Image[] imageArray;
 
-            /*
-            Loads the frames for the Player object's jumping animation into the
-            image array.
-            */
+
+            // Loads the frames for the Player object's jumping animation into
+            // the image array.
             if (i == PLAYER_JUMPING) {
                 imageArray = new Image[numFrames[PLAYER_JUMPING]];
                 for (int j = 0; j < numFrames[PLAYER_JUMPING]; j++) {
@@ -334,10 +330,9 @@ public class View {
                             "sprites/player/jumping/Player_Jumping_%d.png", j);
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
-            /*
-            Loads the frames for the Player object's falling animation into the
-            image array.
-            */
+
+            // Loads the frames for the Player object's falling animation into
+            // the image array.
             } else if (i == PLAYER_FALLING) {
                 imageArray = new Image[numFrames[PLAYER_FALLING]];
                 for (int j = 0; j < numFrames[PLAYER_FALLING]; j++) {
@@ -346,10 +341,8 @@ public class View {
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
 
-            /*
-            Loads the frames for the Player object's running animation into the
-            image array.
-            */
+            // Loads the frames for the Player object's running animation into
+            // the image array.
             } else {
                 imageArray = new Image[numFrames[PLAYER_RUNNING]];
                 for (int j = 0; j < numFrames[PLAYER_RUNNING]; j++) {
@@ -359,10 +352,9 @@ public class View {
                 }
             }
 
-            /*
-            Adds the frames for the Player object's animation to be displayed
-            in the game.
-            */
+
+            // Adds the frames for the Player object's animation to be displayed
+            // in the game.
             playerSprites.add(imageArray);
         }
     }
