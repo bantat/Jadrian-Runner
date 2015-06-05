@@ -252,7 +252,7 @@ public class View {
         // Loads Menu.fxml to display as start screen.
         try {
             FXMLLoader temp = new FXMLLoader(
-                    View.class.getResource("/resources/Menu.fxml")
+                    View.class.getResource("Menu.fxml")
             );
             temp.setController(this);
             root = temp.load();
@@ -271,8 +271,26 @@ public class View {
     /**
      * Handles the case where the game is quit by the user.
      */
-    public void onQuitGame() { System.exit(1); }
+    public void onQuitGame() {
+        try {
+            FXMLLoader temp = new FXMLLoader(
+                    View.class.getResource("Menu.fxml")
+            );
+            temp.setController(this);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        System.exit(1);
+    }
+
+    public void onNewGame(ActionEvent actionEvent) {
+        loadGameScreen();
+    }
+
+
+//    public void onQuitGame() { System.exit(1); }
 
     /**
      * Loads the standard game screen for playing  from the relevant FXML file.
