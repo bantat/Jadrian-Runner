@@ -1,24 +1,33 @@
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.VBox;
 
+import javafx.geometry.*;
+import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.Group;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.text.*;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
+import javafx.scene.Scene;
 
 import sprites.GameObject;
 import sprites.Obstacle;
 import sprites.SpriteAnimation;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import javafx.scene.control.Button;
+import java.awt.Label;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +56,9 @@ public class View {
     private AnimationTimer timer;
     private long lastFrameDraw = 0;
     //private int frameCount = 0;
+
+    private Button newButton;
+    private Button quitButton;
 
     // Instance variables for displaying the Player object.
     private SpriteAnimation playerAnimation;
@@ -135,42 +147,49 @@ public class View {
         // If it has send the user to the start screen.
         if (model.isRunning() == false) {
             timer.stop();
-            controller = new Controller(model);
-//            loadStartScreen();
+            //loadStartScreen();
+            String score = model.getScore();
             model.resetScore();
-//            loadGameOverScreen();
+            loadGameOverScreen(score);
         }
     }
 
-//    public void loadGameOverScreen() {
-//        gameWindow.setTitle("Jadrian Runner");
-//        gameWindow.setScene(loadGameOverScene());
-//        gameWindow.show();
-//    }
-//
-//    public Scene loadGameOverScene() {
-//        // Javafx based variables to generate new scene for start screen.
-//        Scene newScene;
-//        Parent root = null;
-//
-//        // Loads Menu.fxml to display as start screen.
-//        try {
-//            FXMLLoader temp = new FXMLLoader(
-//                    View.class.getResource("/resources/GameOverPopUp.fxml")
-//            );
-//            temp.setController(this);
-//            root = temp.load();
-//        }
-//
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        // Sets the scene, after root has been set.
-//        newScene = new Scene(root, 800, 600);
-//
-//        return newScene;
-//    }
+    public void loadGameOverScreen(String score) {
+        quitButton = new Button("Quit Game");
+        newButton = new Button("New Game");
+        //Label label = new Label("THis");
+        FlowPane fpl1 = new FlowPane(Orientation.VERTICAL);
+        fpl1.setPadding(new Insets(0,0,75,0));
+        fpl1.setAlignment(Pos.BOTTOM_CENTER);
+        Text scoreText = new Text("Score " + score);
+        fpl1.getChildren().add(scoreText);
+        fpl1.getChildren().add(newButton);
+        fpl1.getChildren().add(quitButton);
+
+        fpl1.setVgap((double) 25);
+        fpl1.setHgap((double) 25);
+        fpl1.setStyle("-fx-background: blue;");
+
+        Scene scene = new Scene(fpl1,400,300);
+        quitButton.setOnAction(e -> handleButtonAction(e));
+        newButton.setOnAction(e -> handleButtonAction(e));
+        gameWindow = new Stage();
+        gameWindow.setScene(scene);
+        gameWindow.initModality(Modality.APPLICATION_MODAL);
+        gameWindow.show();
+    }
+
+    public void handleButtonAction(ActionEvent event) {
+        if (event.getTarget()== quitButton) {
+            onQuitGame();
+        }
+        if (event.getTarget()== newButton) {
+            gameWindow.close();
+            controller = new Controller(model);
+            loadGameScreen();
+        }
+    }
+
 
     /**
      * Loads the main menu game scene from the relevant FXML file.
