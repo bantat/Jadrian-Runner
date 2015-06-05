@@ -331,7 +331,7 @@ public class View {
                 imageArray = new Image[numFrames[PLAYER_JUMPING]];
                 for (int j = 0; j < numFrames[PLAYER_JUMPING]; j++) {
                     String imagePath = String.format("/Resources/" +
-                            "sprites/player/jumping/PlayerJumping-%d.gif", j);
+                            "sprites/player/jumping/Player_Jumping_%d.png", j);
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
             /*
