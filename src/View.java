@@ -408,7 +408,7 @@ public class View {
                 imageArray = new Image[numFrames[PLAYER_FALLING]];
                 for (int j = 0; j < numFrames[PLAYER_FALLING]; j++) {
                     String imagePath = String.format("/Resources/" +
-                            "sprites/player/falling/PlayerFalling-%d.gif", j);
+                            "sprites/player/falling/Player_Falling_%d.png", j);
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
 
