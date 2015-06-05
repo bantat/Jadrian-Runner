@@ -128,6 +128,17 @@ public class View {
      * Draws the game onto the game canvas.
      */
     public void drawGame() {
+
+        //Checks to see if the game has ended as a result of a collision.
+        // If it has send the user to the start screen.
+        if (model.isRunning() == false) {
+            timer.stop();
+            //loadStartScreen();
+            String score = model.getScore();
+            model.resetScore();
+            loadGameOverScreen(score);
+        }
+
         /*
         Initializes a GraphicsContext variable to allow the program to draw
         the player object, Obstacle objects and background on the game window.
@@ -166,17 +177,6 @@ public class View {
 
         context.setFont(new Font("Comic Sans MS", (double) 24));
         context.fillText("SCORE   " + model.getScore() + "m", 40, 40);
-
-
-        //Checks to see if the game has ended as a result of a collision.
-        // If it has send the user to the start screen.
-        if (model.isRunning() == false) {
-            timer.stop();
-            //loadStartScreen();
-            String score = model.getScore();
-            model.resetScore();
-            loadGameOverScreen(score);
-        }
     }
 
     public void loadGameOverScreen(String score) {

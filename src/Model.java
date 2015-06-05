@@ -209,9 +209,4 @@ public class Model {
     public void resetScore() {
         score = 0;
     }
-
-    public int moveCanvas(int dx, int x) {
-        int newX = x - dx;
-        return newX;
-    }
 }
