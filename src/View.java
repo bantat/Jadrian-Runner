@@ -136,10 +136,41 @@ public class View {
         if (model.isRunning() == false) {
             timer.stop();
             controller = new Controller(model);
-            loadStartScreen();
+//            loadStartScreen();
             model.resetScore();
+            loadGameOverScreen();
         }
     }
+
+//    public void loadGameOverScreen() {
+//        gameWindow.setTitle("Jadrian Runner");
+//        gameWindow.setScene(loadGameOverScene());
+//        gameWindow.show();
+//    }
+//
+//    public Scene loadGameOverScene() {
+//        // Javafx based variables to generate new scene for start screen.
+//        Scene newScene;
+//        Parent root = null;
+//
+//        // Loads Menu.fxml to display as start screen.
+//        try {
+//            FXMLLoader temp = new FXMLLoader(
+//                    View.class.getResource("/resources/GameOverPopUp.fxml")
+//            );
+//            temp.setController(this);
+//            root = temp.load();
+//        }
+//
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        // Sets the scene, after root has been set.
+//        newScene = new Scene(root, 800, 600);
+//
+//        return newScene;
+//    }
 
     /**
      * Loads the main menu game scene from the relevant FXML file.
