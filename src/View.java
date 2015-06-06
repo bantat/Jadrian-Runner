@@ -74,10 +74,10 @@ public class View {
     };
 
     Image backgroundSkyImage = new Image(
-            "resources/Background_Sky.png", 0, 800, true, false
+            "Resources/Background_Sky.png", 0, 800, true, false
     );
     Image backgroundGrassImage = new Image(
-            "resources/Background_Grass.png", 0, 800, true, false
+            "Resources/Background_Grass.png", 0, 800, true, false
     );
 
     /**
@@ -404,7 +404,7 @@ public class View {
             if (i == PLAYER_JUMPING) {
                 imageArray = new Image[numFrames[PLAYER_JUMPING]];
                 for (int j = 0; j < numFrames[PLAYER_JUMPING]; j++) {
-                    String imagePath = String.format("/resources/" +
+                    String imagePath = String.format("/Resources/" +
                             "Sprites/Player/Jumping/Player_Jumping_%d.png", j);
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
@@ -414,7 +414,7 @@ public class View {
             } else if (i == PLAYER_FALLING) {
                 imageArray = new Image[numFrames[PLAYER_FALLING]];
                 for (int j = 0; j < numFrames[PLAYER_FALLING]; j++) {
-                    String imagePath = String.format("/resources/" +
+                    String imagePath = String.format("/Resources/" +
                             "Sprites/Player/Falling/Player_Falling_%d.png", j);
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
@@ -424,7 +424,7 @@ public class View {
             } else {
                 imageArray = new Image[numFrames[PLAYER_RUNNING]];
                 for (int j = 0; j < numFrames[PLAYER_RUNNING]; j++) {
-                    String imagePath = String.format("/resources/" +
+                    String imagePath = String.format("/Resources/" +
                             "Sprites/Player/Running/Player_Running_%d.png", j);
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
@@ -529,7 +529,7 @@ public class View {
      */
     public void drawObstacle(Canvas gameCanvas, GameObject obstacle) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
-        Image obstacleImage = loadScaledImage("resources/stick.png",
+        Image obstacleImage = loadScaledImage("Resources/stick.png",
                                               obstacle.getWidth(),
                                               obstacle.getHeight(),
                                               true);
