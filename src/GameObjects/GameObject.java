@@ -1,4 +1,4 @@
-package sprites;
+package GameObjects;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;

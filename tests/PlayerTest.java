@@ -1,5 +1,5 @@
 import org.junit.Test;
-import sprites.Player;
+import GameObjects.Player;
 
 import static org.junit.Assert.*;
 

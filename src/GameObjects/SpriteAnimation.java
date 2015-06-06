@@ -1,4 +1,4 @@
-package sprites;
+package GameObjects;
 
 import javafx.scene.image.Image;
 

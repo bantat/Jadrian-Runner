@@ -20,9 +20,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import sprites.GameObject;
-import sprites.Obstacle;
-import sprites.SpriteAnimation;
+import GameObjects.GameObject;
+import GameObjects.Obstacle;
+import GameObjects.SpriteAnimation;
 
 /**
  * A class for rendering the game graphics on a screen.
@@ -305,7 +305,7 @@ public class View {
 
                 // Determines the frame rate, then draws the updated positions
                 // based on user input, and re-updates the game state.
-                if (currentTime - lastFrameDraw > 16666666L) {
+                if (currentTime - lastFrameDraw > 25000000L) {
                     lastFrameDraw = currentTime;
                     drawGame();
 
@@ -404,8 +404,8 @@ public class View {
             if (i == PLAYER_JUMPING) {
                 imageArray = new Image[numFrames[PLAYER_JUMPING]];
                 for (int j = 0; j < numFrames[PLAYER_JUMPING]; j++) {
-                    String imagePath = String.format("/Resources/" +
-                            "sprites/player/jumping/Player_Jumping_%d.png", j);
+                    String imagePath = String.format("/resources/" +
+                            "Sprites/Player/Jumping/Player_Jumping_%d.png", j);
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
 
@@ -414,8 +414,8 @@ public class View {
             } else if (i == PLAYER_FALLING) {
                 imageArray = new Image[numFrames[PLAYER_FALLING]];
                 for (int j = 0; j < numFrames[PLAYER_FALLING]; j++) {
-                    String imagePath = String.format("/Resources/" +
-                            "sprites/player/falling/Player_Falling_%d.png", j);
+                    String imagePath = String.format("/resources/" +
+                            "Sprites/Player/Falling/Player_Falling_%d.png", j);
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
 
@@ -424,8 +424,8 @@ public class View {
             } else {
                 imageArray = new Image[numFrames[PLAYER_RUNNING]];
                 for (int j = 0; j < numFrames[PLAYER_RUNNING]; j++) {
-                    String imagePath = String.format("/Resources/" +
-                            "sprites/player/running/Player_Running_%d.png", j);
+                    String imagePath = String.format("/resources/" +
+                            "Sprites/Player/Running/Player_Running_%d.png", j);
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
             }
@@ -529,7 +529,7 @@ public class View {
      */
     public void drawObstacle(Canvas gameCanvas, GameObject obstacle) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
-        Image obstacleImage = loadScaledImage("Resources/stick.png",
+        Image obstacleImage = loadScaledImage("resources/stick.png",
                                               obstacle.getWidth(),
                                               obstacle.getHeight(),
                                               true);

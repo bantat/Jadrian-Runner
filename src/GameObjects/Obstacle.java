@@ -1,4 +1,4 @@
-package sprites;
+package GameObjects;
 
 /**
  * A class for representing obstacles in the game.

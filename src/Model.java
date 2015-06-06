@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import sprites.GameObject;
-import sprites.Obstacle;
-import sprites.Player;
+import GameObjects.Obstacle;
+import GameObjects.Player;
 
 /**
  * A class for containing the logic behind the game. Generates obstacles in

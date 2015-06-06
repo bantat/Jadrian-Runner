@@ -1,4 +1,4 @@
-package sprites;
+package GameObjects;
 
 /**
  * Class for the user to control.
@@ -12,7 +12,7 @@ package sprites;
  * @author Alex Griese
  * @author Greg Erlandson
  */
-public class Player extends sprites.GameObject {
+public class Player extends GameObject {
 
     private static final int RUNNING = 0;
     private static final int JUMPING = 1;
