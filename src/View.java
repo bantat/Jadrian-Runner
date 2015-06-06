@@ -285,8 +285,6 @@ public class View {
      */
     public Scene loadGameScene() {
         generateBackgroundCanvases();
-//        generateBackgroundCanvases2();
-
         generateGameCanvas();
 
         List<Canvas> gameCanvasses = new ArrayList<Canvas>();

@@ -17,11 +17,10 @@ public class Player extends sprites.GameObject {
     private static final int RUNNING = 0;
     private static final int JUMPING = 1;
     private static final int FALLING = 2;
-    private static final int NUM_PLAYER_STATES = 3;
 
     boolean shouldJump;
-    boolean left;
-    boolean right;
+    boolean movingLeft;
+    boolean movingRight;
     boolean isAlive;
 
     int maxY;
@@ -71,19 +70,21 @@ public class Player extends sprites.GameObject {
     /**
      * Method for updating the Player object's left movement state.
      *
-     * @param leftState
+     * @param movingLeft boolean describing whether or not the character is
+     *                   facing left.
      */
-    public void setLeft(boolean leftState) {
-        this.left = leftState;
+    public void setLeft(boolean movingLeft) {
+        this.movingLeft = movingLeft;
     }
 
     /**
      * Method for updating the Player object's right movement state.
      *
-     * @param rightState
+     * @param movingRight boolean describing whether or not the character is
+     *                   facing right.
      */
-    public void setRight(boolean rightState) {
-        this.right = rightState;
+    public void setRight(boolean movingRight) {
+        this.movingRight = movingRight;
     }
 
     /**
@@ -101,7 +102,7 @@ public class Player extends sprites.GameObject {
             currentAction = FALLING;
         }
 
-        if (left) {
+        if (movingLeft) {
             if (x - moveSpeed < minX) {
                 dx = 0;
                 x = minX;
@@ -111,7 +112,7 @@ public class Player extends sprites.GameObject {
             }
         }
 
-        if (right) {
+        if (movingRight) {
             if (x + moveSpeed > maxX) {
                 dx = 0;
                 x = maxX;
@@ -121,7 +122,7 @@ public class Player extends sprites.GameObject {
             }
         }
 
-        if (!left && !right && dx > 0) {
+        if (!movingLeft && !movingRight && dx > 0) {
             if (dx - slowSpeed > 0) {
                 dx += -1 * slowSpeed;
             }
@@ -130,7 +131,7 @@ public class Player extends sprites.GameObject {
             }
         }
 
-        if (!left && !right && dx < 0) {
+        if (!movingLeft && !movingRight && dx < 0) {
             if (dx + slowSpeed < 0) {
                 dx += slowSpeed;
             }
