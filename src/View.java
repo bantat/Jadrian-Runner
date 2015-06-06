@@ -1,42 +1,28 @@
-import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.VBox;
+import java.util.ArrayList;
+import java.util.List;
 
+import javafx.animation.AnimationTimer;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.*;
-import javafx.geometry.Insets;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.Group;
-import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.paint.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import javafx.scene.text.Text;
 
 import sprites.GameObject;
 import sprites.Obstacle;
 import sprites.SpriteAnimation;
-
-import java.awt.*;
-import javafx.scene.control.Button;
-
-import java.awt.Label;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.awt.Color.*;
 
 /**
  * A class for rendering the game graphics on a screen.
@@ -51,7 +37,6 @@ public class View {
     // Instance variables for generating the window on the screen.
     private Model model;
     private Controller controller;
-    private ArrayList<Canvas> gameCanvasses;
     private Canvas mainCanvas;
     private Canvas backgroundSkyCanvas;
     private Canvas backgroundGrassCanvas;
@@ -136,10 +121,9 @@ public class View {
      * Draws the game onto the game canvas.
      */
     public void drawGame() {
-
         //Checks to see if the game has ended as a result of a collision.
         // If it has send the user to the start screen.
-        if (model.isRunning() == false) {
+        if (!model.isRunning()) {
             timer.stop();
             //loadStartScreen();
             String score = model.getScore();
@@ -178,8 +162,8 @@ public class View {
 
         List<Obstacle> obstacles = model.getObstacles();
 
-        for (int i = 0; i < obstacles.size(); i++) {
-            drawObstacle(mainCanvas, obstacles.get(i));
+        for (Obstacle obstacle : obstacles) {
+            drawObstacle(mainCanvas, obstacle);
         }
 
         context.setFont(new Font("Comic Sans MS", (double) 24));
@@ -220,8 +204,8 @@ public class View {
         fpl1.setStyle("-fx-background: #95f7ff;");
 
         Scene scene = new Scene(fpl1,400,300);
-        quitButton.setOnAction(e -> handleButtonAction(e));
-        newButton.setOnAction(e -> handleButtonAction(e));
+        quitButton.setOnAction(this::handleButtonAction);
+        newButton.setOnAction(this::handleButtonAction);
         gameWindow = new Stage();
         gameWindow.setScene(scene);
         gameWindow.initModality(Modality.APPLICATION_MODAL);
@@ -262,6 +246,10 @@ public class View {
             e.printStackTrace();
         }
 
+        if (root == null) {
+            System.out.println("Could not load FXML file.");
+            System.exit(1);
+        }
         // Sets the scene, after root has been set.
         mainScene = new Scene(root, 800, 600);
 
@@ -285,11 +273,10 @@ public class View {
         System.exit(1);
     }
 
-    public void onNewGame(ActionEvent actionEvent) {
-        loadGameScreen();
-    }
-
-
+//    public void onNewGame(ActionEvent actionEvent) {
+//        loadGameScreen();
+//    }
+//
 //    public void onQuitGame() { System.exit(1); }
 
     /**
@@ -298,11 +285,9 @@ public class View {
      */
     public Scene loadGameScene() {
         generateBackgroundCanvases();
-//        generateBackgroundCanvases2();
-
         generateGameCanvas();
 
-        gameCanvasses = new ArrayList<Canvas>();
+        List<Canvas> gameCanvasses = new ArrayList<Canvas>();
         gameCanvasses.add(backgroundSkyCanvas);
         gameCanvasses.add(backgroundGrassCanvas);
         gameCanvasses.add(mainCanvas);
@@ -312,7 +297,6 @@ public class View {
         genPlayerAnimation();
 
         // Initializes the game timer, which will allow the user to play the
-        // Initializes the game timer, which will allow the user to play the
         // game.
         timer = new AnimationTimer() {
             @Override
@@ -321,7 +305,7 @@ public class View {
 
                 // Determines the frame rate, then draws the updated positions
                 // based on user input, and re-updates the game state.
-                if (currentTime - lastFrameDraw > 25000000L) {
+                if (currentTime - lastFrameDraw > 16666666L) {
                     lastFrameDraw = currentTime;
                     drawGame();
 
@@ -346,21 +330,8 @@ public class View {
         root.getChildren().addAll(gameCanvasses);
         gameScene = new Scene(root, 800, 600);
 
-        // Checks to see if a key has been pressed.
-        gameScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                controller.keyPressed(event);
-            }
-        });
-
-        // Checks to see if a key has been released.
-        gameScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                controller.keyReleased(event);
-            }
-        });
+        gameScene.setOnKeyPressed( controller::keyPressed );
+        gameScene.setOnKeyReleased( controller::keyReleased );
 
         return gameScene;
     }
@@ -473,13 +444,17 @@ public class View {
      * @param height the requested height
      * @return the scaled image
      */
-    public Image loadScaledImage(String imagePath, int width, int height) {
-        Image scaledSpriteImage = new Image(
+    public Image loadScaledImage(String imagePath,
+                                 int width,
+                                 int height,
+                                 boolean preserveRatio) {
+        return new Image(
                 imagePath,
-                width, height,
-                false, false
+                width,
+                height,
+                preserveRatio,
+                false    // smooth
         );
-        return scaledSpriteImage;
     }
 
     /**
@@ -491,14 +466,13 @@ public class View {
      */
     public Image loadScaledImage(String imagePath, double scalingFactor) {
         Image spriteImage = new Image(imagePath);
-        Image scaledSpriteImage = new Image(
+        return new Image(
                 imagePath,
                 spriteImage.getWidth() * scalingFactor,
                 spriteImage.getHeight() * scalingFactor,
                 true,    // preserveRatio
                 false    // smooth
         );
-        return scaledSpriteImage;
     }
 
     /**
@@ -541,8 +515,8 @@ public class View {
         Image playerImage = playerAnimation.getImage();
         context.drawImage(
                 playerImage,
-                (int) player.getX(),
-                (int) player.getY(),
+                player.getX(),
+                player.getY(),
                 playerImage.getWidth(),
                 playerImage.getHeight()
         );
@@ -557,7 +531,8 @@ public class View {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
         Image obstacleImage = loadScaledImage("Resources/stick.png",
                                               obstacle.getWidth(),
-                                              obstacle.getHeight());
+                                              obstacle.getHeight(),
+                                              true);
         context.drawImage(obstacleImage, obstacle.getX(), obstacle.getY());
     }
 }
