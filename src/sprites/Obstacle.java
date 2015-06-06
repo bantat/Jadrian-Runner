@@ -25,4 +25,22 @@ public class Obstacle extends GameObject {
     public void updatePosition() {
         x = x + dx;
     }
+
+    public String getSpriteName(){
+        if (width>200){
+            if (height>200){
+                return "tree";
+            }else {
+                return "bush";
+            }
+        }
+        else{
+            if (height<200){
+                return "stick";
+            }
+            else{
+                return "lightpole";
+            }
+        }
+    }
 }

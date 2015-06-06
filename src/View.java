@@ -89,10 +89,10 @@ public class View {
     };
 
     Image backgroundSkyImage = new Image(
-            "Resources/Background_Sky.png", 0, 800, true, false
+            "resources/Background_Sky.png", 0, 800, true, false
     );
     Image backgroundGrassImage = new Image(
-            "Resources/Background_Grass.png", 0, 800, true, false
+            "resources/Background_Grass.png", 0, 800, true, false
     );
 
     /**
