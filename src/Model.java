@@ -49,17 +49,13 @@ public class Model {
     }
 
     /**
-     * Helper method that generates a random int.
+     * Helper method that generates a random int from the min to the max,
+     * inclusive.
      * @param min, the lowest possible int that could be generated.
      * @param max, the largest possible int that could be generated.
      * @return randNum, the random int desired.
      */
     public static int randInt(int min, int max) {
-        // The rand.nextInt method generates a random number between 0 and one
-        // less than the desired int. Thus, randomNum takes the difference
-        // between the max and min and add 1. We then add min to the randomly
-        // generated number in order to keep it within the constraints
-        // (min,max).
         return new Random().nextInt((max - min) + 1) + min;
     }
 
@@ -149,19 +145,19 @@ public class Model {
         // not one, it generates a new one. Then, updates the position of each
         // of the existing Obstacle objects.
         int obstaclesOffScreen = 0;
-        for (int i = 0; i < obstacles.size(); i++) {
-            if (obstacles.get(i).getX() + obstacles.get(i).getWidth() < 0) {
-                obstacles.remove(i);
+        for (Obstacle obstacle : obstacles) {
+            // TODO: change isOffScreen() so that it accepts something other
+            // TODO: than a canvas, or even better, move isOffScreen() to view.
+            if (obstacle.getX() + obstacle.getWidth() < 0) {
+                obstacles.remove(obstacle);
             }
-            if (obstacles.get(i).isOffScreen(new Canvas(800, 600))) {
+            if (obstacle.isOffScreen(new Canvas(800, 600))) {
                 obstaclesOffScreen++;
             }
-            obstacles.get(i).updatePosition();
-
+            obstacle.updatePosition();
         }
         if (obstaclesOffScreen < 1) {
             generateNewObstacle();
-
         }
         distance++;
     }

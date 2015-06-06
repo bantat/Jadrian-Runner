@@ -16,15 +16,12 @@ public class Obstacle extends GameObject {
         this.dx = -1 * speed;
         this.x = x;
         this.y = y;
-
     }
 
     /**
      * Updates the position of the Obstacle object based on its speed.
      */
-    public void updatePosition() {
-        x = x + dx;
-    }
+    public void updatePosition() { x = x + dx; }
 
     public String getSpriteName(){
         if (width>200){
