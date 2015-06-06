@@ -136,10 +136,9 @@ public class View {
      * Draws the game onto the game canvas.
      */
     public void drawGame() {
-
         //Checks to see if the game has ended as a result of a collision.
         // If it has send the user to the start screen.
-        if (model.isRunning() == false) {
+        if (!model.isRunning()) {
             timer.stop();
             //loadStartScreen();
             String score = model.getScore();
@@ -346,21 +345,8 @@ public class View {
         root.getChildren().addAll(gameCanvasses);
         gameScene = new Scene(root, 800, 600);
 
-        // Checks to see if a key has been pressed.
-        gameScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                controller.keyPressed(event);
-            }
-        });
-
-        // Checks to see if a key has been released.
-        gameScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                controller.keyReleased(event);
-            }
-        });
+        gameScene.setOnKeyPressed( controller::keyPressed );
+        gameScene.setOnKeyReleased( controller::keyReleased );
 
         return gameScene;
     }
@@ -473,13 +459,17 @@ public class View {
      * @param height the requested height
      * @return the scaled image
      */
-    public Image loadScaledImage(String imagePath, int width, int height) {
-        Image scaledSpriteImage = new Image(
+    public Image loadScaledImage(String imagePath,
+                                 int width,
+                                 int height,
+                                 boolean preserveRatio) {
+        return new Image(
                 imagePath,
-                width, height,
-                false, false
+                width,
+                height,
+                preserveRatio,
+                false    // smooth
         );
-        return scaledSpriteImage;
     }
 
     /**
@@ -491,14 +481,13 @@ public class View {
      */
     public Image loadScaledImage(String imagePath, double scalingFactor) {
         Image spriteImage = new Image(imagePath);
-        Image scaledSpriteImage = new Image(
+        return new Image(
                 imagePath,
                 spriteImage.getWidth() * scalingFactor,
                 spriteImage.getHeight() * scalingFactor,
                 true,    // preserveRatio
                 false    // smooth
         );
-        return scaledSpriteImage;
     }
 
     /**
@@ -541,8 +530,8 @@ public class View {
         Image playerImage = playerAnimation.getImage();
         context.drawImage(
                 playerImage,
-                (int) player.getX(),
-                (int) player.getY(),
+                player.getX(),
+                player.getY(),
                 playerImage.getWidth(),
                 playerImage.getHeight()
         );
@@ -557,7 +546,8 @@ public class View {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
         Image obstacleImage = loadScaledImage("Resources/stick.png",
                                               obstacle.getWidth(),
-                                              obstacle.getHeight());
+                                              obstacle.getHeight(),
+                                              true);
         context.drawImage(obstacleImage, obstacle.getX(), obstacle.getY());
     }
 }
