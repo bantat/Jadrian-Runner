@@ -44,8 +44,8 @@ public class Player extends sprites.GameObject {
         maxFallSpeed = 10;
         jumpHeight = -20;
 
-        boolean isAlive = true;
-        boolean startJump = false;
+        isAlive = true;
+        shouldJump = false;
 
         maxY = 450;
         minY = 250;
