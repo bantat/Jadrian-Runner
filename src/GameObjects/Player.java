@@ -61,7 +61,7 @@ public class Player extends GameObject {
     /**
      * Method for updating the Player object's jump state.
      *
-     * @param shouldJump
+     * @param shouldJump whether or not the player should try to jump
      */
     public void setJumping(boolean shouldJump) {
         this.shouldJump = shouldJump;

@@ -74,10 +74,10 @@ public class View {
     };
 
     Image backgroundSkyImage = new Image(
-            "Resources/Background_Sky.png", 0, 800, true, false
+            "/Background_Sky.png", 0, 800, true, false
     );
     Image backgroundGrassImage = new Image(
-            "Resources/Background_Grass.png", 0, 800, true, false
+            "/Background_Grass.png", 0, 800, true, false
     );
 
     /**
@@ -126,15 +126,15 @@ public class View {
         if (!model.isRunning()) {
             timer.stop();
             //loadStartScreen();
-            String score = model.getScore();
-            model.resetScore();
-            loadGameOverScreen(score);
+            String distance = model.getDistance();
+            model.resetDistance();
+            loadGameOverScreen(distance);
         }
 
         // Initializes a GraphicsContext variable to allow the program to draw
         // the player object, Obstacle objects and background on the game
         // window. Clears the previous game screen in order to draw new game
-        // state with the updated Player object, Obstacle objects and score.
+        // state with the updated Player object, Obstacle objects and distance.
         GraphicsContext context = mainCanvas.getGraphicsContext2D();
         context.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
 
@@ -167,7 +167,7 @@ public class View {
         }
 
         context.setFont(new Font("Comic Sans MS", (double) 24));
-        context.fillText("SCORE   " + model.getScore() + "m", 40, 40);
+        context.fillText("SCORE   " + model.getDistance() + "m", 40, 40);
     }
 
     /**
@@ -186,16 +186,16 @@ public class View {
         context.drawImage(image, x + image.getWidth(), -200);
     }
 
-    public void loadGameOverScreen(String score) {
+    public void loadGameOverScreen(String distance) {
         quitButton = new Button("Quit Game");
         newButton = new Button("New Game");
         //Label label = new Label("THis");
         FlowPane fpl1 = new FlowPane(Orientation.VERTICAL);
         fpl1.setPadding(new Insets(0,0,75, 0));
         fpl1.setAlignment(Pos.BOTTOM_CENTER);
-        Text scoreText = new Text("Score: " + score);
-        scoreText.setFont(Font.font ("Comic Sans MS", 20));
-        fpl1.getChildren().add(scoreText);
+        Text distanceText = new Text("Distance: " + distance);
+        distanceText.setFont(Font.font ("Comic Sans MS", 20));
+        fpl1.getChildren().add(distanceText);
         fpl1.getChildren().add(newButton);
         fpl1.getChildren().add(quitButton);
 
@@ -296,8 +296,8 @@ public class View {
 
         genPlayerAnimation();
 
-        // Initializes the game timer, which will allow the user to play the
-        // game.
+        // Initializes the game timer that reponds to the passage of time
+        // requests updates regularly.
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -310,28 +310,22 @@ public class View {
                     drawGame();
 
                     model.updateGameState();
-
-                    //frameCount++;
                 }
             }
         };
-
-        timer.start();
-
-        // I don't think we need this call.
-        // drawGame();
 
         Scene gameScene;
 
         // Adds all the canvasses, which have all been 'drawn' on to the scene,
         // in order to be displayed.
-
         Group root = new Group();
         root.getChildren().addAll(gameCanvasses);
         gameScene = new Scene(root, 800, 600);
 
         gameScene.setOnKeyPressed( controller::keyPressed );
         gameScene.setOnKeyReleased( controller::keyReleased );
+
+        timer.start();
 
         return gameScene;
     }
@@ -350,20 +344,6 @@ public class View {
         backgroundSkyContext.drawImage(backgroundSkyImage,0,-200);
         backgroundGrassContext.drawImage(backgroundGrassImage,0,-200);
     }
-
-//    /**
-//     * Generates the canvas for the background of the game, along with any
-//     * images drawn onto it.
-//     */
-//    public void generateBackgroundCanvases2() {
-//        backgroundCanvas2 = new Canvas(800,600);
-//        GraphicsContext context = backgroundCanvas2.getGraphicsContext2D();
-//
-//        Image background = new Image(
-//                "Resources/background.png",0,800,true,false
-//        );
-//        context.drawImage(background, 800,-200);
-//    }
 
     /**
      * Generates the canvas used for game play, including the Player object
@@ -392,47 +372,43 @@ public class View {
     }
 
     /**
-     * Loads the sprite images arrays to the animation ArrayList.
+     * Loads the sprite Image arrays to the animation ArrayList.
      */
     public void loadPlayerSprites() {
+        // Iterates through the player states and loads the respecctive Image
+        // array for each one.
         for (int i = 0; i < NUM_PLAYER_STATES; i++) {
             Image[] imageArray;
 
-
-            // Loads the frames for the Player object's jumping animation into
-            // the image array.
             if (i == PLAYER_JUMPING) {
                 imageArray = new Image[numFrames[PLAYER_JUMPING]];
                 for (int j = 0; j < numFrames[PLAYER_JUMPING]; j++) {
-                    String imagePath = String.format("/Resources/" +
-                            "Sprites/Player/Jumping/Player_Jumping_%d.png", j);
+                    String imagePath = String.format(
+                            "/Sprites/Player/Jumping/Player_Jumping_%d.png", j
+                    );
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
 
-            // Loads the frames for the Player object's falling animation into
-            // the image array.
             } else if (i == PLAYER_FALLING) {
                 imageArray = new Image[numFrames[PLAYER_FALLING]];
                 for (int j = 0; j < numFrames[PLAYER_FALLING]; j++) {
-                    String imagePath = String.format("/Resources/" +
-                            "Sprites/Player/Falling/Player_Falling_%d.png", j);
+                    String imagePath = String.format(
+                            "/Sprites/Player/Falling/Player_Falling_%d.png", j
+                    );
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
 
-            // Loads the frames for the Player object's running animation into
-            // the image array.
             } else {
                 imageArray = new Image[numFrames[PLAYER_RUNNING]];
                 for (int j = 0; j < numFrames[PLAYER_RUNNING]; j++) {
-                    String imagePath = String.format("/Resources/" +
-                            "Sprites/Player/Running/Player_Running_%d.png", j);
+                    String imagePath = String.format(
+                            "/Sprites/Player/Running/Player_Running_%d.png", j
+                    );
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
             }
 
-
-            // Adds the frames for the Player object's animation to be displayed
-            // in the game.
+            // Adds the frames for the Player object's animation.
             playerSprites.add(imageArray);
         }
     }
@@ -449,7 +425,7 @@ public class View {
                                  int height,
                                  boolean preserveRatio) {
         return new Image(
-                imagePath,
+                getClass().getResourceAsStream(imagePath),
                 width,
                 height,
                 preserveRatio,
@@ -465,9 +441,9 @@ public class View {
      * @return the scaled image
      */
     public Image loadScaledImage(String imagePath, double scalingFactor) {
-        Image spriteImage = new Image(imagePath);
+        Image spriteImage = new Image(getClass().getResourceAsStream(imagePath));
         return new Image(
-                imagePath,
+                getClass().getResourceAsStream(imagePath),
                 spriteImage.getWidth() * scalingFactor,
                 spriteImage.getHeight() * scalingFactor,
                 true,    // preserveRatio
@@ -482,7 +458,6 @@ public class View {
      * @param player the Player object to be updated.
      */
     public void updatePlayerAnimation(GameObject player) {
-        // Sets the animation to correspond to the correct action.
         if (player.getDirectionY() > 0) {
             playerAnimation.setFrames(playerSprites.get(PLAYER_FALLING));
             playerAnimation.setFrameDelay(100);
@@ -531,7 +506,7 @@ public class View {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
         int obWidth= obstacle.getWidth()/2;
         int obHeight= obstacle.getHeight()/2;
-        Image obstacleImage = loadScaledImage("Resources/stick.png",
+        Image obstacleImage = loadScaledImage("/stick.png",
                                               obstacle.getWidth(),
                                               obstacle.getHeight(),
                                               true);

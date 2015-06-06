@@ -33,11 +33,10 @@ public abstract class GameObject {
     protected double fallSpeed;
     protected double maxFallSpeed;
     protected double jumpHeight;
-    protected double shortJumpSpeed;
 
     /**
-     * Method for getting an object representation of the GameObject's collision
-     * box.
+     * Returns an Rectangle2D representation of the GameObject's
+     * collision box.
      * @return Rectangle2D hitBox
      */
     public Rectangle2D getHitBox() {
@@ -46,14 +45,12 @@ public abstract class GameObject {
     }
 
     /**
-     * Method for checking if two GameObjects hitboxes intersect.
-     * @param otherObject
+     * Checks if two GameObjects hitboxes intersect.
+     * @param otherObject the object being checked for the collision
      * @return boolean isCollsion
      */
     public boolean isCollision(GameObject otherObject) {
-        Rectangle2D thisHitBox = getHitBox();
-        Rectangle2D otherHitBox = otherObject.getHitBox();
-        return thisHitBox.intersects(otherHitBox);
+        return getHitBox().intersects(otherObject.getHitBox());
     }
 
     /**
@@ -147,11 +144,10 @@ public abstract class GameObject {
      *                             false, if the object is on the screen
      */
     public boolean isOffScreen(Canvas gameCanvas) {
-        if (x + width < 0) return true;
-        else if (x > gameCanvas.getWidth()) return true;
-        else if (y + height < 0) return true;
-        else if (y > gameCanvas.getHeight()) return true;
-        else return false;
+        return (x + width < 0)
+            || (x > gameCanvas.getWidth())
+            || (y + height < 0)
+            || (y > gameCanvas.getHeight());
     }
 
     /**

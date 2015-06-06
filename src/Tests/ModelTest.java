@@ -1,8 +1,6 @@
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-import Model;
-
 /**
  * Created by erlandsong on 6/1/15.
  */

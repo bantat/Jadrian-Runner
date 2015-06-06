@@ -8,7 +8,7 @@ public class Enemy extends GameObject {
 
         super();
 
-        boolean fireball=false;
+        boolean fireball =false;
         int fireballX;
         int fireballY;
 

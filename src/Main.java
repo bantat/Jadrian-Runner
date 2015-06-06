@@ -1,10 +1,5 @@
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-
-import java.awt.*;
-import java.beans.EventHandler;
 
 /**
  * The primary class and access point for Jadrian Runner.

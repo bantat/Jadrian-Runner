@@ -10,18 +10,13 @@ import javafx.scene.image.Image;
  */
 public class SpriteAnimation {
 
-    // Instance variable to store the different frames involved in the
-    // animation.
     private Image[] frames;
     private int currentFrame;
-    private int numFrames;
 
     private long startTime;
     private long frameDelay;
 
     private boolean playedOnce;
-
-    private int lastIndex;
 
     public SpriteAnimation() {
         playedOnce = false;

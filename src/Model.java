@@ -17,18 +17,16 @@ import GameObjects.Player;
  * @author Greg Erlandson
  */
 public class Model {
-    /*
-    Keep track of the Obstacle and Player objects,
-    whether or not the game is running, the specified user input
-    (move left, move right, or jump), and the score.
-     */
+    // Keeps track of the Obstacle and Player objects, whether or not the game
+    // is running, the specified user input (move left, move right, orjump),
+    // and the distance.
     private ArrayList<Obstacle> obstacles;
     private Player player;
     private boolean isRunning;
     private boolean isJumping = false;
     private boolean left;
     private boolean right;
-    private int score;
+    private int distance;
 
     /**
      * Initializes our game by creating a GameObject for the player and a
@@ -57,15 +55,12 @@ public class Model {
      * @return randNum, the random int desired.
      */
     public static int randInt(int min, int max) {
-        Random rand = new Random();
-        /*
-        The rand.nextInt method generates a random number between 0 and one
-        less than the desired int. Thus, randomNum takes the difference between
-        the max and min and add 1. We then add min to the randomly generated
-        number in order to keep it within the constraints (min,max).
-         */
-        int randomNum = rand.nextInt((max - min) + 1) + min;
-        return randomNum;
+        // The rand.nextInt method generates a random number between 0 and one
+        // less than the desired int. Thus, randomNum takes the difference
+        // between the max and min and add 1. We then add min to the randomly
+        // generated number in order to keep it within the constraints
+        // (min,max).
+        return new Random().nextInt((max - min) + 1) + min;
     }
 
     /**
@@ -137,22 +132,22 @@ public class Model {
 
         // Checks to see if any of the Obstacle objects have collided with the
         // Player object. If any of them have it tells the game to end.
-        for (int j = 0; j < obstacles.size(); j++) {
-            if (obstacles.get(j).isCollision(player)) {
-                isRunning = false;
-            }
-        }
+        obstacles.stream()
+                .forEach(s -> {
+                    if (s.isCollision(player)) {
+                        isRunning = false;
+                    }
+                });
+
         player.updatePosition();
 
-        /*
-        Checks to see if an Obstacle object is off the screen to the left; if it
-        has, remove it from the Obstacle objects list, in order to keep the list
-        size reasonably small. Also, checks to see if there is an Obstacle
-        object, which is generated off the screen to the right before
-        moving on to the game screen, is off the screen. If there is not one,
-        it generates a new one. Then, updates the position of each of the
-        existing Obstacle objects.
-         */
+        // Checks to see if an Obstacle object is off the screen to the left;
+        // if it has, remove it from the Obstacle objects list, in order to
+        // keep the list size reasonably small. Also, checks to see if there is
+        // an Obstacle object, which is generated off the screen to the right
+        // before moving on to the game screen, is off the screen. If there is
+        // not one, it generates a new one. Then, updates the position of each
+        // of the existing Obstacle objects.
         int obstaclesOffScreen = 0;
         for (int i = 0; i < obstacles.size(); i++) {
             if (obstacles.get(i).getX() + obstacles.get(i).getWidth() < 0) {
@@ -168,7 +163,7 @@ public class Model {
             generateNewObstacle();
 
         }
-        score++;
+        distance++;
     }
 
     /**
@@ -193,19 +188,18 @@ public class Model {
     }
 
     /**
-     * Getter for score.
-     * @return scoreString, in a string format in order to be displayed as
+     * Getter for distance.
+     * @return distanceString, in a string format in order to be displayed as
      * text on screen.
      */
-    public String getScore() {
-        String scoreString = Integer.toString(score/10);
-        return scoreString;
+    public String getDistance() {
+        return Integer.toString(distance/10);
     }
 
     /**
-     * Setter for score.
+     * Setter for distance.
      */
-    public void resetScore() {
-        score = 0;
+    public void resetDistance() {
+        distance = 0;
     }
 }
