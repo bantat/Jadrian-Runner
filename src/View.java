@@ -529,10 +529,14 @@ public class View {
      */
     public void drawObstacle(Canvas gameCanvas, GameObject obstacle) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
+        int obWidth= obstacle.getWidth()/2;
+        int obHeight= obstacle.getHeight()/2;
         Image obstacleImage = loadScaledImage("Resources/stick.png",
                                               obstacle.getWidth(),
                                               obstacle.getHeight(),
                                               true);
-        context.drawImage(obstacleImage, obstacle.getX(), obstacle.getY());
+
+        context.drawImage(obstacleImage, obstacle.getX()+obWidth, obstacle.getY()+obHeight);
+        //context.draw
     }
 }
