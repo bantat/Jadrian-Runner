@@ -196,7 +196,6 @@ public class View {
         Button quitButton = new Button("Quit Game");
         Button newButton = new Button("New Game");
 
-        //Label label = new Label("THis");
         FlowPane flowPlane = new FlowPane(Orientation.VERTICAL);
         flowPlane.setPadding(new Insets(0,0,75, 0));
         flowPlane.setAlignment(Pos.BOTTOM_CENTER);
