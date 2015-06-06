@@ -321,7 +321,7 @@ public class View {
 
                 // Determines the frame rate, then draws the updated positions
                 // based on user input, and re-updates the game state.
-                if (currentTime - lastFrameDraw > 25000000L) {
+                if (currentTime - lastFrameDraw > 16666666L) {
                     lastFrameDraw = currentTime;
                     drawGame();
 
