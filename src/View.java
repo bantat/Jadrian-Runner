@@ -1,42 +1,28 @@
-import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.VBox;
+import java.util.ArrayList;
+import java.util.List;
 
+import javafx.animation.AnimationTimer;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.*;
-import javafx.geometry.Insets;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.Group;
-import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.paint.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import javafx.scene.text.Text;
 
 import sprites.GameObject;
 import sprites.Obstacle;
 import sprites.SpriteAnimation;
-
-import java.awt.*;
-import javafx.scene.control.Button;
-
-import java.awt.Label;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.awt.Color.*;
 
 /**
  * A class for rendering the game graphics on a screen.
@@ -51,7 +37,6 @@ public class View {
     // Instance variables for generating the window on the screen.
     private Model model;
     private Controller controller;
-    private ArrayList<Canvas> gameCanvasses;
     private Canvas mainCanvas;
     private Canvas backgroundSkyCanvas;
     private Canvas backgroundGrassCanvas;
@@ -177,8 +162,8 @@ public class View {
 
         List<Obstacle> obstacles = model.getObstacles();
 
-        for (int i = 0; i < obstacles.size(); i++) {
-            drawObstacle(mainCanvas, obstacles.get(i));
+        for (Obstacle obstacle : obstacles) {
+            drawObstacle(mainCanvas, obstacle);
         }
 
         context.setFont(new Font("Comic Sans MS", (double) 24));
@@ -219,8 +204,8 @@ public class View {
         fpl1.setStyle("-fx-background: #95f7ff;");
 
         Scene scene = new Scene(fpl1,400,300);
-        quitButton.setOnAction(e -> handleButtonAction(e));
-        newButton.setOnAction(e -> handleButtonAction(e));
+        quitButton.setOnAction(this::handleButtonAction);
+        newButton.setOnAction(this::handleButtonAction);
         gameWindow = new Stage();
         gameWindow.setScene(scene);
         gameWindow.initModality(Modality.APPLICATION_MODAL);
@@ -261,6 +246,10 @@ public class View {
             e.printStackTrace();
         }
 
+        if (root == null) {
+            System.out.println("Could not load FXML file.");
+            System.exit(1);
+        }
         // Sets the scene, after root has been set.
         mainScene = new Scene(root, 800, 600);
 
@@ -284,11 +273,10 @@ public class View {
         System.exit(1);
     }
 
-    public void onNewGame(ActionEvent actionEvent) {
-        loadGameScreen();
-    }
-
-
+//    public void onNewGame(ActionEvent actionEvent) {
+//        loadGameScreen();
+//    }
+//
 //    public void onQuitGame() { System.exit(1); }
 
     /**
@@ -301,7 +289,7 @@ public class View {
 
         generateGameCanvas();
 
-        gameCanvasses = new ArrayList<Canvas>();
+        List<Canvas> gameCanvasses = new ArrayList<Canvas>();
         gameCanvasses.add(backgroundSkyCanvas);
         gameCanvasses.add(backgroundGrassCanvas);
         gameCanvasses.add(mainCanvas);
@@ -310,7 +298,6 @@ public class View {
 
         genPlayerAnimation();
 
-        // Initializes the game timer, which will allow the user to play the
         // Initializes the game timer, which will allow the user to play the
         // game.
         timer = new AnimationTimer() {
