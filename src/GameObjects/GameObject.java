@@ -119,6 +119,10 @@ public abstract class GameObject {
      * @return boolean isOffScreen true, if the object is off the screen;
      *                             false, if the object is on the screen
      */
+
+    // TODO: change isOffScreen() so that it accepts something other
+    // TODO: than a canvas, or even better, move isOffScreen() to view.
+
     public boolean isOffScreen(Canvas gameCanvas) {
         return (x + width < 0)
             || (x > gameCanvas.getWidth())

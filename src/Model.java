@@ -1,5 +1,3 @@
-import javafx.scene.canvas.Canvas;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -128,74 +126,41 @@ public class Model {
 
         // Checks to see if any of the Obstacle objects have collided with the
         // Player object. If any of them have it tells the game to end.
-        obstacles.stream()
-                .forEach(s -> {
-                    if (s.isCollision(player)) {
-                        isRunning = false;
-                    }
-                });
-
-        player.updatePosition();
-
-        // Checks to see if an Obstacle object is off the screen to the left;
-        // if it has, remove it from the Obstacle objects list, in order to
-        // keep the list size reasonably small. Also, checks to see if there is
-        // an Obstacle object, which is generated off the screen to the right
-        // before moving on to the game screen, is off the screen. If there is
-        // not one, it generates a new one. Then, updates the position of each
-        // of the existing Obstacle objects.
-        int obstaclesOffScreen = 0;
         for (Obstacle obstacle : obstacles) {
-            // TODO: change isOffScreen() so that it accepts something other
-            // TODO: than a canvas, or even better, move isOffScreen() to view.
-            if (obstacle.getX() + obstacle.getWidth() < 0) {
-                obstacles.remove(obstacle);
-            }
-            if (obstacle.isOffScreen(new Canvas(800, 600))) {
-                obstaclesOffScreen++;
+            if (obstacle.isCollision(player)) {
+                isRunning = false;
             }
             obstacle.updatePosition();
         }
-        if (obstaclesOffScreen < 1) {
-            generateNewObstacle();
-        }
+
+        player.updatePosition();
+
         distance++;
     }
 
     /**
-     * Gets the list of Obstacle objects.
+     * Deletes the obstacles that are offscreen to the left, and generates
+     * a new obstacle if there are no obstacles offscreen to the right.
+     * @param offscreenLeft a list of the obstacles offscreen to the left,
+     *                      which will be deleted from the obstacle list.
+     * @param numOffscreenRight the number of obstacle offscreen to the right.
      */
-    public List<Obstacle> getObstacles()   {
-        return obstacles;
+    public void updateOffscreenObstacles(List<Obstacle> offscreenLeft,
+                                         int numOffscreenRight) {
+        for (Obstacle obstacle: offscreenLeft) {
+            obstacles.remove(obstacle);
+        }
+
+        if (numOffscreenRight < 1) {
+            generateNewObstacle();
+        }
     }
 
-    /**
-     * Gets Player object.
-     */
-    public Player getPlayer()   {
-        return player;
-    }
+    public List<Obstacle> getObstacles() { return obstacles; }
 
-    /**
-     * Generates the next section of track for the user to play on.
-     */
-    public void genNewTrack() {
+    public Player getPlayer() { return player; }
 
-    }
+    public int getDistance() { return distance/10; }
 
-    /**
-     * Getter for distance.
-     * @return distanceString, in a string format in order to be displayed as
-     * text on screen.
-     */
-    public String getDistance() {
-        return Integer.toString(distance/10);
-    }
-
-    /**
-     * Setter for distance.
-     */
-    public void resetDistance() {
-        distance = 0;
-    }
+    public void resetDistance() { distance = 0; }
 }

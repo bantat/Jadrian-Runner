@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.animation.AnimationTimer;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.*;
 
@@ -126,7 +127,7 @@ public class View {
         if (!model.isRunning()) {
             timer.stop();
             //loadStartScreen();
-            String distance = model.getDistance();
+            int distance = model.getDistance();
             model.resetDistance();
             loadGameOverScreen(distance);
         }
@@ -160,14 +161,43 @@ public class View {
         GameObject player = model.getPlayer();
         drawPlayer(mainCanvas, player);
 
-        List<Obstacle> obstacles = model.getObstacles();
+        List<Obstacle> obstaclesOffscreenLeft = new ArrayList<Obstacle>();
+        int numObjectsOffscreenRight = 0;
 
-        for (Obstacle obstacle : obstacles) {
-            drawObstacle(mainCanvas, obstacle);
+        // Determines which obstacles are on the screen. If the obstacle is
+        // offscreen to the right, it is simply not drawn. If it is offscreen
+        // to the left, it is not drawn and is recorded in a list.
+        for (Obstacle obstacle : model.getObstacles()) {
+            if (isOffScreen(obstacle, mainCanvas)) {
+                if (obstacle.getX() < 0) {
+                    obstaclesOffscreenLeft.add(obstacle);
+                } else {
+                    ++numObjectsOffscreenRight;
+                }
+            } else {
+                drawObstacle(mainCanvas, obstacle);
+            }
         }
+
+        // Informs Model which obstacles are offscreen to the left and how
+        // many are offscreen to the right.
+        model.updateOffscreenObstacles(obstaclesOffscreenLeft,
+                                       numObjectsOffscreenRight);
 
         context.setFont(new Font("Comic Sans MS", (double) 24));
         context.fillText("SCORE   " + model.getDistance() + "m", 40, 40);
+    }
+
+    /**
+     * Method for checking if a GameObject is within the boundaries of a Canvas.
+     * @param gameCanvas the canvas the GameObject has been drawn on
+     * @return true if the object is off of the screen
+     */
+    private boolean isOffScreen(GameObject object, Canvas gameCanvas) {
+        return (object.getX() + object.getWidth() < 0)
+            || (object.getX() > gameCanvas.getWidth())
+            || (object.getY() + object.getHeight() < 0)
+            || (object.getY() > gameCanvas.getHeight());
     }
 
     /**
@@ -191,7 +221,7 @@ public class View {
      * buttons allowing the player to start a new game or quit.
      * @param distance the distancee the player travelled in the game
      */
-    public void loadGameOverScreen(String distance) {
+    public void loadGameOverScreen(int distance) {
         Button quitButton = new Button("Quit Game");
         Button newButton = new Button("New Game");
 
@@ -199,7 +229,7 @@ public class View {
         flowPlane.setPadding(new Insets(0,0,75, 0));
         flowPlane.setAlignment(Pos.BOTTOM_CENTER);
 
-        Text distanceText = new Text("Distance: " + distance);
+        Text distanceText = new Text(String.format("Distance: %d", distance));
         distanceText.setFont(Font.font ("Comic Sans MS", 20));
 
         flowPlane.getChildren().add(distanceText);
@@ -211,8 +241,8 @@ public class View {
         flowPlane.setStyle("-fx-background: #95f7ff;");
 
         Scene scene = new Scene(flowPlane, 400, 300);
-        quitButton.setOnAction( e -> onQuitGame() );
-        newButton.setOnAction( e -> {
+        quitButton.setOnAction( (ActionEvent e) -> onQuitGame() );
+        newButton.setOnAction( (ActionEvent e) -> {
             loadGameScreen();
             popupWindow.close();
         });

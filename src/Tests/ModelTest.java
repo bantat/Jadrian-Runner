@@ -54,10 +54,4 @@ public class ModelTest {
         //Player player;
         //player = model.getPlayer();
     }
-
-    @Test
-    public void testGenNewTrack() throws Exception {
-        model.genNewTrack();
-        assertNull(null);
-    }
 }
