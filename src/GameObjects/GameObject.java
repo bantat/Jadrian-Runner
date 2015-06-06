@@ -41,7 +41,7 @@ public abstract class GameObject {
      */
     public Rectangle2D getHitBox() {
         return new Rectangle2D((int)x, (int)y,
-                             width, height);
+                               width, height);
     }
 
     /**
@@ -53,37 +53,13 @@ public abstract class GameObject {
         return getHitBox().intersects(otherObject.getHitBox());
     }
 
-    /**
-     * Gets the x position of the GameObject.
-     * @return the x position of the GameObject
-     */
-    public int getX() {
-        return (int) x;
-    }
+    public int getX() { return (int) x; }
 
-    /**
-     * Gets the y position of the GameObject.
-     * @return the y position of the GameObject
-     */
-    public int getY() {
-        return (int) y;
-    }
+    public int getY() { return (int) y; }
 
-    /**
-     * Gets the width of the GameObject.
-     * @return the width of the GameObject
-     */
-    public int getWidth() {
-        return width;
-    }
+    public int getWidth() { return width; }
 
-    /**
-     * Gets the height of the GameObject.
-     * @return the height of the GameObject
-     */
-    public int getHeight() {
-        return height;
-    }
+    public int getHeight() { return height; }
 
 //    public void setLeft(boolean isLeft) {
 //        left = isLeft;
@@ -160,7 +136,5 @@ public abstract class GameObject {
      * Gets the SpriteAnimation.
      * @return the sprite animation.
      */
-    public SpriteAnimation getAnimation() {
-        return animation;
-    }
+    public SpriteAnimation getAnimation() { return animation; }
 }

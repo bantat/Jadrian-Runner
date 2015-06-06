@@ -41,6 +41,7 @@ public class View {
     private Canvas backgroundSkyCanvas;
     private Canvas backgroundGrassCanvas;
     private Stage gameWindow;
+    private Stage popupWindow;
 
 
     double backgroundSkyShift = -2;
@@ -51,10 +52,6 @@ public class View {
     // Instance variables for continual running.
     private AnimationTimer timer;
     private long lastFrameDraw = 0;
-    //private int frameCount = 0;
-
-    private Button newButton;
-    private Button quitButton;
 
     // Instance variables for displaying the Player object.
     private SpriteAnimation playerAnimation;
@@ -73,12 +70,16 @@ public class View {
             3  // FALLING
     };
 
-    Image backgroundSkyImage = new Image(
-            "/Background_Sky.png", 0, 800, true, false
-    );
-    Image backgroundGrassImage = new Image(
-            "/Background_Grass.png", 0, 800, true, false
-    );
+    private final Image backgroundSkyImage = loadScaledImage(
+            "/Background_Sky.png",   // filePath
+            0,     // width
+            800,   // height
+            true); // preserveRatio
+    private final Image backgroundGrassImage = loadScaledImage(
+            "/Background_Grass.png", // filePath
+            0,     // width
+            800,   // height
+            true); // preserveRatio
 
     /**
      * Stores references to the gameWindow Stage and model objects for the
@@ -186,43 +187,43 @@ public class View {
         context.drawImage(image, x + image.getWidth(), -200);
     }
 
+    /**
+     * Creates a popup window that displays the player's distance and has
+     * buttons allowing the player to start a new game or quit.
+     * @param distance the distancee the player travelled in the game
+     */
     public void loadGameOverScreen(String distance) {
-        quitButton = new Button("Quit Game");
-        newButton = new Button("New Game");
+        Button quitButton = new Button("Quit Game");
+        Button newButton = new Button("New Game");
+
         //Label label = new Label("THis");
-        FlowPane fpl1 = new FlowPane(Orientation.VERTICAL);
-        fpl1.setPadding(new Insets(0,0,75, 0));
-        fpl1.setAlignment(Pos.BOTTOM_CENTER);
+        FlowPane flowPlane = new FlowPane(Orientation.VERTICAL);
+        flowPlane.setPadding(new Insets(0,0,75, 0));
+        flowPlane.setAlignment(Pos.BOTTOM_CENTER);
+
         Text distanceText = new Text("Distance: " + distance);
         distanceText.setFont(Font.font ("Comic Sans MS", 20));
-        fpl1.getChildren().add(distanceText);
-        fpl1.getChildren().add(newButton);
-        fpl1.getChildren().add(quitButton);
 
-        fpl1.setVgap((double) 25);
-        fpl1.setHgap((double) 25);
-        fpl1.setStyle("-fx-background: #95f7ff;");
+        flowPlane.getChildren().add(distanceText);
+        flowPlane.getChildren().add(newButton);
+        flowPlane.getChildren().add(quitButton);
 
-        Scene scene = new Scene(fpl1,400,300);
-        quitButton.setOnAction(this::handleButtonAction);
-        newButton.setOnAction(this::handleButtonAction);
-        gameWindow = new Stage();
-        gameWindow.setScene(scene);
-        gameWindow.initModality(Modality.APPLICATION_MODAL);
-        gameWindow.show();
-    }
+        flowPlane.setVgap(25);
+        flowPlane.setHgap(25);
+        flowPlane.setStyle("-fx-background: #95f7ff;");
 
-    public void handleButtonAction(ActionEvent event) {
-        if (event.getTarget()== quitButton) {
-            onQuitGame();
-        }
-        if (event.getTarget()== newButton) {
-            gameWindow.close();
-            controller = new Controller(model);
+        Scene scene = new Scene(flowPlane, 400, 300);
+        quitButton.setOnAction( e -> onQuitGame() );
+        newButton.setOnAction( e -> {
             loadGameScreen();
-        }
-    }
+            popupWindow.close();
+        });
 
+        popupWindow = new Stage();
+        popupWindow.setScene(scene);
+        popupWindow.initModality(Modality.APPLICATION_MODAL);
+        popupWindow.show();
+    }
 
     /**
      * Loads the main menu game scene from the relevant FXML file.
