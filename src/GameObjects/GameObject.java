@@ -1,7 +1,6 @@
 package GameObjects;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.Canvas;
 
 /**
  * A class for representing game entities as objects.
@@ -97,44 +96,15 @@ public abstract class GameObject {
         this.dy = dy;
     }
 
-    /**
-     * Gets the x velocity of the GameObject.
-     * @return the x velocity of the GameObject
-     */
-    public double getDirectionX() {
-        return this.dx;
-    }
+    public double getXVelocity() { return this.dx; }
 
-    /**
-     * Gets the y velocity of the GameObject.
-     * @return the y velocity of the GameObject
-     */
-    public double getDirectionY() {
-        return this.dy;
-    }
-
-    /**
-     * Method for checking if a GameObject is within the boundaries of a Canvas.
-     * @param gameCanvas the canvas the GameObject has been drawn on
-     * @return boolean isOffScreen true, if the object is off the screen;
-     *                             false, if the object is on the screen
-     */
-
-    // TODO: change isOffScreen() so that it accepts something other
-    // TODO: than a canvas, or even better, move isOffScreen() to view.
-
-    public boolean isOffScreen(Canvas gameCanvas) {
-        return (x + width < 0)
-            || (x > gameCanvas.getWidth())
-            || (y + height < 0)
-            || (y > gameCanvas.getHeight());
-    }
+    public double getYVelocity() { return this.dy; }
 
     /**
      * An abstract method implemented by implementations of the GameObject
      * class. Will update the GameObjects position.
      */
-    public abstract void updatePosition();
+    public abstract void updatePosition(double elapsed);
 
     /**
      * Gets the SpriteAnimation.

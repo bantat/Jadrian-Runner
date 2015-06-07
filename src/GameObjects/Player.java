@@ -18,17 +18,17 @@ public class Player extends GameObject {
     private static final int JUMPING = 1;
     private static final int FALLING = 2;
 
-    boolean shouldJump;
-    boolean movingLeft;
-    boolean movingRight;
-    boolean isAlive;
+    private boolean shouldJump;
+    private boolean movingLeft;
+    private boolean movingRight;
+    private boolean isAlive;
 
-    int maxY;
-    int minY;
-    int minX;
-    int maxX;
+    private int maxY;
+    private int minY;
+    private int minX;
+    private int maxX;
 
-    int slowSpeed;
+    private double slowSpeed;
 
     public Player() {
 
@@ -41,7 +41,7 @@ public class Player extends GameObject {
         moveSpeed = 8;
         slowSpeed = 3;
         maxFallSpeed = 10;
-        jumpHeight = -20;
+        jumpHeight = -21;
 
         isAlive = true;
         shouldJump = false;
@@ -80,8 +80,8 @@ public class Player extends GameObject {
     /**
      * Method for updating the Player object's right movement state.
      *
-     * @param movingRight boolean describing whether or not the character is
-     *                   facing right.
+     * @param movingRight boolean describing whether or not the character
+     *                    is facing right.
      */
     public void setRight(boolean movingRight) {
         this.movingRight = movingRight;
@@ -92,7 +92,7 @@ public class Player extends GameObject {
      * position, and velocity, and whether or not the player jumped since then.
      */
     @Override
-    public void updatePosition() {
+    public void updatePosition(double elapsed) {
         // Determines the current action and updated direction vector from
         // the most recent update.
         if (shouldJump && currentAction != FALLING) {
@@ -162,7 +162,7 @@ public class Player extends GameObject {
             y = maxY;
         }
 
-        x = x + dx;
-        y = y + dy;
+        x += elapsed * dx;
+        y += elapsed * dy;
     }
 }

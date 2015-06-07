@@ -4,6 +4,7 @@ import java.util.Random;
 
 import GameObjects.Obstacle;
 import GameObjects.Player;
+import javafx.animation.AnimationTimer;
 
 /**
  * A class for containing the logic behind the game. Generates obstacles in
@@ -16,7 +17,7 @@ import GameObjects.Player;
  */
 public class Model {
     // Keeps track of the Obstacle and Player objects, whether or not the game
-    // is running, the specified user input (move left, move right, orjump),
+    // is running, the specified user input (move left, move right, or jump),
     // and the distance.
     private ArrayList<Obstacle> obstacles;
     private Player player;
@@ -26,16 +27,33 @@ public class Model {
     private boolean right;
     private int distance;
 
+    AnimationTimer modelTimer;
+    long lastUpdateTime;
+
     /**
      * Initializes our game by creating a GameObject for the player and a
-     * GameObject for the obstacles encountered in our game. Sets gameRunning to
-     * true, since the game gameRunning at this point
+     * GameObject for the obstacles encountered in our game. Sets gameRunning
+     * to true, since the game gameRunning at this point
      */
     public void init() {
         player = new Player();
         obstacles = new ArrayList<Obstacle>();
         gameRunning = true;
         isJumping = false;
+
+        modelTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                double currentTime = System.nanoTime();
+                double elapsedSeconds = (currentTime - lastUpdateTime) / 1e9;
+
+                if (elapsedSeconds > .01) {
+                    updateGameState(elapsedSeconds * 30);
+                    lastUpdateTime = System.nanoTime();
+                }
+            }
+        };
+        modelTimer.start();
     }
 
     /**
@@ -89,8 +107,8 @@ public class Model {
 //        }
 //        Obstacle tempObstacle;
         obstacles.add(new Obstacle(13,              // width
-                                   75,             // height
-                                   8,               // speed
+                                   75,              // height
+                                   8,              // speed
                                    1050,            // x
                                    randInt(240,400) // y
                 )
@@ -114,18 +132,18 @@ public class Model {
      * Updates the game, i.e. all the Obstacle objects' and Player object's
      * positions.
      */
-    public void updateGameState() {
+    public void updateGameState(double elapsed) {
         // Tells the Player object whether or not the user wants to move the
         // Player object is meant to jump, move left, or move right.
         player.setJumping(isJumping);
         player.setLeft(left);
         player.setRight(right);
-        player.updatePosition();
+        player.updatePosition(elapsed);
 
         // Checks to see if any of the Obstacle objects have collided with the
         // Player object. If any of them have it tells the game to end.
         obstacles.forEach((Obstacle o) -> {
-            o.updatePosition();
+            o.updatePosition(elapsed);
             if (o.isCollision(player)) {
                 gameRunning = false;
             }

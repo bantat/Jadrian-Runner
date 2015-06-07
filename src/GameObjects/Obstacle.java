@@ -2,13 +2,15 @@ package GameObjects;
 
 /**
  * A class for representing obstacles in the game.
+ *
+ * @author Tore Banta
+ * @author Ben Withbroe
+ * @author Alex Griese
+ * @author Greg Erlandson
  */
 public class Obstacle extends GameObject {
 
-    // Takes and sets the width, height, speed and x,y position of the given
-    // object. Inherits? the methods of the GameObject abstract class.
-    public Obstacle(int width, int height, int speed, int x, int y) {
-
+    public Obstacle(int width, int height, double speed, int x, int y) {
         super();
 
         this.width = width;
@@ -19,23 +21,22 @@ public class Obstacle extends GameObject {
     }
 
     /**
-     * Updates the position of the Obstacle object based on its speed.
+     * Updates the position of the Obstacle object based on its velocity.
      */
-    public void updatePosition() { x = x + dx; }
+    public void updatePosition(double elapsed) { x += elapsed * dx; }
 
-    public String getSpriteName(){
-        if (width>200){
-            if (height>200){
+    public String getObstacleType(){
+        if (width > 200){
+            if (height > 200){
                 return "tree";
-            }else {
+            } else {
                 return "bush";
             }
-        }
-        else{
-            if (height<200){
+
+        } else{
+            if (height < 200){
                 return "stick";
-            }
-            else{
+            } else{
                 return "lightpole";
             }
         }

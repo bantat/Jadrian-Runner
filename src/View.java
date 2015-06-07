@@ -35,8 +35,8 @@ import GameObjects.SpriteAnimation;
 public class View {
 
     // Instance variables for generating the window on the screen.
-    private final Model model;
-    private final Controller controller;
+    private Model model;
+    private GameController gameController;
     private Canvas mainCanvas;
     private Canvas backgroundSkyCanvas;
     private Canvas backgroundGrassCanvas;
@@ -51,8 +51,11 @@ public class View {
     private double backgroundSkyCanvasX = 0;
     private double backgroundGrassCanvasX = 0;
 
+    private Image backgroundSkyImage;
+    private Image backgroundGrassImage;
+
     // Instance variables for continual running.
-    private AnimationTimer timer;
+    private AnimationTimer viewTimer;
     private long lastFrameDraw = 0;
 
     // Instance variables for displaying the Player object.
@@ -72,17 +75,6 @@ public class View {
             3  // FALLING
     };
 
-    private final Image backgroundSkyImage = loadScaledImage(
-            "/Background_Sky.png",
-            0,     // width
-            800,   // height
-            true); // preserveRatio
-    private final Image backgroundGrassImage = loadScaledImage(
-            "/Background_Grass.png",
-            0,     // width
-            800,   // height
-            true); // preserveRatio
-
     /**
      * Stores references to the gameWindow Stage and model objects for the
      * game, and creates a two dimensional context for drawing game elements
@@ -90,15 +82,25 @@ public class View {
      *
      * @param model the model that stores all of the information about the
      *              game's current state.
-     * @param controller the controller that handles keyboard input
+     * @param gameController the controller that handles keyboard input during
+     *                       game play
      * @param gameWindow the Stage on which everything is drawn
      */
-    public View(Model model, Controller controller, Stage gameWindow) {
+    public View(Model model, GameController gameController, Stage gameWindow) {
         this.model = model;
-        this.controller = controller;
+        this.gameController = gameController;
         this.gameWindow = gameWindow;
 
-        //AnimationTimer timer;
+        backgroundSkyImage = loadScaledImage(
+                "/Background_Sky.png",
+                0,     // width
+                800,   // height
+                true); // preserveRatio
+        backgroundGrassImage = loadScaledImage(
+                "/Background_Grass.png",
+                0,     // width
+                800,   // height
+                true); // preserveRatio
     }
 
     /**
@@ -127,7 +129,7 @@ public class View {
         //Checks to see if the game has ended as a result of a collision.
         // If it has send the user to the start screen.
         if (!model.gameRunning()) {
-            timer.stop();
+            viewTimer.stop();
             //loadStartScreen();
             int distance = model.getDistance();
             model.resetDistance();
@@ -248,6 +250,7 @@ public class View {
         quitButton.setOnAction( (ActionEvent e) -> onQuitGame() );
         newButton.setOnAction( (ActionEvent e) -> {
             loadGameScreen();
+            gameController.reset();
             popupWindow.close();
         });
 
@@ -329,9 +332,9 @@ public class View {
 
         genPlayerAnimation();
 
-        // Initializes the game timer that reponds to the passage of time
+        // Initializes the game timer that responds to the passage of time
         // requests updates regularly.
-        timer = new AnimationTimer() {
+        viewTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 long currentTime = System.nanoTime();
@@ -342,7 +345,7 @@ public class View {
                     lastFrameDraw = currentTime;
                     drawGame();
 
-                    model.updateGameState();
+//                    model.updateGameState();
                 }
             }
         };
@@ -355,10 +358,10 @@ public class View {
         root.getChildren().addAll(gameCanvasses);
         gameScene = new Scene(root, 800, 600);
 
-        gameScene.setOnKeyPressed( controller::keyPressed );
-        gameScene.setOnKeyReleased( controller::keyReleased );
+        gameScene.setOnKeyPressed( gameController::keyPressed );
+        gameScene.setOnKeyReleased( gameController::keyReleased );
 
-        timer.start();
+        viewTimer.start();
 
         return gameScene;
     }
@@ -491,12 +494,12 @@ public class View {
      * @param player the Player object to be updated.
      */
     public void updatePlayerAnimation(GameObject player) {
-        if (player.getDirectionY() > 0) {
+        if (player.getYVelocity() > 0) {
             playerAnimation.setFrames(playerSprites.get(PLAYER_FALLING));
             playerAnimation.setFrameDelay(100);
 //            width = 40;
 
-        } else if (player.getDirectionY() < 0) {
+        } else if (player.getYVelocity() < 0) {
             playerAnimation.setFrames(playerSprites.get(PLAYER_JUMPING));
             playerAnimation.setFrameDelay(100);
 //            width = 40;
