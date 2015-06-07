@@ -35,14 +35,16 @@ import GameObjects.SpriteAnimation;
 public class View {
 
     // Instance variables for generating the window on the screen.
-    private Model model;
-    private Controller controller;
+    private final Model model;
+    private final Controller controller;
     private Canvas mainCanvas;
     private Canvas backgroundSkyCanvas;
     private Canvas backgroundGrassCanvas;
     private Stage gameWindow;
     private Stage popupWindow;
 
+    private int windowWidth = 800;
+    private int windowHeight = 600;
 
     double backgroundSkyShift = -2;
     double backgroundGrassShift = -8;
@@ -71,12 +73,12 @@ public class View {
     };
 
     private final Image backgroundSkyImage = loadScaledImage(
-            "/Background_Sky.png",   // filePath
+            "/Background_Sky.png",
             0,     // width
             800,   // height
             true); // preserveRatio
     private final Image backgroundGrassImage = loadScaledImage(
-            "/Background_Grass.png", // filePath
+            "/Background_Grass.png",
             0,     // width
             800,   // height
             true); // preserveRatio
@@ -124,7 +126,7 @@ public class View {
     public void drawGame() {
         //Checks to see if the game has ended as a result of a collision.
         // If it has send the user to the start screen.
-        if (!model.isRunning()) {
+        if (!model.gameRunning()) {
             timer.stop();
             //loadStartScreen();
             int distance = model.getDistance();
@@ -241,6 +243,8 @@ public class View {
         flowPlane.setStyle("-fx-background: #95f7ff;");
 
         Scene scene = new Scene(flowPlane, 400, 300);
+
+        // Overrides the handle method for each button with a lambda function
         quitButton.setOnAction( (ActionEvent e) -> onQuitGame() );
         newButton.setOnAction( (ActionEvent e) -> {
             loadGameScreen();
@@ -364,7 +368,7 @@ public class View {
      * images drawn onto it.
      */
     public void generateBackgroundCanvases() {
-        backgroundGrassCanvas = new Canvas(800,600);
+        backgroundGrassCanvas = new Canvas(windowWidth, windowHeight);
         GraphicsContext backgroundSkyContext = backgroundGrassCanvas.getGraphicsContext2D();
 
         backgroundSkyCanvas = new Canvas(800,600);
@@ -379,7 +383,7 @@ public class View {
      * and any Obstacle objects on the screen.
      */
     public void generateGameCanvas() {
-        mainCanvas = new Canvas(800,600);
+        mainCanvas = new Canvas(windowWidth, windowHeight);
         //GraphicsContext context = mainCanvas.getGraphicsContext2D();
     }
 

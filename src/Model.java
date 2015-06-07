@@ -20,31 +20,28 @@ public class Model {
     // and the distance.
     private ArrayList<Obstacle> obstacles;
     private Player player;
-    private boolean isRunning;
-    private boolean isJumping = false;
+    private boolean gameRunning;
+    private boolean isJumping;
     private boolean left;
     private boolean right;
     private int distance;
 
     /**
      * Initializes our game by creating a GameObject for the player and a
-     * GameObject for the obstacles encountered in our game. Sets isRunning to
-     * true, since the game isRunning at this point
+     * GameObject for the obstacles encountered in our game. Sets gameRunning to
+     * true, since the game gameRunning at this point
      */
     public void init() {
         player = new Player();
         obstacles = new ArrayList<Obstacle>();
-        isRunning = true;
+        gameRunning = true;
+        isJumping = false;
     }
 
     /**
-     * Let's the program know if the game is
-     * running or not.
-     * @return a boolean, isRunning
+     * @return true if the game should be running
      */
-    public boolean isRunning() {
-        return isRunning;
-    }
+    public boolean gameRunning() { return gameRunning; }
 
     /**
      * Helper method that generates a random int from the min to the max,
@@ -123,17 +120,16 @@ public class Model {
         player.setJumping(isJumping);
         player.setLeft(left);
         player.setRight(right);
+        player.updatePosition();
 
         // Checks to see if any of the Obstacle objects have collided with the
         // Player object. If any of them have it tells the game to end.
-        for (Obstacle obstacle : obstacles) {
-            if (obstacle.isCollision(player)) {
-                isRunning = false;
+        obstacles.forEach((Obstacle o) -> {
+            o.updatePosition();
+            if (o.isCollision(player)) {
+                gameRunning = false;
             }
-            obstacle.updatePosition();
-        }
-
-        player.updatePosition();
+        });
 
         distance++;
     }
@@ -147,9 +143,7 @@ public class Model {
      */
     public void updateOffscreenObstacles(List<Obstacle> offscreenLeft,
                                          int numOffscreenRight) {
-        for (Obstacle obstacle: offscreenLeft) {
-            obstacles.remove(obstacle);
-        }
+        offscreenLeft.forEach(obstacles::remove);
 
         if (numOffscreenRight < 1) {
             generateNewObstacle();
