@@ -2,7 +2,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- * Created by erlandsong on 6/1/15.
+ * Test class for Model.java
  */
 public class ModelTest {
     Model model= new Model();
@@ -15,14 +15,17 @@ public class ModelTest {
 
     @Test
     public void testIsRunning() throws Exception {
-        assertEquals(true, model.isRunning());
+        assertEquals(true, model.gameRunning());
     }
 
     @Test
     public void testRandInt() throws Exception {
         int random;
-        random= model.randInt(0, 10);
-        assertTrue((random>-1) && (random<11));
+
+        for (int i =0; i < 10; ++i) {
+            random = Model.randInt(0, 10);
+            assertTrue((random>-1) && (random<11));
+        }
     }
 
     @Test
@@ -39,7 +42,7 @@ public class ModelTest {
 
     @Test
     public void testUpdateGameState() throws Exception {
-        model.updateGameState();
+        model.updateGameState(0);
     }
 
     @Test

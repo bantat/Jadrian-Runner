@@ -27,7 +27,7 @@ public class PlayerTest {
         y= 0;
         int oldPosition= player.getX();
         player.setDirection(x, y);
-        player.updatePosition();
+        player.updatePosition(1L);
         int newPosition = player.getX();
         assertTrue((oldPosition+5) == newPosition);
 
@@ -82,23 +82,23 @@ public class PlayerTest {
         x = 2;
         y =-5;
         player.setDirection(x, y);
-        assertTrue((player.getDirectionX() == x) && (player.getDirectionY() == y));
+        assertTrue((player.getXVelocity() == x) && (player.getYVelocity() == y));
     }
 
     @Test
-    public void testGetDirectionX() throws Exception {
+    public void testGetXVelocity() throws Exception {
         x= 9;
         y= 0;
         player.setDirection(x, y);
-        assertTrue(player.getDirectionX() == x);
+        assertTrue(player.getXVelocity() == x);
     }
 
     @Test
-    public void testGetDirectionY() throws Exception {
+    public void testGetYVelocity() throws Exception {
         x= 0;
         y= 0;
         player.setDirection(x, y);
-        assertTrue(player.getDirectionY() == y);
+        assertTrue(player.getYVelocity() == y);
     }
 
     @Test

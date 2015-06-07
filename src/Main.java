@@ -11,41 +11,21 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    private Model model;
-    private View view;
-    private Controller controller;
-    private Stage gameWindow;
-
     /**
      * Method which is called for running the game on startup. Takes a Stage
      * object which is the graphics window containing view elements of the game.
      *
-     * @param gameWindow
+     * @param gameWindow The Stage in which the game will be held
      * @throws Exception
      */
     @Override
     public void start(Stage gameWindow) throws Exception {
+        final Model model = new Model();
+        final GameController gameController = new GameController(model);
+        final View view = new View(model, gameController, gameWindow);
 
-        this.gameWindow = gameWindow;
-
-        // Instantiates MVC components
-        model = new Model();
-        controller = new Controller(model);
-        view = new View(model, controller, gameWindow);
-
-        // Loads main menu screen for game
         view.loadStartScreen();
     }
 
-
-
-    /**
-     * Method for running the class Main, calls launch using command line
-     * arguments provided.
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args); }
 }
