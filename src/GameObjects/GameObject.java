@@ -1,7 +1,6 @@
 package GameObjects;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.Canvas;
 
 /**
  * A class for representing game entities as objects.
@@ -21,7 +20,6 @@ public abstract class GameObject {
     protected int width;
     protected int height;
 
-    protected SpriteAnimation animation;
     protected int currentAction;
 
 //    protected boolean left;
@@ -40,7 +38,9 @@ public abstract class GameObject {
      * @return Rectangle2D hitBox
      */
     public Rectangle2D getHitBox() {
-        return new Rectangle2D((int)x, (int)y,
+//        return new Rectangle2D((int) x + width / 2, (int) y + height / 2,
+//                               width * 1.5, height * 1.5);
+        return new Rectangle2D((int) x, (int) y,
                                width, height);
     }
 
@@ -53,9 +53,9 @@ public abstract class GameObject {
         return getHitBox().intersects(otherObject.getHitBox());
     }
 
-    public int getX() { return (int) x; }
+    public double getX() { return x; }
 
-    public int getY() { return (int) y; }
+    public double getY() { return y; }
 
     public int getWidth() { return width; }
 
@@ -97,44 +97,13 @@ public abstract class GameObject {
         this.dy = dy;
     }
 
-    /**
-     * Gets the x velocity of the GameObject.
-     * @return the x velocity of the GameObject
-     */
-    public double getDirectionX() {
-        return this.dx;
-    }
+    public double getXVelocity() { return this.dx; }
 
-    /**
-     * Gets the y velocity of the GameObject.
-     * @return the y velocity of the GameObject
-     */
-    public double getDirectionY() {
-        return this.dy;
-    }
-
-    /**
-     * Method for checking if a GameObject is within the boundaries of a Canvas.
-     * @param gameCanvas the canvas the GameObject has been drawn on
-     * @return boolean isOffScreen true, if the object is off the screen;
-     *                             false, if the object is on the screen
-     */
-    public boolean isOffScreen(Canvas gameCanvas) {
-        return (x + width < 0)
-            || (x > gameCanvas.getWidth())
-            || (y + height < 0)
-            || (y > gameCanvas.getHeight());
-    }
+    public double getYVelocity() { return this.dy; }
 
     /**
      * An abstract method implemented by implementations of the GameObject
      * class. Will update the GameObjects position.
      */
-    public abstract void updatePosition();
-
-    /**
-     * Gets the SpriteAnimation.
-     * @return the sprite animation.
-     */
-    public SpriteAnimation getAnimation() { return animation; }
+    public abstract void updatePosition(double elapsed);
 }

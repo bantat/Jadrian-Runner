@@ -1,7 +1,10 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.animation.AnimationTimer;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.*;
 
@@ -35,22 +38,30 @@ public class View {
 
     // Instance variables for generating the window on the screen.
     private Model model;
-    private Controller controller;
+    private GameController gameController;
     private Canvas mainCanvas;
     private Canvas backgroundSkyCanvas;
     private Canvas backgroundGrassCanvas;
     private Stage gameWindow;
     private Stage popupWindow;
 
+    private int windowWidth = 800;
+    private int windowHeight = 600;
 
-    double backgroundSkyShift = -2;
-    double backgroundGrassShift = -8;
+    private double backgroundSkyShift = -2;
+    private double backgroundGrassShift = -8;
     private double backgroundSkyCanvasX = 0;
     private double backgroundGrassCanvasX = 0;
 
+    private Image backgroundSkyImage;
+    private Image backgroundGrassImage;
+
     // Instance variables for continual running.
-    private AnimationTimer timer;
+    private AnimationTimer viewTimer;
     private long lastFrameDraw = 0;
+
+    private String defaultObstacleType;
+    private Map<String, Image> obstacleImages;
 
     // Instance variables for displaying the Player object.
     private SpriteAnimation playerAnimation;
@@ -69,17 +80,6 @@ public class View {
             3  // FALLING
     };
 
-    private final Image backgroundSkyImage = loadScaledImage(
-            "/Background_Sky.png",   // filePath
-            0,     // width
-            800,   // height
-            true); // preserveRatio
-    private final Image backgroundGrassImage = loadScaledImage(
-            "/Background_Grass.png", // filePath
-            0,     // width
-            800,   // height
-            true); // preserveRatio
-
     /**
      * Stores references to the gameWindow Stage and model objects for the
      * game, and creates a two dimensional context for drawing game elements
@@ -87,15 +87,25 @@ public class View {
      *
      * @param model the model that stores all of the information about the
      *              game's current state.
-     * @param controller the controller that handles keyboard input
+     * @param gameController the controller that handles keyboard input during
+     *                       game play
      * @param gameWindow the Stage on which everything is drawn
      */
-    public View(Model model, Controller controller, Stage gameWindow) {
+    public View(Model model, GameController gameController, Stage gameWindow) {
         this.model = model;
-        this.controller = controller;
+        this.gameController = gameController;
         this.gameWindow = gameWindow;
 
-        //AnimationTimer timer;
+        backgroundSkyImage = loadScaledImage(
+                "/Background_Sky.png",
+                0,     // width
+                800,   // height
+                true); // preserveRatio
+        backgroundGrassImage = loadScaledImage(
+                "/Background_Grass.png",
+                0,     // width
+                800,   // height
+                true); // preserveRatio
     }
 
     /**
@@ -123,10 +133,10 @@ public class View {
     public void drawGame() {
         //Checks to see if the game has ended as a result of a collision.
         // If it has send the user to the start screen.
-        if (!model.isRunning()) {
-            timer.stop();
+        if (!model.gameRunning()) {
+            viewTimer.stop();
             //loadStartScreen();
-            String distance = model.getDistance();
+            int distance = model.getDistance();
             model.resetDistance();
             loadGameOverScreen(distance);
         }
@@ -157,17 +167,49 @@ public class View {
             backgroundGrassCanvasX = 0;
         }
 
+        GraphicsContext gameContext = mainCanvas.getGraphicsContext2D();
+//        context.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
+
         GameObject player = model.getPlayer();
-        drawPlayer(mainCanvas, player);
+        drawPlayer(gameContext, player);
 
-        List<Obstacle> obstacles = model.getObstacles();
+        List<Obstacle> obstaclesOffscreenLeft = new ArrayList<Obstacle>();
+        int numObjectsOffscreenRight = 0;
 
-        for (Obstacle obstacle : obstacles) {
-            drawObstacle(mainCanvas, obstacle);
+        // Determines which obstacles are on the screen. If the obstacle is
+        // offscreen to the right, it is simply not drawn. If it is offscreen
+        // to the left, it is not drawn and is recorded in a list.
+        for (Obstacle obstacle : model.getObstacles()) {
+            if (isOffScreen(obstacle, mainCanvas)) {
+                if (obstacle.getX() < 0) {
+                    obstaclesOffscreenLeft.add(obstacle);
+                } else {
+                    ++numObjectsOffscreenRight;
+                }
+            } else {
+                drawObstacle(gameContext, obstacle);
+            }
         }
+
+        // Informs Model which obstacles are offscreen to the left and how
+        // many are offscreen to the right.
+        model.updateOffscreenObstacles(obstaclesOffscreenLeft,
+                                       numObjectsOffscreenRight);
 
         context.setFont(new Font("Comic Sans MS", (double) 24));
         context.fillText("SCORE   " + model.getDistance() + "m", 40, 40);
+    }
+
+    /**
+     * Method for checking if a GameObject is within the boundaries of a Canvas.
+     * @param gameCanvas the canvas the GameObject has been drawn on
+     * @return true if the object is off of the screen
+     */
+    private boolean isOffScreen(GameObject object, Canvas gameCanvas) {
+        return (object.getX() + object.getWidth() < 0)
+            || (object.getX() > gameCanvas.getWidth())
+            || (object.getY() + object.getHeight() < 0)
+            || (object.getY() > gameCanvas.getHeight());
     }
 
     /**
@@ -191,7 +233,7 @@ public class View {
      * buttons allowing the player to start a new game or quit.
      * @param distance the distancee the player travelled in the game
      */
-    public void loadGameOverScreen(String distance) {
+    public void loadGameOverScreen(int distance) {
         Button quitButton = new Button("Quit Game");
         Button newButton = new Button("New Game");
 
@@ -199,7 +241,7 @@ public class View {
         flowPlane.setPadding(new Insets(0,0,75, 0));
         flowPlane.setAlignment(Pos.BOTTOM_CENTER);
 
-        Text distanceText = new Text("Distance: " + distance);
+        Text distanceText = new Text(String.format("Distance: %d", distance));
         distanceText.setFont(Font.font ("Comic Sans MS", 20));
 
         flowPlane.getChildren().add(distanceText);
@@ -211,8 +253,12 @@ public class View {
         flowPlane.setStyle("-fx-background: #95f7ff;");
 
         Scene scene = new Scene(flowPlane, 400, 300);
-        quitButton.setOnAction( e -> onQuitGame() );
-        newButton.setOnAction( e -> {
+
+        // Overrides the handle method for each button with a lambda function
+        quitButton.setOnAction( (ActionEvent e) -> onQuitGame() );
+        newButton.setOnAction( (ActionEvent e) -> {
+            gameController.reset();
+
             loadGameScreen();
             popupWindow.close();
         });
@@ -228,20 +274,17 @@ public class View {
      * @return the main menu game scene.
      */
     public Scene loadMainScene() {
-        // Javafx based variables to generate new scene for start screen.
         Scene mainScene;
         Parent root = null;
 
-        // Loads Menu.fxml to display as start screen.
         try {
             FXMLLoader temp = new FXMLLoader(
                     View.class.getResource("Menu.fxml")
             );
             temp.setController(this);
             root = temp.load();
-        }
 
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -249,7 +292,7 @@ public class View {
             System.out.println("Could not load FXML file.");
             System.exit(1);
         }
-        // Sets the scene, after root has been set.
+
         mainScene = new Scene(root, 800, 600);
 
         return mainScene;
@@ -294,24 +337,7 @@ public class View {
         model.init();
 
         genPlayerAnimation();
-
-        // Initializes the game timer that reponds to the passage of time
-        // requests updates regularly.
-        timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                long currentTime = System.nanoTime();
-
-                // Determines the frame rate, then draws the updated positions
-                // based on user input, and re-updates the game state.
-                if (currentTime - lastFrameDraw > 25000000L) {
-                    lastFrameDraw = currentTime;
-                    drawGame();
-
-                    model.updateGameState();
-                }
-            }
-        };
+        genObstacleImages();
 
         Scene gameScene;
 
@@ -321,10 +347,24 @@ public class View {
         root.getChildren().addAll(gameCanvasses);
         gameScene = new Scene(root, 800, 600);
 
-        gameScene.setOnKeyPressed( controller::keyPressed );
-        gameScene.setOnKeyReleased( controller::keyReleased );
+        // Overrides the handle method with a method reference to the
+        // game controller.
+        gameScene.setOnKeyPressed( gameController::keyPressed );
+        gameScene.setOnKeyReleased( gameController::keyReleased );
 
-        timer.start();
+        // Initializes the game timer that responds to the passage of time
+        // requests updates regularly.
+        viewTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                // Redraws the game
+                if (now - lastFrameDraw > 20000000L) {
+                    lastFrameDraw = now;
+                    drawGame();
+                }
+            }
+        };
+        viewTimer.start();
 
         return gameScene;
     }
@@ -334,7 +374,7 @@ public class View {
      * images drawn onto it.
      */
     public void generateBackgroundCanvases() {
-        backgroundGrassCanvas = new Canvas(800,600);
+        backgroundGrassCanvas = new Canvas(windowWidth, windowHeight);
         GraphicsContext backgroundSkyContext = backgroundGrassCanvas.getGraphicsContext2D();
 
         backgroundSkyCanvas = new Canvas(800,600);
@@ -349,7 +389,7 @@ public class View {
      * and any Obstacle objects on the screen.
      */
     public void generateGameCanvas() {
-        mainCanvas = new Canvas(800,600);
+        mainCanvas = new Canvas(windowWidth, windowHeight);
         //GraphicsContext context = mainCanvas.getGraphicsContext2D();
     }
 
@@ -412,6 +452,18 @@ public class View {
         }
     }
 
+    private void genObstacleImages() {
+        obstacleImages = new HashMap<String, Image>();
+        String[] obstacleTypes = Obstacle.getObstacleTypes();
+
+        for (String type : obstacleTypes) {
+            String path = String.format("/%s.png", type);
+            obstacleImages.put(type, loadScaledImage(path, 1));
+        }
+
+        defaultObstacleType = obstacleTypes[0];
+    }
+
     /**
      * Loads the image, requesting it be of size width x height.
      * @param imagePath the filepath to the image
@@ -457,12 +509,12 @@ public class View {
      * @param player the Player object to be updated.
      */
     public void updatePlayerAnimation(GameObject player) {
-        if (player.getDirectionY() > 0) {
+        if (player.getYVelocity() > 0) {
             playerAnimation.setFrames(playerSprites.get(PLAYER_FALLING));
             playerAnimation.setFrameDelay(100);
 //            width = 40;
 
-        } else if (player.getDirectionY() < 0) {
+        } else if (player.getYVelocity() < 0) {
             playerAnimation.setFrames(playerSprites.get(PLAYER_JUMPING));
             playerAnimation.setFrameDelay(100);
 //            width = 40;
@@ -476,16 +528,17 @@ public class View {
         playerAnimation.update();
     }
 
+    // TODO: fix the goddamn hitboxes and figure out why they're different for
+    // TODO: obstacle and the player
+
     /**
      * Draws the Player object onto the game canvas.
-     * @param gameCanvas the canvas the Player object is drawn on.
+     * @param context the GraphicsContext the Player object is drawn on.
      * @param player the Player object that is drawn
      */
-    public void drawPlayer(Canvas gameCanvas, GameObject player) {
-        GraphicsContext context = gameCanvas.getGraphicsContext2D();
-        context.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
-
+    public void drawPlayer(GraphicsContext context, GameObject player) {
         updatePlayerAnimation(player);
+
         Image playerImage = playerAnimation.getImage();
         context.drawImage(
                 playerImage,
@@ -498,19 +551,25 @@ public class View {
 
     /**
      * Draws the Obstacle object onto the game canvas.
-     * @param gameCanvas the canvas the Obstacle object is drawn on.
+     * @param context the GraphicsContext the Obstacle object is drawn on.
      * @param obstacle the Obstacle object that is drawn
      */
-    public void drawObstacle(Canvas gameCanvas, GameObject obstacle) {
-        GraphicsContext context = gameCanvas.getGraphicsContext2D();
-        int obWidth= obstacle.getWidth()/2;
-        int obHeight= obstacle.getHeight()/2;
-        Image obstacleImage = loadScaledImage("/stick.png",
-                                              obstacle.getWidth(),
-                                              obstacle.getHeight(),
-                                              true);
+    public void drawObstacle(GraphicsContext context, Obstacle obstacle) {
+        // Loads the obstacle image from the obstacleImages map. If the
+        // obstacleType is invalid, loads the default obstacleImage.
+        Image obstacleImage;
+        String obstacleType = obstacle.getObstacleType();
 
-        context.drawImage(obstacleImage, obstacle.getX()+obWidth, obstacle.getY()+obHeight);
-        //context.draw
+        if (obstacleImages.containsKey(obstacleType)) {
+            obstacleImage = obstacleImages.get(obstacle.getObstacleType());
+        } else {
+            obstacleImage = obstacleImages.get(defaultObstacleType);
+        }
+
+        context.drawImage(obstacleImage,
+                          obstacle.getX(),
+                          obstacle.getY(),
+                          obstacle.getWidth(),
+                          obstacle.getHeight());
     }
 }
