@@ -20,7 +20,6 @@ public abstract class GameObject {
     protected int width;
     protected int height;
 
-    protected SpriteAnimation animation;
     protected int currentAction;
 
 //    protected boolean left;
@@ -39,7 +38,9 @@ public abstract class GameObject {
      * @return Rectangle2D hitBox
      */
     public Rectangle2D getHitBox() {
-        return new Rectangle2D((int)x, (int)y,
+//        return new Rectangle2D((int) x + width / 2, (int) y + height / 2,
+//                               width * 1.5, height * 1.5);
+        return new Rectangle2D((int) x, (int) y,
                                width, height);
     }
 
@@ -52,9 +53,9 @@ public abstract class GameObject {
         return getHitBox().intersects(otherObject.getHitBox());
     }
 
-    public int getX() { return (int) x; }
+    public double getX() { return x; }
 
-    public int getY() { return (int) y; }
+    public double getY() { return y; }
 
     public int getWidth() { return width; }
 
@@ -105,10 +106,4 @@ public abstract class GameObject {
      * class. Will update the GameObjects position.
      */
     public abstract void updatePosition(double elapsed);
-
-    /**
-     * Gets the SpriteAnimation.
-     * @return the sprite animation.
-     */
-    public SpriteAnimation getAnimation() { return animation; }
 }

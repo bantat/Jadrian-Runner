@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
@@ -46,8 +48,8 @@ public class View {
     private int windowWidth = 800;
     private int windowHeight = 600;
 
-    double backgroundSkyShift = -2;
-    double backgroundGrassShift = -8;
+    private double backgroundSkyShift = -2;
+    private double backgroundGrassShift = -8;
     private double backgroundSkyCanvasX = 0;
     private double backgroundGrassCanvasX = 0;
 
@@ -57,6 +59,9 @@ public class View {
     // Instance variables for continual running.
     private AnimationTimer viewTimer;
     private long lastFrameDraw = 0;
+
+    private String defaultObstacleType;
+    private Map<String, Image> obstacleImages;
 
     // Instance variables for displaying the Player object.
     private SpriteAnimation playerAnimation;
@@ -249,8 +254,9 @@ public class View {
         // Overrides the handle method for each button with a lambda function
         quitButton.setOnAction( (ActionEvent e) -> onQuitGame() );
         newButton.setOnAction( (ActionEvent e) -> {
-            loadGameScreen();
             gameController.reset();
+
+            loadGameScreen();
             popupWindow.close();
         });
 
@@ -265,20 +271,17 @@ public class View {
      * @return the main menu game scene.
      */
     public Scene loadMainScene() {
-        // Javafx based variables to generate new scene for start screen.
         Scene mainScene;
         Parent root = null;
 
-        // Loads Menu.fxml to display as start screen.
         try {
             FXMLLoader temp = new FXMLLoader(
                     View.class.getResource("Menu.fxml")
             );
             temp.setController(this);
             root = temp.load();
-        }
 
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -286,7 +289,7 @@ public class View {
             System.out.println("Could not load FXML file.");
             System.exit(1);
         }
-        // Sets the scene, after root has been set.
+
         mainScene = new Scene(root, 800, 600);
 
         return mainScene;
@@ -331,24 +334,7 @@ public class View {
         model.init();
 
         genPlayerAnimation();
-
-        // Initializes the game timer that responds to the passage of time
-        // requests updates regularly.
-        viewTimer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                long currentTime = System.nanoTime();
-
-                // Determines the frame rate, then draws the updated positions
-                // based on user input, and re-updates the game state.
-                if (currentTime - lastFrameDraw > 25000000L) {
-                    lastFrameDraw = currentTime;
-                    drawGame();
-
-//                    model.updateGameState();
-                }
-            }
-        };
+        genObstacleImages();
 
         Scene gameScene;
 
@@ -358,9 +344,23 @@ public class View {
         root.getChildren().addAll(gameCanvasses);
         gameScene = new Scene(root, 800, 600);
 
+        // Overrides the handle method with a method reference to the
+        // game controller.
         gameScene.setOnKeyPressed( gameController::keyPressed );
         gameScene.setOnKeyReleased( gameController::keyReleased );
 
+        // Initializes the game timer that responds to the passage of time
+        // requests updates regularly.
+        viewTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                // Redraws the game
+                if (now - lastFrameDraw > 20000000L) {
+                    lastFrameDraw = now;
+                    drawGame();
+                }
+            }
+        };
         viewTimer.start();
 
         return gameScene;
@@ -449,6 +449,18 @@ public class View {
         }
     }
 
+    private void genObstacleImages() {
+        obstacleImages = new HashMap<String, Image>();
+        String[] obstacleTypes = Obstacle.getObstacleTypes();
+
+        for (String type : obstacleTypes) {
+            String path = String.format("/%s.png", type);
+            obstacleImages.put(type, loadScaledImage(path, 1));
+        }
+
+        defaultObstacleType = obstacleTypes[0];
+    }
+
     /**
      * Loads the image, requesting it be of size width x height.
      * @param imagePath the filepath to the image
@@ -513,6 +525,9 @@ public class View {
         playerAnimation.update();
     }
 
+    // TODO: fix the goddamn hitboxes and figure out why they're different for
+    // TODO: obstacle and the player
+
     /**
      * Draws the Player object onto the game canvas.
      * @param gameCanvas the canvas the Player object is drawn on.
@@ -531,6 +546,20 @@ public class View {
                 playerImage.getWidth(),
                 playerImage.getHeight()
         );
+
+        Rectangle2D hitbox = player.getHitBox();
+
+        double[] xPoints = new double[2];
+        xPoints[0] = hitbox.getMinX();
+        xPoints[1] = hitbox.getMaxX();
+
+        double[] yPoints = new double[2];
+        yPoints[0] = hitbox.getMinY();
+        yPoints[1] = hitbox.getMaxY();
+
+        context.strokePolygon(xPoints,
+                              yPoints,
+                              2);
     }
 
     /**
@@ -538,16 +567,35 @@ public class View {
      * @param gameCanvas the canvas the Obstacle object is drawn on.
      * @param obstacle the Obstacle object that is drawn
      */
-    public void drawObstacle(Canvas gameCanvas, GameObject obstacle) {
+    public void drawObstacle(Canvas gameCanvas, Obstacle obstacle) {
         GraphicsContext context = gameCanvas.getGraphicsContext2D();
         int obWidth= obstacle.getWidth()/2;
         int obHeight= obstacle.getHeight()/2;
-        Image obstacleImage = loadScaledImage("/stick.png",
-                                              obstacle.getWidth(),
-                                              obstacle.getHeight(),
-                                              true);
 
-        context.drawImage(obstacleImage, obstacle.getX()+obWidth, obstacle.getY()+obHeight);
-        //context.draw
+        Rectangle2D hitbox = obstacle.getHitBox();
+
+        double[] xPoints = new double[2];
+        xPoints[0] = hitbox.getMinX();
+        xPoints[1] = hitbox.getMaxX();
+
+        double[] yPoints = new double[2];
+        yPoints[0] = hitbox.getMinY();
+        yPoints[1] = hitbox.getMaxY();
+
+        // Loads the obstacle image from the
+        Image obstacleImage;
+        String obstacleType = obstacle.getObstacleType();
+        if (obstacleImages.containsKey(obstacleType)) {
+            obstacleImage = obstacleImages.get(obstacle.getObstacleType());
+        } else {
+            obstacleImage = obstacleImages.get(defaultObstacleType);
+        }
+
+        context.drawImage(obstacleImage,
+                          obstacle.getX()+ obWidth,
+                          obstacle.getY()+ obHeight);
+        context.strokePolygon(xPoints,
+                              yPoints,
+                              2);
     }
 }

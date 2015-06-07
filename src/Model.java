@@ -27,8 +27,12 @@ public class Model {
     private boolean right;
     private int distance;
 
+    private static final Random random = new Random();
+
     AnimationTimer modelTimer;
     long lastUpdateTime;
+
+    private int numObstacleTypes;
 
     /**
      * Initializes our game by creating a GameObject for the player and a
@@ -38,18 +42,19 @@ public class Model {
     public void init() {
         player = new Player();
         obstacles = new ArrayList<Obstacle>();
+        numObstacleTypes = 1;
+
         gameRunning = true;
         isJumping = false;
 
         modelTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                double currentTime = System.nanoTime();
-                double elapsedSeconds = (currentTime - lastUpdateTime) / 1e9;
+                double elapsedSeconds = (now - lastUpdateTime) / 1e9;
 
-                if (elapsedSeconds > .01) {
+                if (elapsedSeconds > .005) {
                     updateGameState(elapsedSeconds * 30);
-                    lastUpdateTime = System.nanoTime();
+                    lastUpdateTime = now;
                 }
             }
         };
@@ -69,7 +74,7 @@ public class Model {
      * @return randNum, the random int desired.
      */
     public static int randInt(int min, int max) {
-        return new Random().nextInt((max - min) + 1) + min;
+        return random.nextInt((max - min) + 1) + min;
     }
 
     /**
@@ -106,11 +111,11 @@ public class Model {
 //            }
 //        }
 //        Obstacle tempObstacle;
-        obstacles.add(new Obstacle(13,              // width
-                                   75,              // height
-                                   8,              // speed
-                                   1050,            // x
-                                   randInt(240,400) // y
+        obstacles.add(new Obstacle(
+                        random.nextInt(numObstacleTypes), // obstacleType
+                        8,               // x velocity
+                        1050,            // x
+                        randInt(240,400) // y
                 )
         );
 
@@ -121,7 +126,8 @@ public class Model {
      * Updates the GameState. Determines whether or not the user specified
      * a jump, move left, or move right.
      */
-    public void updateInputState(boolean jumpState, boolean leftState,
+    public void updateInputState(boolean jumpState,
+                                 boolean leftState,
                                  boolean rightState) {
         isJumping = jumpState;
         left = leftState;
@@ -149,6 +155,9 @@ public class Model {
             }
         });
 
+        if (!gameRunning) {
+            modelTimer.stop();
+        }
         distance++;
     }
 
@@ -172,7 +181,7 @@ public class Model {
 
     public Player getPlayer() { return player; }
 
-    public int getDistance() { return distance/10; }
+    public int getDistance() { return distance / 10; }
 
     public void resetDistance() { distance = 0; }
 }

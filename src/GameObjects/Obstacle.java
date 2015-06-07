@@ -1,5 +1,9 @@
 package GameObjects;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A class for representing obstacles in the game.
  *
@@ -9,12 +13,26 @@ package GameObjects;
  * @author Greg Erlandson
  */
 public class Obstacle extends GameObject {
+    private String obstacleType;
+    private static final String[] obstacleTypes = new String[] {
+            "Stick"
+    };
 
-    public Obstacle(int width, int height, double speed, int x, int y) {
+    // Instantiates an unmodifiable map that maps each obstacleType to an int
+    // array describing its dimensions.
+    private static final Map<String, int[]> obstacleDimensions;
+    static {
+        Map<String, int[]> temp = new HashMap<>();
+        temp.put("Stick", new int[]{13, 75});
+
+        obstacleDimensions = Collections.unmodifiableMap(temp);
+    };
+
+    public Obstacle(int obstacleType, double speed, int x, int y) {
         super();
 
-        this.width = width;
-        this.height = height;
+        this.obstacleType = obstacleTypes[obstacleType];
+
         this.dx = -1 * speed;
         this.x = x;
         this.y = y;
@@ -23,22 +41,29 @@ public class Obstacle extends GameObject {
     /**
      * Updates the position of the Obstacle object based on its velocity.
      */
-    public void updatePosition(double elapsed) { x += elapsed * dx; }
+    public void updatePosition(double elapsed) {
+        x += elapsed * dx;
+    }
 
-    public String getObstacleType(){
-        if (width > 200){
-            if (height > 200){
-                return "tree";
-            } else {
-                return "bush";
-            }
+    public static String[] getObstacleTypes() {
+        return obstacleTypes;
+    }
 
-        } else{
-            if (height < 200){
-                return "stick";
-            } else{
-                return "lightpole";
-            }
-        }
+    public String getObstacleType() {
+        return obstacleType;
+//        if (width > 200){
+//            if (height > 200){
+//                return "tree";
+//            } else {
+//                return "bush";
+//            }
+//
+//        } else{
+//            if (height < 200){
+//                return "stick";
+//            } else{
+//                return "lightpole";
+//            }
+//        }
     }
 }

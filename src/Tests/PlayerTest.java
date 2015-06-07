@@ -4,7 +4,7 @@ import GameObjects.Player;
 import static org.junit.Assert.*;
 
 /**
- * Created by erlandsong on 6/1/15.
+ * A class for testing the Player class.
  */
 public class PlayerTest {
 
@@ -23,12 +23,12 @@ public class PlayerTest {
 
     @Test
     public void testUpdatePosition() throws Exception {
-        x= 5;
-        y= 0;
-        int oldPosition= player.getX();
+        x = 5;
+        y = 0;
+        double oldPosition= player.getX();
         player.setDirection(x, y);
         player.updatePosition(1L);
-        int newPosition = player.getX();
+        double newPosition = player.getX();
         assertTrue((oldPosition+5) == newPosition);
 
     }

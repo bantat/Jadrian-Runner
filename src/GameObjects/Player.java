@@ -34,8 +34,8 @@ public class Player extends GameObject {
 
         super();
 
-        width = 40;
-        height = 40;
+        width = 44;
+        height = 76;
 
         fallSpeed = 2;
         moveSpeed = 8;
