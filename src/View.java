@@ -167,8 +167,11 @@ public class View {
             backgroundGrassCanvasX = 0;
         }
 
+        GraphicsContext gameContext = mainCanvas.getGraphicsContext2D();
+//        context.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
+
         GameObject player = model.getPlayer();
-        drawPlayer(mainCanvas, player);
+        drawPlayer(gameContext, player);
 
         List<Obstacle> obstaclesOffscreenLeft = new ArrayList<Obstacle>();
         int numObjectsOffscreenRight = 0;
@@ -184,7 +187,7 @@ public class View {
                     ++numObjectsOffscreenRight;
                 }
             } else {
-                drawObstacle(mainCanvas, obstacle);
+                drawObstacle(gameContext, obstacle);
             }
         }
 
@@ -530,14 +533,12 @@ public class View {
 
     /**
      * Draws the Player object onto the game canvas.
-     * @param gameCanvas the canvas the Player object is drawn on.
+     * @param context the GraphicsContext the Player object is drawn on.
      * @param player the Player object that is drawn
      */
-    public void drawPlayer(Canvas gameCanvas, GameObject player) {
-        GraphicsContext context = gameCanvas.getGraphicsContext2D();
-        context.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
-
+    public void drawPlayer(GraphicsContext context, GameObject player) {
         updatePlayerAnimation(player);
+
         Image playerImage = playerAnimation.getImage();
         context.drawImage(
                 playerImage,
@@ -546,45 +547,19 @@ public class View {
                 playerImage.getWidth(),
                 playerImage.getHeight()
         );
-
-        Rectangle2D hitbox = player.getHitBox();
-
-        double[] xPoints = new double[2];
-        xPoints[0] = hitbox.getMinX();
-        xPoints[1] = hitbox.getMaxX();
-
-        double[] yPoints = new double[2];
-        yPoints[0] = hitbox.getMinY();
-        yPoints[1] = hitbox.getMaxY();
-
-        context.strokePolygon(xPoints,
-                              yPoints,
-                              2);
     }
 
     /**
      * Draws the Obstacle object onto the game canvas.
-     * @param gameCanvas the canvas the Obstacle object is drawn on.
+     * @param context the GraphicsContext the Obstacle object is drawn on.
      * @param obstacle the Obstacle object that is drawn
      */
-    public void drawObstacle(Canvas gameCanvas, Obstacle obstacle) {
-        GraphicsContext context = gameCanvas.getGraphicsContext2D();
-        int obWidth= obstacle.getWidth()/2;
-        int obHeight= obstacle.getHeight()/2;
-
-        Rectangle2D hitbox = obstacle.getHitBox();
-
-        double[] xPoints = new double[2];
-        xPoints[0] = hitbox.getMinX();
-        xPoints[1] = hitbox.getMaxX();
-
-        double[] yPoints = new double[2];
-        yPoints[0] = hitbox.getMinY();
-        yPoints[1] = hitbox.getMaxY();
-
-        // Loads the obstacle image from the
+    public void drawObstacle(GraphicsContext context, Obstacle obstacle) {
+        // Loads the obstacle image from the obstacleImages map. If the
+        // obstacleType is invalid, loads the default obstacleImage.
         Image obstacleImage;
         String obstacleType = obstacle.getObstacleType();
+
         if (obstacleImages.containsKey(obstacleType)) {
             obstacleImage = obstacleImages.get(obstacle.getObstacleType());
         } else {
@@ -592,10 +567,9 @@ public class View {
         }
 
         context.drawImage(obstacleImage,
-                          obstacle.getX()+ obWidth,
-                          obstacle.getY()+ obHeight);
-        context.strokePolygon(xPoints,
-                              yPoints,
-                              2);
+                          obstacle.getX(),
+                          obstacle.getY(),
+                          obstacle.getWidth(),
+                          obstacle.getHeight());
     }
 }
