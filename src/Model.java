@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import GameObjects.GameObject;
 import GameObjects.Obstacle;
 import GameObjects.Player;
 import javafx.animation.AnimationTimer;
@@ -32,7 +33,9 @@ public class Model {
     AnimationTimer modelTimer;
     long lastUpdateTime;
 
-    private int numObstacleTypes;
+    private Obstacle currentObstacle;
+    private Obstacle lastObstacle;
+    private int numJumpedOver;
 
     /**
      * Initializes our game by creating a GameObject for the player and a
@@ -42,7 +45,8 @@ public class Model {
     public void init() {
         player = new Player();
         obstacles = new ArrayList<Obstacle>();
-        numObstacleTypes = 1;
+        numJumpedOver = 0;
+        distance = 0;
 
         gameRunning = true;
         isJumping = false;
@@ -76,6 +80,11 @@ public class Model {
      * @return randNum, the random int desired.
      */
     public static int randInt(int min, int max) {
+        if (max < 0) {
+            return -1;
+        } else if (min < 0) {
+            min = 0;
+        }
         return random.nextInt((max - min) + 1) + min;
     }
 
@@ -213,8 +222,15 @@ public class Model {
         // Player object. If any of them have it tells the game to end.
         obstacles.forEach((Obstacle o) -> {
             o.updatePosition(elapsed);
+
             if (o.isCollision(player)) {
                 gameRunning = false;
+
+            } else if (isOver(player, o)
+                    && o != lastObstacle && o != currentObstacle) {
+                numJumpedOver++;
+                lastObstacle = currentObstacle;
+                currentObstacle = o;
             }
         });
 
@@ -233,18 +249,45 @@ public class Model {
      */
     public void updateOffscreenObstacles(List<Obstacle> offscreenLeft,
                                          int numOffscreenRight) {
-        offscreenLeft.forEach(obstacles::remove);
+        try {
+            offscreenLeft.forEach(obstacles::remove);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (numOffscreenRight < 1) {
             generateNewObstacle();
         }
     }
 
-    public List<Obstacle> getObstacles() { return obstacles; }
+    /**
+     * @param player the player
+     * @param object the obstacle being checked
+     * @return true if the player is over the obstacle
+     */
+    private boolean isOver(GameObject player, GameObject object) {
+        return player.getY() < object.getY()
+            && player.getX() > object.getX()
+            && player.getX() < object.getX() + object.getWidth();
+    }
 
-    public Player getPlayer() { return player; }
+    public int getNumJumpedOver() {
+        return numJumpedOver;
+    }
 
-    public int getDistance() { return distance / 10; }
+    public List<Obstacle> getObstacles() {
+        return obstacles;
+    }
 
-    public void resetDistance() { distance = 0; }
+    public Player getPlayer() {
+        return player;
+    }
+
+    public int getDistance() {
+        return distance / 10;
+    }
+
+    public void resetDistance() {
+        distance = 0;
+    }
 }
