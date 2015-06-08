@@ -1,10 +1,9 @@
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 
 /**
- * Created by alexgriese on 6/7/15.
+ * Test class for the GameController class
  */
 public class GameControllerTest {
     private GameController controller;
