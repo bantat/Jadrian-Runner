@@ -84,13 +84,12 @@ public class Model {
      * of the game.
      */
     public void generateNewObstacle() {
-//        ARE WE GOING TO USE THIS???
 
-//        int minWidth = 20;
-//        int maxWidth = 80;
+//        int minWidth = 15;
+//        int maxWidth = 70;
 //
-//        int minHeight = 20;
-//        int maxHeight = 80;
+//        int minHeight = 15;
+//        int maxHeight = 70;
 //
 //        int minSpeed = 5;
 //        int maxSpeed = 7;
@@ -100,7 +99,11 @@ public class Model {
 //
 //        int minY = 280;
 //        int maxY = 500;
-//        boolean obstacleNotMade = true
+//
+//        boolean obstacleNotMade = true;
+//
+//        Obstacle tempObstacle;
+//
 //        while (obstacleNotMade) {
 //            tempObstacle = new Obstacle(randInt(minWidth, maxWidth),
 //                                                 randInt(minHeight, maxHeight),
@@ -108,9 +111,9 @@ public class Model {
 //                                                 randInt(minX, maxX),
 //                                                 randInt(minY, maxY));
 //
-//            for (int i = 0; i < obstacles.size(); i++) {
-//                Obstacle otherObstacle = obstacles.get(i);
-//            }
+//            Obstacle otherObstacle = obstacles.get(obstacles.size() - 1);
+//
+//            if (tempObstacle.getX() > otherObstacle.getX())
 //        }
 //        Obstacle tempObstacle;
         obstacles.add(new Obstacle(
