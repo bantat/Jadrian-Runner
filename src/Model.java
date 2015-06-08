@@ -76,6 +76,8 @@ public class Model {
      * @return randNum, the random int desired.
      */
     public static int randInt(int min, int max) {
+        if (max < 0) { return -1;}
+        if (min < 0) { min = 0;}
         return random.nextInt((max - min) + 1) + min;
     }
 
@@ -176,7 +178,11 @@ public class Model {
      */
     public void updateOffscreenObstacles(List<Obstacle> offscreenLeft,
                                          int numOffscreenRight) {
-        offscreenLeft.forEach(obstacles::remove);
+        try {
+            offscreenLeft.forEach(obstacles::remove);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (numOffscreenRight < 1) {
             generateNewObstacle();
