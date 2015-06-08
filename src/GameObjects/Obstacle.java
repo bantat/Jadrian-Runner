@@ -15,37 +15,38 @@ import java.util.Map;
 public class Obstacle extends GameObject {
     private String obstacleType;
     private static final String[] obstacleTypes = new String[] {
-            "Stick"
+            "Stick", "Log", "Bush"
     };
 
-    // Instantiates an unmodifiable map that maps each obstacleType to an int
-    // array describing its dimensions.
-    private static final Map<String, int[]> obstacleDimensions;
-    static {
-        Map<String, int[]> temp = new HashMap<>();
-        temp.put("Stick", new int[]{13, 75});
-
-        obstacleDimensions = Collections.unmodifiableMap(temp);
-    }
-
     /**
-     * Instatiates a new obstacle
-     * @param obstacleType an int representing the type of obstacle
+     * Instantiates a new obstacle
+     * @param width the requested width of the obstacle
+     * @param height the requested height of the obstacle
      * @param speed the speed at which the obstacle moves across the screen
      * @param x the x position of the obstacle
      * @param y the y position of the obstacle
      */
-    public Obstacle(int obstacleType, double speed, int x, int y) {
+    public Obstacle(int width, int height, double speed, int x, int y) {
         super();
 
-        this.obstacleType = obstacleTypes[obstacleType];
+        this.width = width;
+        this.height = height;
 
-        width = obstacleDimensions.get(this.obstacleType)[0];
-        height = obstacleDimensions.get(this.obstacleType)[1];
+        determineType();
 
         this.dx = -1 * speed;
         this.x = x;
         this.y = y;
+    }
+
+    private void determineType() {
+        if (width / height < .5) {
+            obstacleType = "Stick";
+        } else if (width / height > 2) {
+            obstacleType = "Log";
+        } else {
+            obstacleType = "Bush";
+        }
     }
 
     /**
