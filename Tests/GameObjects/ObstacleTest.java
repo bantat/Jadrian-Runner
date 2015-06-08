@@ -8,29 +8,46 @@ import static org.junit.Assert.*;
  */
 public class ObstacleTest {
 
-    Obstacle obstacleBush = new Obstacle(50, 50, 50, 20, 20);
-    Obstacle obstacleStick = new Obstacle(10, 100, 50, 20, 20);
-    Obstacle obstacleLog = new Obstacle(100, 10, 50, 20, 20);
-    String str;
-    String[] strings;
-    String[] expectedStrings= {"Stick", "Log", "Bush"};
-
+    @Test
     public void testGetObstacleType() throws Exception{
-        str = obstacleBush.getObstacleType();
-        assertEquals(str, "Bush");
-        str = obstacleStick.getObstacleType();
-        assertEquals(str, "Stick");
-        str = obstacleLog.getObstacleType();
-        assertEquals(str, "Log");
+        Obstacle bush =  new Obstacle( 50,  // width
+                                       50,  // height
+                                       50,  // speed
+                                       20,  // x
+                                       20); // y
+        Obstacle stick = new Obstacle( 10,  // width
+                                      100,  // height
+                                       50,  // speed
+                                       20,  // x
+                                       20); // y
+        Obstacle log =   new Obstacle(100,  // width
+                                       10,  // height
+                                       50,  // speed
+                                       20,  // x
+                                       20); // y
+
+        assertEquals(bush.getObstacleType(), "Bush");
+        assertEquals(stick.getObstacleType(), "Stick");
+        assertEquals(log.getObstacleType(), "Log");
 
     }
 
+    @Test
     public void testGetObstacleTypes() throws Exception{
-        strings= obstacleBush.getObstacleTypes();
-        assertArrayEquals(strings, expectedStrings);
+        String[] expectedTypes = {"Stick", "Log", "Bush"};
+        String[] obstacleTypes = Obstacle.getObstacleTypes();
+
+        assertArrayEquals(obstacleTypes, expectedTypes);
     }
+
+    @Test
     public void testMinimumDimensions() throws Exception{
-        Obstacle smallObstacle= new Obstacle(-100, -10, 50, 20, 20);
+        Obstacle smallObstacle =   new Obstacle(-100,  // width
+                                                 -10,  // height
+                                                  50,  // speed
+                                                  20,  // x
+                                                  20); // y
+
         assertEquals(smallObstacle.getHeight(), 10);
         assertEquals(smallObstacle.getWidth(), 10);
     }
