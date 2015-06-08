@@ -1,9 +1,5 @@
 package GameObjects;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * A class for representing obstacles in the game.
  *
@@ -39,6 +35,10 @@ public class Obstacle extends GameObject {
         this.y = y;
     }
 
+    /**
+     * Based on the width to height ratio, determines which obstacle to
+     * produce.
+     */
     private void determineType() {
         if (width / height < .5) {
             obstacleType = "Stick";
