@@ -97,12 +97,12 @@ public class View {
         this.gameWindow = gameWindow;
 
         backgroundSkyImage = loadScaledImage(
-                "/Background_Sky.png",
+                "/Images/Background/Background_Sky.png",
                 0,     // width
                 800,   // height
                 true); // preserveRatio
         backgroundGrassImage = loadScaledImage(
-                "/Background_Grass.png",
+                "/Images/Background/Background_Grass.png",
                 0,     // width
                 800,   // height
                 true); // preserveRatio
@@ -279,7 +279,7 @@ public class View {
 
         try {
             FXMLLoader temp = new FXMLLoader(
-                    View.class.getResource("Menu.fxml")
+                    View.class.getResource("/FXML/Menu.fxml")
             );
             temp.setController(this);
             root = temp.load();
@@ -304,7 +304,7 @@ public class View {
     public void onQuitGame() {
         try {
             FXMLLoader temp = new FXMLLoader(
-                    View.class.getResource("Menu.fxml")
+                    View.class.getResource("/FXML/Menu.fxml")
             );
             temp.setController(this);
         }
@@ -423,7 +423,7 @@ public class View {
                 imageArray = new Image[numFrames[PLAYER_JUMPING]];
                 for (int j = 0; j < numFrames[PLAYER_JUMPING]; j++) {
                     String imagePath = String.format(
-                            "/Sprites/Player/Jumping/Player_Jumping_%d.png", j
+                            "/Images/GameObjects/Player/Jumping/Player_Jumping_%d.png", j
                     );
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
@@ -432,7 +432,7 @@ public class View {
                 imageArray = new Image[numFrames[PLAYER_FALLING]];
                 for (int j = 0; j < numFrames[PLAYER_FALLING]; j++) {
                     String imagePath = String.format(
-                            "/Sprites/Player/Falling/Player_Falling_%d.png", j
+                            "/Images/GameObjects/Player/Falling/Player_Falling_%d.png", j
                     );
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
@@ -441,7 +441,7 @@ public class View {
                 imageArray = new Image[numFrames[PLAYER_RUNNING]];
                 for (int j = 0; j < numFrames[PLAYER_RUNNING]; j++) {
                     String imagePath = String.format(
-                            "/Sprites/Player/Running/Player_Running_%d.png", j
+                            "/Images/GameObjects/Player/Running/Player_Running_%d.png", j
                     );
                     imageArray[j] = loadScaledImage(imagePath, 2);
                 }
@@ -457,7 +457,7 @@ public class View {
         String[] obstacleTypes = Obstacle.getObstacleTypes();
 
         for (String type : obstacleTypes) {
-            String path = String.format("/%s.png", type);
+            String path = String.format("/Images/GameObjects/Obstacles/%s.png", type);
             obstacleImages.put(type, loadScaledImage(path, 1));
         }
 

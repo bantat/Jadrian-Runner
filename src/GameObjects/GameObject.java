@@ -83,6 +83,12 @@ public abstract class GameObject {
      * @param y the new y position of the GameObject.
      */
     public void setPosition(double x, double y) {
+        if(x<10){
+            x=10;
+        }
+        if(y<10){
+            y=10;
+        }
         this.x = x;
         this.y = y;
     }
