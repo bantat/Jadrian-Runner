@@ -17,6 +17,7 @@ import javafx.animation.AnimationTimer;
  * @author Greg Erlandson
  */
 public class Model {
+
     // Keeps track of the Obstacle and Player objects, whether or not the game
     // is running, the specified user input (move left, move right, or jump),
     // and the distance.
@@ -27,6 +28,7 @@ public class Model {
     private boolean left;
     private boolean right;
     private int distance;
+    private int obstacleSpeed;
 
     private static final Random random = new Random();
 
@@ -50,6 +52,8 @@ public class Model {
 
         gameRunning = true;
         isJumping = false;
+
+        obstacleSpeed = 8;
 
         modelTimer = new AnimationTimer() {
             @Override
@@ -100,7 +104,7 @@ public class Model {
         int minHeight = 15;
         int maxHeight = 70;
 
-        int speed = 12;
+        int speed = obstacleSpeed;
 
         int x = 1050;
 
@@ -110,18 +114,19 @@ public class Model {
         int bufferHeight = 100;
 
         Obstacle tempObstacle1 = new Obstacle(
-                        randInt(15, 70), // height
-                        randInt(15, 70), // width
+                        randInt(minHeight, maxHeight), // height
+                        randInt(minWidth, maxWidth), // width
                         speed,               // x velocity
-                        1050,            // x
-                        randInt(280,400) // y
+                        x,            // x
+                        randInt(minY, maxY) // y
                         );
+
         Obstacle tempObstacle2 = new Obstacle(
-                        randInt(15, 70), // height
-                        randInt(15, 70), // width
+                        randInt(minHeight, maxHeight), // height
+                        randInt(minWidth, maxWidth), // width
                         speed,               // x velocity
-                        1050,            // x
-                        randInt(280,400) // y
+                        x,            // x
+                        randInt(minY, maxY) // y
                         );
 
         boolean tempObstacle1Init = false;
@@ -137,6 +142,7 @@ public class Model {
                     )
             );
         }
+
         else {
             Obstacle otherObstacle = obstacles.get(obstacles.size() - 1);
             int tempMaxY = (int) otherObstacle.getY() + bufferHeight;
@@ -158,7 +164,7 @@ public class Model {
                         randInt(tempMinY, maxY));
                 tempObstacle2Init = true;
             }
-            int outcome = randInt(0,2);
+            int outcome = randInt(0,1);
             if (outcome == 0 && tempObstacle1Init) {
                 obstacles.add(tempObstacle1);
             }
@@ -167,9 +173,6 @@ public class Model {
             }
             else if (tempObstacle1Init && tempObstacle2Init) {
                 obstacles.add(tempObstacle1);
-                obstacles.add(tempObstacle2);
-            }
-            else {
                 obstacles.add(new Obstacle(
                         randInt(15, 70), // height
                         randInt(15, 70), // width
@@ -238,6 +241,9 @@ public class Model {
             modelTimer.stop();
         }
         distance++;
+        if (distance % 500 == 0) {
+            obstacleSpeed++;
+        }
     }
 
     /**
