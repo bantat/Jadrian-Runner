@@ -2,7 +2,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 /**
- * The primary class and access point for Jadrian Runner.
+ * The primary class and access point for Jadrian Runner. Run Main.main() to
+ * load game.
  *
  * @author Tore Banta
  * @author Ben Withbroe
