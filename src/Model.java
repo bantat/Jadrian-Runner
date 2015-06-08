@@ -91,7 +91,7 @@ public class Model {
         int minHeight = 15;
         int maxHeight = 70;
 
-        int speed = 8;
+        int speed = 12;
 
         int x = 1050;
 
@@ -103,14 +103,14 @@ public class Model {
         Obstacle tempObstacle1 = new Obstacle(
                         randInt(15, 70), // height
                         randInt(15, 70), // width
-                        8,               // x velocity
+                        speed,               // x velocity
                         1050,            // x
                         randInt(280,400) // y
                         );
         Obstacle tempObstacle2 = new Obstacle(
                         randInt(15, 70), // height
                         randInt(15, 70), // width
-                        8,               // x velocity
+                        speed,               // x velocity
                         1050,            // x
                         randInt(280,400) // y
                         );
@@ -164,7 +164,7 @@ public class Model {
                 obstacles.add(new Obstacle(
                         randInt(15, 70), // height
                         randInt(15, 70), // width
-                        8,               // x velocity
+                        speed,               // x velocity
                         1050,            // x
                         randInt(280,400) // y
                         )
