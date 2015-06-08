@@ -98,21 +98,28 @@ public class Model {
      */
     public void generateNewObstacle() {
 
+        // Defines min and max possible obstacle dimensions
         int minWidth = 15;
         int maxWidth = 70;
 
         int minHeight = 15;
         int maxHeight = 70;
 
+        // Assign speed var to obstacleSpeed instance vars, which is incremented
+        // over time by updateGameState
         int speed = obstacleSpeed;
 
+        // Always draws obstacle at same offscreen x value
         int x = 1050;
 
+        // Range of values for Y position, where player must avoid obstacles
         int minY = 280;
         int maxY = 400;
 
+        // Spacing between obstacles for player to fit
         int bufferHeight = 100;
 
+        // Instantiates two randomly generated temp obstacles
         Obstacle tempObstacle1 = new Obstacle(
                         randInt(minHeight, maxHeight), // height
                         randInt(minWidth, maxWidth), // width
@@ -129,9 +136,12 @@ public class Model {
                         randInt(minY, maxY) // y
                         );
 
+        // Booleans to track if tempObstacles have been initialized to something
+        // else
         boolean tempObstacle1Init = false;
         boolean tempObstacle2Init = false;
 
+        // Base case, draws random obstacle if none in game to compare to
         if (obstacles.size() == 0) {
             obstacles.add(new Obstacle(
                             randInt(minHeight, maxHeight), // height
@@ -143,6 +153,8 @@ public class Model {
             );
         }
 
+        // Otherwise, tries to change tempObstacles to randomly generated
+        // obstacle with buffer distance between previously drawn obstacle
         else {
             Obstacle otherObstacle = obstacles.get(obstacles.size() - 1);
             int tempMaxY = (int) otherObstacle.getY() + bufferHeight;
@@ -164,6 +176,8 @@ public class Model {
                         randInt(tempMinY, maxY));
                 tempObstacle2Init = true;
             }
+
+            // Randomly decides which of the temp obstacles to draw in game
             int outcome = randInt(0,1);
             if (outcome == 0 && tempObstacle1Init) {
                 obstacles.add(tempObstacle1);
@@ -171,6 +185,7 @@ public class Model {
             else if (outcome == 1 && tempObstacle2Init) {
                 obstacles.add(tempObstacle2);
             }
+            // Possible outcome for drawing multiple obstacles
             else if (tempObstacle1Init && tempObstacle2Init) {
                 obstacles.add(tempObstacle1);
                 obstacles.add(new Obstacle(
@@ -183,18 +198,6 @@ public class Model {
                 );
             }
         }
-
-//        Obstacle tempObstacle;
-//        obstacles.add(new Obstacle(
-//                        randInt(15, 70), // height
-//                        randInt(15, 70), // width
-//                        8,               // x velocity
-//                        1050,            // x
-//                        randInt(280,400) // y
-//                )
-//        );
-
-
     }
 
     /**
@@ -240,7 +243,10 @@ public class Model {
         if (!gameRunning) {
             modelTimer.stop();
         }
+
         distance++;
+
+        // Increases speed of obstacles every 50m travelled in game
         if (distance % 500 == 0) {
             obstacleSpeed++;
         }
@@ -249,9 +255,9 @@ public class Model {
     /**
      * Deletes the obstacles that are offscreen to the left, and generates
      * a new obstacle if there are no obstacles offscreen to the right.
-     * @param offscreenLeft a list of the obstacles offscreen to the left,
+     * @param offscreenLeft A list of the obstacles offscreen to the left,
      *                      which will be deleted from the obstacle list.
-     * @param numOffscreenRight the number of obstacle offscreen to the right.
+     * @param numOffscreenRight The number of obstacle offscreen to the right.
      */
     public void updateOffscreenObstacles(List<Obstacle> offscreenLeft,
                                          int numOffscreenRight) {

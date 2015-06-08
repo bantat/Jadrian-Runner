@@ -20,10 +20,13 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage gameWindow) throws Exception {
+
+        // Instantiates MVC components
         final Model model = new Model();
         final GameController gameController = new GameController(model);
         final View view = new View(model, gameController, gameWindow);
 
+        // Call to newly constructed view to load starting screen
         view.loadStartScreen();
     }
 

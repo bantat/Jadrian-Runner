@@ -9,6 +9,7 @@ import javafx.scene.input.KeyEvent;
  * @author Greg Erlandson
  */
 public class GameController {
+
     // Keeps track of the model in order to update instance variables in model,
     // user input (move left, move right or jump).
     private Model model;
