@@ -528,9 +528,6 @@ public class View {
         playerAnimation.update();
     }
 
-    // TODO: fix the goddamn hitboxes and figure out why they're different for
-    // TODO: obstacle and the player
-
     /**
      * Draws the Player object onto the game canvas.
      * @param context the GraphicsContext the Player object is drawn on.
