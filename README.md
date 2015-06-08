@@ -12,12 +12,11 @@ Group Members:
 
 * Tore Banta
 
-Running the Game:
+Running/Building the Game:
+- Import the project in intelliJ from existing files, using default settings and JDK 1.8
+- Mark the directory 'Resources' as Resources Root
+- Ensure directory 'Tests' is marked as Test Sources Root
+- If problem with junit import for test files, click lightbulb next to @Test and choose Import JUnit to Classpath
+- Run Main.java in intelliJ
 
-- Compile the .java files in the /src directory
-- Run Main from the command line, execute "java Main"
-
-If you run into difficulties running the game,
-change the lines 136 and 157 in View.java, which say "View.class.getResource("Menu.fxml")"
-to read the .fxml file from an absolute path:
-View.class.getResource("/resources/Menu.fxml")
+Hope you enjoy the game!
