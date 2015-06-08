@@ -88,45 +88,102 @@ public class Model {
      */
     public void generateNewObstacle() {
 
-//        int minWidth = 15;
-//        int maxWidth = 70;
-//
-//        int minHeight = 15;
-//        int maxHeight = 70;
-//
-//        int minSpeed = 5;
-//        int maxSpeed = 7;
-//
-//        int minX = 800;
-//        int maxX = 1500;
-//
-//        int minY = 280;
-//        int maxY = 500;
-//
-//        boolean obstacleNotMade = true;
-//
-//        Obstacle tempObstacle;
-//
-//        while (obstacleNotMade) {
-//            tempObstacle = new Obstacle(randInt(minWidth, maxWidth),
-//                                                 randInt(minHeight, maxHeight),
-//                                                 randInt(minSpeed, maxSpeed),
-//                                                 randInt(minX, maxX),
-//                                                 randInt(minY, maxY));
-//
-//            Obstacle otherObstacle = obstacles.get(obstacles.size() - 1);
-//
-//            if (tempObstacle.getX() > otherObstacle.getX())
-//        }
-//        Obstacle tempObstacle;
-        obstacles.add(new Obstacle(
+        int minWidth = 15;
+        int maxWidth = 70;
+
+        int minHeight = 15;
+        int maxHeight = 70;
+
+        int speed = 8;
+
+        int x = 1050;
+
+        int minY = 280;
+        int maxY = 400;
+
+        int bufferHeight = 100;
+
+        Obstacle tempObstacle1 = new Obstacle(
                         randInt(15, 70), // height
                         randInt(15, 70), // width
                         8,               // x velocity
                         1050,            // x
                         randInt(280,400) // y
-                )
-        );
+                        );
+        Obstacle tempObstacle2 = new Obstacle(
+                        randInt(15, 70), // height
+                        randInt(15, 70), // width
+                        8,               // x velocity
+                        1050,            // x
+                        randInt(280,400) // y
+                        );
+
+        boolean tempObstacle1Init = false;
+        boolean tempObstacle2Init = false;
+
+        if (obstacles.size() == 0) {
+            obstacles.add(new Obstacle(
+                            randInt(minHeight, maxHeight), // height
+                            randInt(minWidth, maxWidth), // width
+                            speed,               // x velocity
+                            x,            // x
+                            randInt(minY, maxY) // y
+                    )
+            );
+        }
+        else {
+            Obstacle otherObstacle = obstacles.get(obstacles.size() - 1);
+            int tempMaxY = (int) otherObstacle.getY() + bufferHeight;
+            if (minY < tempMaxY) {
+                tempObstacle1 = new Obstacle(randInt(minWidth, maxWidth),
+                        randInt(minHeight, maxHeight),
+                        speed,
+                        x,
+                        randInt(minY, tempMaxY));
+                tempObstacle1Init = true;
+            }
+            int tempMinY = (int) otherObstacle.getY() +
+                    otherObstacle.getHeight();
+            if (tempMinY < maxY) {
+                tempObstacle2 = new Obstacle(randInt(minWidth, maxWidth),
+                        randInt(minHeight, maxHeight),
+                        speed,
+                        x,
+                        randInt(tempMinY, maxY));
+                tempObstacle2Init = true;
+            }
+            int outcome = randInt(0,2);
+            if (outcome == 0 && tempObstacle1Init) {
+                obstacles.add(tempObstacle1);
+            }
+            else if (outcome == 1 && tempObstacle2Init) {
+                obstacles.add(tempObstacle2);
+            }
+            else if (tempObstacle1Init && tempObstacle2Init) {
+                obstacles.add(tempObstacle1);
+                obstacles.add(tempObstacle2);
+            }
+            else {
+                obstacles.add(new Obstacle(
+                        randInt(15, 70), // height
+                        randInt(15, 70), // width
+                        8,               // x velocity
+                        1050,            // x
+                        randInt(280,400) // y
+                        )
+                );
+            }
+        }
+
+//        Obstacle tempObstacle;
+//        obstacles.add(new Obstacle(
+//                        randInt(15, 70), // height
+//                        randInt(15, 70), // width
+//                        8,               // x velocity
+//                        1050,            // x
+//                        randInt(280,400) // y
+//                )
+//        );
 
 
     }
