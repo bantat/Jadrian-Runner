@@ -64,7 +64,9 @@ public class Model {
     /**
      * @return true if the game should be running
      */
-    public boolean gameRunning() { return gameRunning; }
+    public boolean gameRunning() {
+        return gameRunning;
+    }
 
     /**
      * Helper method that generates a random int from the min to the max,
@@ -112,10 +114,11 @@ public class Model {
 //        }
 //        Obstacle tempObstacle;
         obstacles.add(new Obstacle(
-                        random.nextInt(numObstacleTypes), // obstacleType
+                        randInt(15, 70), // height
+                        randInt(15, 70), // width
                         8,               // x velocity
                         1050,            // x
-                        randInt(240,400) // y
+                        randInt(280,400) // y
                 )
         );
 

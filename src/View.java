@@ -414,7 +414,7 @@ public class View {
      * Loads the sprite Image arrays to the animation ArrayList.
      */
     public void loadPlayerSprites() {
-        // Iterates through the player states and loads the respecctive Image
+        // Iterates through the player states and loads the respective Image
         // array for each one.
         for (int i = 0; i < NUM_PLAYER_STATES; i++) {
             Image[] imageArray;
