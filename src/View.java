@@ -135,10 +135,7 @@ public class View {
         // If it has send the user to the start screen.
         if (!model.gameRunning()) {
             viewTimer.stop();
-            //loadStartScreen();
-            int distance = model.getDistance();
-            model.resetDistance();
-            loadGameOverScreen(distance);
+            loadGameOverScreen(model.getDistance(), model.getNumJumpedOver());
         }
 
         // Initializes a GraphicsContext variable to allow the program to draw
@@ -197,7 +194,10 @@ public class View {
                                        numObjectsOffscreenRight);
 
         context.setFont(new Font("Comic Sans MS", (double) 24));
-        context.fillText("SCORE   " + model.getDistance() + "m", 40, 40);
+        context.fillText("DISTANCE  " + model.getDistance() + "m", 20, 40);
+
+        context.setFont(new Font("Comic Sans MS", (double) 24));
+        context.fillText("CLEARED   " + model.getNumJumpedOver(), 20, 80);
     }
 
     /**
@@ -233,7 +233,7 @@ public class View {
      * buttons allowing the player to start a new game or quit.
      * @param distance the distancee the player travelled in the game
      */
-    public void loadGameOverScreen(int distance) {
+    public void loadGameOverScreen(int distance, int numJumpedOver) {
         Button quitButton = new Button("Quit Game");
         Button newButton = new Button("New Game");
 
@@ -244,7 +244,11 @@ public class View {
         Text distanceText = new Text(String.format("Distance: %d", distance));
         distanceText.setFont(Font.font ("Comic Sans MS", 20));
 
+        Text jumpedText = new Text(String.format("Jumped over: %d", numJumpedOver));
+        jumpedText.setFont(Font.font ("Comic Sans MS", 20));
+
         flowPlane.getChildren().add(distanceText);
+        flowPlane.getChildren().add(jumpedText);
         flowPlane.getChildren().add(newButton);
         flowPlane.getChildren().add(quitButton);
 
