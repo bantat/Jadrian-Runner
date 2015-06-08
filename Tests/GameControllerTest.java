@@ -8,7 +8,11 @@ public class GameControllerTest {
     private GameController controller;
     private Model model = new Model();
 
-    @Test (expected = Exception.class)
+
+    // The following 3 tests, make sure the Controller class does not break
+    // when null is passed as a parameter.
+
+    @Test
     public void testConstructor() throws Exception {
         controller = new GameController(null);
     }

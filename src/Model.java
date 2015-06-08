@@ -249,12 +249,10 @@ public class Model {
      */
     public void updateOffscreenObstacles(List<Obstacle> offscreenLeft,
                                          int numOffscreenRight) {
-        try {
-            offscreenLeft.forEach(obstacles::remove);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+        if (offscreenLeft != null) {
+            offscreenLeft.forEach(obstacles::remove);
+        }
         if (numOffscreenRight < 1) {
             generateNewObstacle();
         }
