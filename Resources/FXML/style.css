@@ -1,0 +1,10 @@
+#pane{
+    -fx-background-image: url("background_image.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 600 400;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+}
+.root {
+    -fx-background-image: url("../Images/Background/background.png");
+}
