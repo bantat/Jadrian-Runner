@@ -142,8 +142,10 @@ public class View {
         // the player object, Obstacle objects and background on the game
         // window. Clears the previous game screen in order to draw new game
         // state with the updated Player object, Obstacle objects and distance.
-        GraphicsContext context = mainCanvas.getGraphicsContext2D();
-        context.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
+        GraphicsContext gameContext = mainCanvas.getGraphicsContext2D();
+        gameContext.clearRect(0, 0,
+                              mainCanvas.getWidth(),
+                              mainCanvas.getHeight());
 
         backgroundSkyCanvasX += backgroundSkyShift;
         updateBackgroundImage(backgroundSkyCanvas,
@@ -163,9 +165,6 @@ public class View {
         if (backgroundGrassCanvasX <= -backgroundGrassImage.getWidth()) {
             backgroundGrassCanvasX = 0;
         }
-
-        GraphicsContext gameContext = mainCanvas.getGraphicsContext2D();
-//        context.clearRect(0, 0, mainCanvas.getWidth(), mainCanvas.getHeight());
 
         GameObject player = model.getPlayer();
         drawPlayer(gameContext, player);
@@ -193,11 +192,11 @@ public class View {
         model.updateOffscreenObstacles(obstaclesOffscreenLeft,
                                        numObjectsOffscreenRight);
 
-        context.setFont(new Font("Comic Sans MS", (double) 24));
-        context.fillText("DISTANCE  " + model.getDistance() + "m", 20, 40);
+        gameContext.setFont(new Font("Comic Sans MS", (double) 24));
+        gameContext.fillText("DISTANCE  " + model.getDistance() + "m", 20, 40);
 
-        context.setFont(new Font("Comic Sans MS", (double) 24));
-        context.fillText("CLEARED   " + model.getNumJumpedOver(), 20, 80);
+        gameContext.setFont(new Font("Comic Sans MS", (double) 24));
+        gameContext.fillText("CLEARED   " + model.getNumJumpedOver(), 20, 80);
     }
 
     /**
@@ -318,12 +317,6 @@ public class View {
 
         System.exit(1);
     }
-
-//    public void onNewGame(ActionEvent actionEvent) {
-//        loadGameScreen();
-//    }
-//
-//    public void onQuitGame() { System.exit(1); }
 
     /**
      * Loads the standard game screen for playing  from the relevant FXML file.
@@ -456,6 +449,9 @@ public class View {
         }
     }
 
+    /**
+     * Generates the images used for the various obstacles.
+     */
     private void genObstacleImages() {
         obstacleImages = new HashMap<String, Image>();
         String[] obstacleTypes = Obstacle.getObstacleTypes();
@@ -516,17 +512,14 @@ public class View {
         if (player.getYVelocity() > 0) {
             playerAnimation.setFrames(playerSprites.get(PLAYER_FALLING));
             playerAnimation.setFrameDelay(100);
-//            width = 40;
 
         } else if (player.getYVelocity() < 0) {
             playerAnimation.setFrames(playerSprites.get(PLAYER_JUMPING));
             playerAnimation.setFrameDelay(100);
-//            width = 40;
 
         } else {
             playerAnimation.setFrames(playerSprites.get(PLAYER_RUNNING));
             playerAnimation.setFrameDelay(40);
-//            width = 40;
         }
 
         playerAnimation.update();

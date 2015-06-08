@@ -33,6 +33,7 @@ public class Model {
     AnimationTimer modelTimer;
     long lastUpdateTime;
 
+    private Obstacle currentObstacle;
     private Obstacle lastObstacle;
     private int numJumpedOver;
 
@@ -79,8 +80,11 @@ public class Model {
      * @return randNum, the random int desired.
      */
     public static int randInt(int min, int max) {
-        if (max < 0) { return -1;}
-        if (min < 0) { min = 0;}
+        if (max < 0) {
+            return -1;
+        } else if (min < 0) {
+            min = 0;
+        }
         return random.nextInt((max - min) + 1) + min;
     }
 
@@ -222,9 +226,11 @@ public class Model {
             if (o.isCollision(player)) {
                 gameRunning = false;
 
-            } else if (isOver(player, o) && o != lastObstacle) {
+            } else if (isOver(player, o)
+                    && o != lastObstacle && o != currentObstacle) {
                 numJumpedOver++;
-                lastObstacle = o;
+                lastObstacle = currentObstacle;
+                currentObstacle = o;
             }
         });
 
@@ -269,11 +275,19 @@ public class Model {
         return numJumpedOver;
     }
 
-    public List<Obstacle> getObstacles() { return obstacles; }
+    public List<Obstacle> getObstacles() {
+        return obstacles;
+    }
 
-    public Player getPlayer() { return player; }
+    public Player getPlayer() {
+        return player;
+    }
 
-    public int getDistance() { return distance / 10; }
+    public int getDistance() {
+        return distance / 10;
+    }
 
-    public void resetDistance() { distance = 0; }
+    public void resetDistance() {
+        distance = 0;
+    }
 }
