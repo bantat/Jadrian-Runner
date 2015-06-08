@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import GameObjects.GameObject;
 import GameObjects.Obstacle;
 import GameObjects.Player;
 import javafx.animation.AnimationTimer;
@@ -32,7 +33,8 @@ public class Model {
     AnimationTimer modelTimer;
     long lastUpdateTime;
 
-    private int numObstacleTypes;
+    private Obstacle lastObstacle;
+    private int numJumpedOver;
 
     /**
      * Initializes our game by creating a GameObject for the player and a
@@ -42,7 +44,8 @@ public class Model {
     public void init() {
         player = new Player();
         obstacles = new ArrayList<Obstacle>();
-        numObstacleTypes = 1;
+        numJumpedOver = 0;
+        distance = 0;
 
         gameRunning = true;
         isJumping = false;
@@ -156,8 +159,13 @@ public class Model {
         // Player object. If any of them have it tells the game to end.
         obstacles.forEach((Obstacle o) -> {
             o.updatePosition(elapsed);
+
             if (o.isCollision(player)) {
                 gameRunning = false;
+
+            } else if (isOver(player, o) && o != lastObstacle) {
+                numJumpedOver++;
+                lastObstacle = o;
             }
         });
 
@@ -181,6 +189,21 @@ public class Model {
         if (numOffscreenRight < 1) {
             generateNewObstacle();
         }
+    }
+
+    /**
+     * @param player the player
+     * @param object the obstacle being checked
+     * @return true if the player is over the obstacle
+     */
+    private boolean isOver(GameObject player, GameObject object) {
+        return player.getY() < object.getY()
+            && player.getX() > object.getX()
+            && player.getX() < object.getX() + object.getWidth();
+    }
+
+    public int getNumJumpedOver() {
+        return numJumpedOver;
     }
 
     public List<Obstacle> getObstacles() { return obstacles; }
