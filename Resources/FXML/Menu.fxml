@@ -94,7 +94,7 @@
       </ImageView>
       <ImageView fitHeight="278.0" fitWidth="196.0" layoutX="80.0" layoutY="238.0">
          <image>
-            <Image url="@../Images/Background/Screenshot%202015-06-08%2012.54.09.png" />
+            <Image url="@../Images/Background/jadrian.png" />
          </image>
       </ImageView>
    </children>
