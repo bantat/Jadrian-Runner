@@ -35,11 +35,12 @@ public class ModelTest {
     @Test
     public void testGenerateNewObstacle() throws Exception {
         model = new Model();
+        model.init();
         model.generateNewObstacle();
         assertTrue(model.getObstacles().size() != 0);
     }
 
-    @Test(expected = Exception.class)
+    @Test
     public void testUpdateOffscreenObstaclesNull() throws Exception {
         model = new Model();
         model.updateOffscreenObstacles(null, 1);

@@ -58,7 +58,6 @@ public class SpriteAnimation {
 
         long elapsed = (System.nanoTime() - startTime) / 1000000L ;
 
-        // What is going on in these two ifs?
         if (elapsed > frameDelay) {
             currentFrame++;
             startTime = System.nanoTime();
@@ -70,21 +69,8 @@ public class SpriteAnimation {
     }
 
     /**
-     * Gets the current frame.
-     * @return the current frame
-     */
-    public int getFrame() { return currentFrame; }
-
-    /**
      * Gets the image being displayed for the current frame.
      * @return image being displayed.
      */
     public Image getImage() { return frames[currentFrame]; }
-
-    /**
-     * ???
-     * @return returns playedOnce boolean
-     */
-    public boolean hasPlayedOnce() { return playedOnce; }
-
 }

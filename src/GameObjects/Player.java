@@ -1,7 +1,7 @@
 package GameObjects;
 
 /**
- * Class for the user to control.
+ * Class for the player object which user controls to play game.
  *
  * Template from Youtuber ForeignGuyMike, in his video at the URL:
  * https://www.youtube.com/watch?v=zUOkojY_Ylo&list=PL-2t7SM0vDfcIedoMIghzzgQqZq
@@ -14,46 +14,55 @@ package GameObjects;
  */
 public class Player extends GameObject {
 
+    // Final static instance vars for player object Animation state
     private static final int RUNNING = 0;
     private static final int JUMPING = 1;
     private static final int FALLING = 2;
 
+    // Instance vars for player object state based on user input
     private boolean shouldJump;
     private boolean movingLeft;
     private boolean movingRight;
-    private boolean isAlive;
 
+    // Movement boundaries
     private int maxY;
     private int minY;
     private int minX;
     private int maxX;
 
+    // Slow moving speed for smooth player movement
     private double slowSpeed;
 
     public Player() {
 
         super();
 
+        // Initialize necessary instance variables for player object
+
+        // Size
         width = 44;
         height = 76;
 
+        // Movement
         fallSpeed = 2;
         moveSpeed = 8;
         slowSpeed = 3;
         maxFallSpeed = 10;
         jumpHeight = -21;
 
-        isAlive = true;
         shouldJump = false;
 
+        // Boundaries
         maxY = 450;
         minY = 250;
         minX = 10;
         maxX = 600;
 
+        // Initial position
         x = 10;
         y = maxY;
 
+        // Initial direction
         dx = 0;
         dy = 0;
     }
@@ -93,6 +102,7 @@ public class Player extends GameObject {
      */
     @Override
     public void updatePosition(double elapsed) {
+
         // Determines the current action and updated direction vector from
         // the most recent update.
         if (shouldJump && currentAction != FALLING) {
@@ -102,6 +112,8 @@ public class Player extends GameObject {
             currentAction = FALLING;
         }
 
+        // When user input moving in some direction, check for boundaries and
+        // apply move speed to dx
         if (movingLeft) {
             if (x - moveSpeed < minX) {
                 dx = 0;
@@ -122,6 +134,7 @@ public class Player extends GameObject {
             }
         }
 
+        // Smooth transition out of player movement
         if (!movingLeft && !movingRight && dx > 0) {
             if (dx - slowSpeed > 0) {
                 dx += -1 * slowSpeed;
@@ -140,6 +153,8 @@ public class Player extends GameObject {
             }
         }
 
+        // If jumping, decrement dy by jump height until minY is reached
+        // (because of reversed Y coordinate plane)
         if (currentAction == JUMPING) {
             if (y > minY) {
                 dy = jumpHeight;
@@ -148,6 +163,8 @@ public class Player extends GameObject {
                 dy += fallSpeed;
             }
 
+        // If falling, increment dy by fallspped until maxY is reached
+        // (because of reversed Y coordinate plane)
         } else if (currentAction == FALLING) {
             if (y + dy <= maxY) {
                 dy += fallSpeed;
@@ -157,11 +174,13 @@ public class Player extends GameObject {
                 y = maxY;
             }
 
+        // Otherwise, sets player movement to static
         } else  {
             dy = 0;
             y = maxY;
         }
 
+        // Update x and y based on difference in frame draw and dx, dy values
         x += elapsed * dx;
         y += elapsed * dy;
     }

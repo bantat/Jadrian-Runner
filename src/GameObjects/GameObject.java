@@ -22,11 +22,6 @@ public abstract class GameObject {
 
     protected int currentAction;
 
-//    protected boolean left;
-//    protected boolean right;
-//    protected boolean up;
-//    protected boolean down;
-
     protected double moveSpeed;
     protected double fallSpeed;
     protected double maxFallSpeed;
@@ -38,8 +33,6 @@ public abstract class GameObject {
      * @return Rectangle2D hitBox
      */
     public Rectangle2D getHitBox() {
-//        return new Rectangle2D((int) x + width / 2, (int) y + height / 2,
-//                               width * 1.5, height * 1.5);
         return new Rectangle2D((int) x, (int) y,
                                width, height);
     }
@@ -60,22 +53,6 @@ public abstract class GameObject {
     public int getWidth() { return width; }
 
     public int getHeight() { return height; }
-
-//    public void setLeft(boolean isLeft) {
-//        left = isLeft;
-//    }
-//
-//    public void setRight(boolean isRight) {
-//        right = isRight;
-//    }
-//
-//    public void setUp(boolean isUp) {
-//        up = isUp;
-//    }
-//
-//    public void setDown(boolean isDown) {
-//        down = isDown;
-//    }
 
     /**
      * Sets the x and y position of the GameObject.

@@ -9,6 +9,7 @@ import javafx.scene.input.KeyEvent;
  * @author Greg Erlandson
  */
 public class GameController {
+
     // Keeps track of the model in order to update instance variables in model,
     // user input (move left, move right or jump).
     private Model model;
@@ -21,10 +22,12 @@ public class GameController {
      * methods based on user input.
      */
     public GameController(Model model) {
-        this.model = model;
-        jump = false;
-        left = false;
-        right = false;
+        if (model != null) {
+            this.model = model;
+            jump = false;
+            left = false;
+            right = false;
+        }
     }
 
     /**
@@ -42,23 +45,25 @@ public class GameController {
      * @param keyEvent javafx object that describes the key pressed.
      */
     public void keyPressed(KeyEvent keyEvent) {
-        switch (keyEvent.getCode()) {
-            case UP:
-                // fall through
-            case SPACE:
-                jump = true;
-                break;
+        if (keyEvent != null) {
+            switch (keyEvent.getCode()) {
+                case UP:
+                    // fall through
+                case SPACE:
+                    jump = true;
+                    break;
 
-            case LEFT:
-                left = true;
-                break;
+                case LEFT:
+                    left = true;
+                    break;
 
-            case RIGHT:
-                right = true;
+                case RIGHT:
+                    right = true;
+            }
+
+            keyEvent.consume();
+            model.updateInputState(jump, left, right);
         }
-
-        keyEvent.consume();
-        model.updateInputState(jump, left, right);
     }
 
     /**
@@ -66,23 +71,25 @@ public class GameController {
      * @param keyEvent javafx object that describes the key pressed.
      */
     public void keyReleased(KeyEvent keyEvent) {
-        switch (keyEvent.getCode()) {
-            case UP:
-                // fall through
-            case SPACE:
-                jump = false;
-                break;
+        if (keyEvent != null) {
+            switch (keyEvent.getCode()) {
+                case UP:
+                    // fall through
+                case SPACE:
+                    jump = false;
+                    break;
 
-            case LEFT:
-                left = false;
-                break;
+                case LEFT:
+                    left = false;
+                    break;
 
-            case RIGHT:
-                right = false;
+                case RIGHT:
+                    right = false;
+            }
+
+
+            keyEvent.consume();
+            model.updateInputState(jump, left, right);
         }
-
-
-        keyEvent.consume();
-        model.updateInputState(jump, left, right);
     }
 }
