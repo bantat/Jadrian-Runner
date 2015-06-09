@@ -12,13 +12,14 @@
 
 * Tore Banta
 
+
 **Running/Building the Game:**
 
-- Import the project in intelliJ from existing files, using default settings and JDK 1.8
+- We made an error in the .iml file at the "phase_3_3" tag. This was corrected on 6/9 in tag "phase_3_3_b", and the only difference with that tag is that the .iml file is corrected. 
 
-- Mark the directory 'Resources' as Resources Root
+- Import the project in intelliJ from existing files, using JDK 1.8.
 
-- Ensure directory 'Tests' is marked as Test Sources Root
+- Make sure the language level is set to 8 to account for lambdas and method references.
 
 - If problem with junit import for test files, click lightbulb next to @Test and choose Import JUnit to Classpath
 
